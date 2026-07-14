@@ -1,0 +1,44 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "uses-expo-router-stack"
+id = "uses-expo-router-stack"
+description = "Must render Stack from expo-router in _layout.tsx and not call createNativeStackNavigator or NavigationContainer."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "navigates-to-details"
+id = "navigates-to-details"
+description = "Must navigate from the Products screen to the details route using expo-router Link or router navigation."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "passes-id-param"
+id = "passes-id-param"
+description = "Must pass the product id as a route parameter when navigating to details."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "details-reads-id-with-hook"
+id = "details-reads-id-with-hook"
+description = "The details screen must read the id from the route with useLocalSearchParams or useGlobalSearchParams."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "details-renders-id"
+id = "details-renders-id"
+description = "The details screen must render the received id value."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

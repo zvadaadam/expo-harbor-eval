@@ -1,0 +1,37 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "uses-native-state"
+id = "uses-native-state"
+description = "Must use useNativeState from @expo/ui/jetpack-compose for native-shared state."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "textfield-controlled"
+id = "textfield-controlled"
+description = "Must pass the native state object from useNativeState directly to the Expo UI TextField value prop."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "host-root"
+id = "host-root"
+description = "Must render the Expo UI TextField under the Jetpack Compose Host."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "no-react-state-mirror"
+id = "no-react-state-mirror"
+description = "Must hold the field value in native state, not a parallel React useState."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

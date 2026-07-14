@@ -1,0 +1,5 @@
+{
+  "upstream_url": "https://github.com/callstackincubator/evals",
+  "upstream_commit": "f7a46a71da58eece312e37a1f5291e9fd0cc236b",
+  "upstream_eval": "evals/expo-sdk/10-rn-expo-notifications-listener-cleanup"
+}

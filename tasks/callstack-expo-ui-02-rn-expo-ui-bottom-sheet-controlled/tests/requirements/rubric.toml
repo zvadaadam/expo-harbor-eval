@@ -1,0 +1,37 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "community-bottom-sheet-import"
+id = "community-bottom-sheet-import"
+description = "Must import BottomSheet APIs from @expo/ui/community/bottom-sheet."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "controlled-open-and-close"
+id = "controlled-open-and-close"
+description = "Must drive the sheet through the ref, both opening it (e.g. expand) and closing it (e.g. close) from a control."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "uses-bottom-sheet-view"
+id = "uses-bottom-sheet-view"
+description = "Must place sheet content in the BottomSheetView (or documented sheet child wrapper) imported from @expo/ui/community/bottom-sheet."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "no-gorhom-import"
+id = "no-gorhom-import"
+description = "Must not import @gorhom/bottom-sheet directly."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

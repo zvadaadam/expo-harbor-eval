@@ -1,0 +1,44 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "uses-current-canceled-spelling"
+id = "uses-current-canceled-spelling"
+description = "Must check result.canceled, not the old result.cancelled spelling."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "assets-null-guard"
+id = "assets-null-guard"
+description = "Must guard result.assets before indexing because canceled results have assets: null."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "no-launch-on-mount"
+id = "no-launch-on-mount"
+description = "Must call launchImageLibraryAsync only from a user action."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "uses-current-media-types-array"
+id = "uses-current-media-types-array"
+description = "Must use the current MediaType array form such as mediaTypes: [\"images\"] rather than depending on deprecated MediaTypeOptions."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "renders-empty-state"
+id = "renders-empty-state"
+description = "Must keep the UI in its stable empty state without crashing when the user cancels the picker."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

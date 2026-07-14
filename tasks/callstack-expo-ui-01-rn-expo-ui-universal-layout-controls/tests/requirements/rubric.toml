@@ -1,0 +1,30 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "uses-universal-layout-primitives"
+id = "uses-universal-layout-primitives"
+description = "Must use @expo/ui universal layout/control primitives such as Column, Row, Button, Text, and Switch."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "controlled-switch-state"
+id = "controlled-switch-state"
+description = "Must keep the @expo/ui Switch value controlled by React state via its value and onValueChange props."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "host-provides-root"
+id = "host-provides-root"
+description = "Must render controls under Host."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

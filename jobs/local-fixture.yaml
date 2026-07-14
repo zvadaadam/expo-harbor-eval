@@ -1,0 +1,17 @@
+jobs_dir: runs
+n_attempts: 1
+timeout_multiplier: 1.0
+n_concurrent_trials: 1
+quiet: false
+
+environment:
+  import_path: expo_harbor_evals.local_env:LocalHostEnvironment
+  delete: true
+
+agents:
+  - name: nop
+
+datasets:
+  - path: tasks
+    task_names:
+      - expo-mobile-eval-import

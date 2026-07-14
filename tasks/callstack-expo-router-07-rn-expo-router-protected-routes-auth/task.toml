@@ -1,0 +1,31 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/callstack-expo-router-07-rn-expo-router-protected-routes-auth"
+description = "Callstack React Native Expo eval adapted to Harbor."
+authors = [{ name = "Callstack React Native Evals contributors" }]
+keywords = ["react-native", "expo", "harbor", "callstack", "llm-judge"]
+
+[metadata]
+category = "expo-router"
+difficulty = "mixed"
+upstream_url = "https://github.com/callstackincubator/evals"
+upstream_commit = "f7a46a71da58eece312e37a1f5291e9fd0cc236b"
+upstream_eval = "evals/expo-router/07-rn-expo-router-protected-routes-auth"
+upstream_license = "MIT"
+requirements = 4
+verifier = "rewardkit-weighted-binary"
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 900.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+workdir = "/app"
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240

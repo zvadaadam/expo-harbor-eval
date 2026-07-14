@@ -1,0 +1,37 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "uses-stack-protected"
+id = "uses-stack-protected"
+description = "Must gate routes with Stack.Protected, since the app uses a Stack layout."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "account-guarded-signed-in"
+id = "account-guarded-signed-in"
+description = "The account screen must be wrapped so it is only present when signedIn is true."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "sign-in-guarded-signed-out"
+id = "sign-in-guarded-signed-out"
+description = "The sign-in screen must be wrapped so it is only present when signedIn is false."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "guard-boolean-explicit"
+id = "guard-boolean-explicit"
+description = "Must pass explicit guard booleans derived from auth state to Stack.Protected."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

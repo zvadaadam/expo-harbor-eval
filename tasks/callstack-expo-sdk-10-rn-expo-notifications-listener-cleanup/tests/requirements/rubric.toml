@@ -1,0 +1,37 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "received-listener-registered"
+id = "received-listener-registered"
+description = "Must register addNotificationReceivedListener in a mount effect."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "response-listener-registered"
+id = "response-listener-registered"
+description = "Must register addNotificationResponseReceivedListener in the same component lifecycle."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "subscriptions-removed"
+id = "subscriptions-removed"
+description = "Must call remove() on every notification subscription in the effect cleanup."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "state-update-from-listeners"
+id = "state-update-from-listeners"
+description = "Must update visible local state from both received notification and response listener payloads."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

@@ -1,0 +1,3 @@
+Wire up the notes screen's save and load using the SDK 56 object-based file API from expo-file-system. Persist the text to a cache file, create the directory idempotently, and on first run (no file yet) load fallback text instead of crashing.
+
+Work in `/app`. Modify the existing files and add any files required to complete the task.

@@ -1,0 +1,37 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "imports-file-directory-paths"
+id = "imports-file-directory-paths"
+description = "Must import File, Directory, and Paths from expo-file-system."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "creates-directory-idempotently"
+id = "creates-directory-idempotently"
+description = "Must create a Directory under Paths.cache or Paths.document with idempotent/intermediates options."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "uses-file-instance-read-write"
+id = "uses-file-instance-read-write"
+description = "Must call File instance methods such as write() and text() for read/write operations."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "handles-read-missing-file"
+id = "handles-read-missing-file"
+description = "Must actually read the file through the File API and drive the fallback text from a caught missing-file/failed read (e.g. try/catch around text()), not from a static status or by never reading."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

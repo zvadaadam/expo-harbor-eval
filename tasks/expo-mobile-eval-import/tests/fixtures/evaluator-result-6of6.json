@@ -1,0 +1,18 @@
+{
+  "test_overview": "Adaptive evaluation: 1 test plan(s), macro avg 100.0% (micro 100.0%, 6/6 points)",
+  "score": 6,
+  "full_points": 6,
+  "macro_avg_pct": 100.0,
+  "micro_pct": 100.0,
+  "n_not_applicable": 0,
+  "test_plans": [
+    {
+      "test_plan": "test_insert.txt",
+      "run_index": 1,
+      "score": 6,
+      "full_points": 6,
+      "macro_pct": 100.0,
+      "steps": []
+    }
+  ]
+}

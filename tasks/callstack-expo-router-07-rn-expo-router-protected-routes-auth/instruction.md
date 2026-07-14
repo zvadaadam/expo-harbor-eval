@@ -1,0 +1,3 @@
+Add authentication gating to the existing Stack routes so the account screen is only reachable when signed in and the sign-in screen only when signed out, using the app's signedIn flag.
+
+Work in `/app`. Modify the existing files and add any files required to complete the task.
