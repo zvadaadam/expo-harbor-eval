@@ -1,0 +1,34 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/simbench-ios-01-goldennotes-create-note"
+description = "Drive the iOS simulator to create a note in the GoldenNotes app; verified from app state, no LLM judge."
+authors = [{ name = "Expo evals" }]
+keywords = ["expo", "ios", "simulator", "simbench", "agent-device"]
+
+[metadata]
+family = "simbench"
+motivation = "Expo simulator-use benchmark: compare model x driver-tool stacks (agent-device, argent, ...) on verifiable simulator tasks; internal thread 2026-07 (szymon/david/brent)"
+category = "simbench"
+difficulty = "easy"
+tier = "forms-and-keyboard"
+requires = ["macos-host", "xcode-simulator", "agent-device-cli"]
+verifier = "app-state-programmatic"
+driver_tool = "agent-device"
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 120.0
+
+[environment]
+build_timeout_sec = 600.0
+workdir = "/app"
+
+# Per-trial readiness doubles as setup: boots the simulator and reinstalls the
+# golden app fresh so every trial starts from a clean data container.
+[environment.healthcheck]
+command = "bash /app/driver/setup.sh"
+timeout_sec = 600.0
+retries = 2

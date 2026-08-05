@@ -1,0 +1,37 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "explicit-top-inset-from-header-height"
+id = "explicit-top-inset-from-header-height"
+description = "The list's top spacing must be applied explicitly through content padding (e.g. contentContainerStyle paddingTop) derived from the measured header height, such as useHeaderHeight() from @react-navigation/elements — not from a hard-coded pixel constant and not from the scroll view's automatic inset."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "no-reliance-on-automatic-content-inset"
+id = "no-reliance-on-automatic-content-inset"
+description = "Must not rely on contentInsetAdjustmentBehavior='automatic' for the header inset: the prop is removed (or set to 'never') and is not combined with the explicit top padding, which would double-apply the inset after a re-layout."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "preserves-transparent-header"
+id = "preserves-transparent-header"
+description = "The Stack options must still declare headerTransparent: true with headerLargeTitle: true and keep headerSearchBarOptions; the overlap must not be fixed by removing or disabling any of these."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "bottom-safe-area-padding"
+id = "bottom-safe-area-padding"
+description = "The list's content padding must account for the bottom safe area using useSafeAreaInsets().bottom (or an equivalent safe-area source), since dropping the automatic inset also drops the automatic bottom adjustment."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

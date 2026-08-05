@@ -1,0 +1,33 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/simbench-ios-02-inventory-scroll-claim"
+description = "Scroll a 60-row inventory list on the iOS simulator and claim one specific off-screen row; verified from app state, no LLM judge."
+authors = [{ name = "Expo evals" }]
+keywords = ["expo", "ios", "simulator", "simbench", "scrolling"]
+
+[metadata]
+family = "simbench"
+motivation = "Expo simulator-use benchmark: compare model x driver-tool stacks (agent-device, argent, ...) on verifiable simulator tasks; internal thread 2026-07 (szymon/david/brent)"
+category = "simbench"
+difficulty = "medium"
+tier = "scroll-and-find"
+requires = ["macos-host", "xcode-simulator"]
+verifier = "app-state-programmatic"
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 120.0
+
+[environment]
+build_timeout_sec = 600.0
+workdir = "/app"
+
+# Per-trial readiness doubles as setup: boots the simulator and reinstalls the
+# golden app fresh so every trial starts from a clean data container.
+[environment.healthcheck]
+command = "bash /app/driver/setup.sh"
+timeout_sec = 600.0
+retries = 2

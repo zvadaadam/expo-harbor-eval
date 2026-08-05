@@ -1,0 +1,43 @@
+# Model/effort ladder over the expo-codegen tasks using the host's logged-in
+# claude CLI (see expo_harbor_evals.claude_host_agent). Model ladder runs at
+# low effort; haiku@high isolates the reasoning-effort axis on the weakest
+# model. Judged by the same claude-code judge as jobs/codegen-judge.yaml so
+# results are comparable; merge runs with:
+#   uv run expo-eval-report runs/codegen-judge runs/codegen-models
+jobs_dir: runs
+n_attempts: 3
+timeout_multiplier: 1.0
+n_concurrent_trials: 3
+quiet: false
+
+environment:
+  import_path: expo_harbor_evals.mac_sandbox_env:MacSandboxEnvironment
+  delete: true
+
+verifier:
+  env:
+    EXPO_EVAL_VERIFIER_MODE: judge
+    REWARDKIT_JUDGE: claude-code
+    REWARDKIT_MODEL: "${REWARDKIT_MODEL:-claude-opus-4-8}"
+
+agents:
+  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
+    model_name: haiku@low
+  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
+    model_name: haiku@high
+  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
+    model_name: sonnet@low
+  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
+    model_name: opus@low
+  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
+    model_name: fable@low
+
+datasets:
+  - path: tasks
+    # Family globs (fnmatch on task directory names): every expo-codegen
+    # task joins automatically; expo-mobile-eval-import does not match.
+    task_names:
+      - "expo-sdk-*"
+      - "expo-router-*"
+      - "expo-ui-*"
+      - "expo-feedback-*"

@@ -1,0 +1,26 @@
+jobs_dir: runs
+n_attempts: 1
+timeout_multiplier: 1.0
+n_concurrent_trials: 3
+quiet: false
+
+environment:
+  import_path: expo_harbor_evals.local_env:LocalHostEnvironment
+  delete: true
+
+verifier:
+  env:
+    EXPO_EVAL_VERIFIER_MODE: reference
+
+agents:
+  - name: oracle
+
+datasets:
+  - path: tasks
+    # Family globs (fnmatch on task directory names): every expo-codegen
+    # task joins automatically; expo-mobile-eval-import does not match.
+    task_names:
+      - "expo-sdk-*"
+      - "expo-router-*"
+      - "expo-ui-*"
+      - "expo-feedback-*"
