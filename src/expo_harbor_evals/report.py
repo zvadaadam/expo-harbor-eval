@@ -292,7 +292,7 @@ def render_task_chart(tasks: list[TaskRow], series: list[Series]) -> str:
         y0 = row_top + (row_h - group_h) / 2
         label = task.name
         id_match = re.match(
-            r"((?:expo-(?:sdk|router|ui|feedback)|simbench-ios)-\d+)-(.*)", label
+            r"((?:sdk|router|ui|feedback|simbench-ios)-\d+)-(.*)", label
         )
         line1, line2 = (
             (id_match.group(1), id_match.group(2)) if id_match else (label, "")

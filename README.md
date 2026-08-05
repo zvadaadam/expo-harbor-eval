@@ -24,8 +24,8 @@ not a new Harbor data model.
 ```text
 jobs/                         Harbor job configs
 src/expo_harbor_evals/        Development helpers
-tasks/codegen/                expo-codegen: imported expo-{sdk,router,ui}-*
-                              plus field-sourced expo-feedback-* tasks
+tasks/codegen/                expo-codegen: imported {sdk,router,ui}-NN-* tasks
+                              plus field-sourced feedback-NN-* tasks
 tasks/expo-mobile-eval-import Harbor task that normalizes evaluator output
 tasks/simbench-ios-*          simulator-use benchmark golden-app tasks
 third_party/                   Upstream license and pinned-source metadata
@@ -117,9 +117,9 @@ commit provenance, and MIT attribution. Use `--all-expo` with
 `expo-codegen-import` when the first cohort is stable enough to expand from 9
 to all upstream Expo tasks.
 
-### Field-sourced tasks (`expo-feedback-*`)
+### Field-sourced tasks (`feedback-*`)
 
-Alongside the imported cohort, `expo-feedback-*` tasks are authored from real
+Alongside the imported cohort, `feedback-*` tasks are authored from real
 failure reports submitted against the Expo agent skills
 (`task.toml [metadata] feedback_id` cites the report). They exist because
 field reports surface the highest-signal eval shape there is: **traps**, where
@@ -137,7 +137,7 @@ Each feedback task ships three artifacts:
   judge scores it below 1.0, so the task provably discriminates instead of
   rewarding anything that looks considered.
 
-`tasks/codegen/expo-feedback-01-transparent-header-content-inset` is the
+`tasks/codegen/feedback-01-transparent-header-content-inset` is the
 pattern's first instance: under a transparent large-title header,
 `contentInsetAdjustmentBehavior="automatic"` (the guidance) applies no top
 inset on a cold launch, and the fix is explicit `useHeaderHeight()` /

@@ -1,7 +1,7 @@
 schema_version = "1.3"
 
 [task]
-name = "expo-harbor/expo-feedback-01-transparent-header-content-inset"
+name = "expo-harbor/feedback-01-transparent-header-content-inset"
 description = "Expo code-gen eval authored from a field-reported failure of popular safe-area guidance."
 authors = [{ name = "Expo Harbor Evals" }]
 keywords = ["react-native", "expo", "harbor", "codegen", "llm-judge", "expo-feedback"]

@@ -2,7 +2,7 @@
 
 This repo packages Expo agent evals on top of Harbor. Three families live in
 `tasks/`: expo-codegen under `tasks/codegen/` (code-gen, LLM-judged: imported
-`expo-{sdk,router,ui}-*` plus authored `expo-feedback-*`; the directory is the
+`{sdk,router,ui}-NN-*` plus authored `feedback-NN-*`; the directory is the
 job cohort, so a new task joins every codegen job by existing), `simbench-ios-*`
 (simulator-use, programmatically verified), and `expo-mobile-eval-import` (EAS
 evaluator bridge). The simbench tasks stay at the top level until the paused
@@ -48,9 +48,9 @@ the distractor proves it rejects a convincing wrong one. Rerun calibration
 after any rubric, judge-prompt, or runner change (`--only <task-dir-name>`
 scopes it while authoring).
 
-## Field-sourced tasks (expo-feedback)
+## Field-sourced tasks (feedback-*)
 
-`expo-feedback-*` tasks turn real failure reports about the Expo agent skills
+`tasks/codegen/feedback-*` tasks turn real failure reports about the Expo agent skills
 into regression evals. The best candidates are **traps**: setups where the
 popular guidance produces the wrong answer, because they separate agents that
 reason about the bug from agents that pattern-match best practices. Rules:
