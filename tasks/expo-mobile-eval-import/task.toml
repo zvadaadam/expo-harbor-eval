@@ -7,6 +7,9 @@ authors = [{ name = "Expo evals" }]
 keywords = ["expo", "ios", "mobile", "harbor", "eas"]
 
 [metadata]
+family = "eas-bridge"
+tier = "result-import"
+motivation = "Bridge expo/eval-experiments eval-out/result.json into Harbor rewards"
 category = "mobile-eval"
 difficulty = "easy"
 tags = ["expo", "eas-bridge", "result-import"]

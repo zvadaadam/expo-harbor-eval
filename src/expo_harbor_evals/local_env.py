@@ -50,11 +50,21 @@ class LocalHostEnvironment(BaseEnvironment):
             "app",
         ):
             (self._root / name).mkdir(parents=True, exist_ok=True)
-        if self.task_env_config.workdir:
-            self._map_path(self.task_env_config.workdir).mkdir(
-                parents=True, exist_ok=True
+        # There is no image build in this environment, so environment/ must
+        # always be materialized into the workdir (a Dockerfile's `COPY . /app`
+        # equivalent). Harbor's base helper only does this for prebuilt
+        # docker_image tasks and would leave /app empty here.
+        workdir_target = self._map_path(self.task_env_config.workdir or "/app")
+        workdir_target.mkdir(parents=True, exist_ok=True)
+        if self.environment_dir.is_dir():
+            shutil.copytree(
+                self.environment_dir,
+                workdir_target,
+                dirs_exist_ok=True,
+                ignore=shutil.ignore_patterns(
+                    "Dockerfile", "docker-compose.yaml", "docker-compose.yml"
+                ),
             )
-        await self._upload_environment_dir_after_start()
 
     @override
     async def stop(self, delete: bool) -> None:
@@ -91,6 +101,10 @@ class LocalHostEnvironment(BaseEnvironment):
         target.mkdir(parents=True, exist_ok=True)
         shutil.copytree(source, target, dirs_exist_ok=True)
 
+    def _wrap_command(self, mapped_command: str) -> str:
+        """Hook for subclasses to wrap the mapped command (e.g. in a sandbox)."""
+        return mapped_command
+
     @override
     async def exec(
         self,
@@ -100,7 +114,7 @@ class LocalHostEnvironment(BaseEnvironment):
         timeout_sec: int | None = None,
         user: str | int | None = None,
     ) -> ExecResult:
-        mapped_command = self._map_command(command)
+        mapped_command = self._wrap_command(self._map_command(command))
         mapped_cwd = self._map_path(cwd) if cwd else self._default_cwd()
         mapped_cwd.mkdir(parents=True, exist_ok=True)
 

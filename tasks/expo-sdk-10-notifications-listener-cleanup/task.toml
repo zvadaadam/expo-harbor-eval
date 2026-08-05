@@ -1,0 +1,34 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/expo-sdk-10-notifications-listener-cleanup"
+description = "Expo code-gen eval imported from Callstack's React Native evals."
+authors = [{ name = "Callstack React Native Evals contributors" }]
+keywords = ["react-native", "expo", "harbor", "codegen", "llm-judge"]
+
+[metadata]
+family = "expo-codegen"
+tier = "code-gen"
+motivation = "https://github.com/callstackincubator/evals (evals/expo-sdk/10-rn-expo-notifications-listener-cleanup)"
+category = "expo-sdk"
+difficulty = "mixed"
+upstream_url = "https://github.com/callstackincubator/evals"
+upstream_commit = "f7a46a71da58eece312e37a1f5291e9fd0cc236b"
+upstream_eval = "evals/expo-sdk/10-rn-expo-notifications-listener-cleanup"
+upstream_license = "MIT"
+requirements = 4
+verifier = "rewardkit-weighted-binary"
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 900.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+workdir = "/app"
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240

@@ -1,0 +1,30 @@
+jobs_dir: runs
+n_attempts: 1
+timeout_multiplier: 1.0
+n_concurrent_trials: 3
+quiet: false
+
+environment:
+  import_path: expo_harbor_evals.local_env:LocalHostEnvironment
+  delete: true
+
+verifier:
+  env:
+    EXPO_EVAL_VERIFIER_MODE: reference
+
+agents:
+  - name: oracle
+
+datasets:
+  - path: tasks
+    task_names:
+      - expo-sdk-04-image-picker-canceled-assets-guard
+      - expo-sdk-10-notifications-listener-cleanup
+      - expo-sdk-12-filesystem-object-api-read-write
+      - expo-router-02-stack-layout-not-native-stack-import
+      - expo-router-07-protected-routes-auth
+      - expo-router-08-serializable-search-params
+      - expo-ui-01-universal-layout-controls
+      - expo-ui-02-bottom-sheet-controlled
+      - expo-ui-06-native-state-text-input
+      - expo-feedback-01-transparent-header-content-inset

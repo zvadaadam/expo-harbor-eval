@@ -9,5 +9,8 @@ dist/
 .DS_Store
 runs/
 outputs/
+# Harbor's default jobs_dir is jobs/; keep ad-hoc run output out of the
+# config directory (config yamls are files, output dirs are directories).
+jobs/*/
 *.tar.gz
 .env

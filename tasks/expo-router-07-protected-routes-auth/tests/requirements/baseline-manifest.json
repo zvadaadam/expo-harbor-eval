@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "files": {
+    "_layout.tsx": "8f9d880dc537ee25914f92a76654ac54ebc1863830cc652e416770c201ddf5f9",
+    "account.tsx": "0a5d800dff95f23c1084a103c2a486f693d6420fe64c67fcbe86b2cd2f7ed808",
+    "index.tsx": "a510027f527ee80bdd45a52b9dbcb8089a3f6af3d7a0a19c0f61480a2c89d6a9",
+    "sign-in.tsx": "93dd4ab41eb82df8ea37c831492c8f0c496eb057b0a5087277f22aee254a0d55"
+  }
+}

@@ -1,0 +1,33 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/simbench-ios-06-goldenlab-vision-grid"
+description = "Tap the one red cell in a 5x5 grid hidden from the accessibility tree (max 3 wrong taps) — pixels only. Verified from app state, no LLM judge."
+authors = [{ name = "Expo evals" }]
+keywords = ["expo", "ios", "simulator", "simbench", "vision-no-tree"]
+
+[metadata]
+family = "simbench"
+motivation = "Expo simulator-use benchmark: compare model x driver-tool stacks (agent-device, argent, ...) on verifiable simulator tasks; internal thread 2026-07 (szymon/david/brent)"
+category = "simbench"
+difficulty = "hard"
+tier = "vision-no-tree"
+requires = ["macos-host", "xcode-simulator"]
+verifier = "app-state-programmatic"
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 120.0
+
+[environment]
+build_timeout_sec = 600.0
+workdir = "/app"
+
+# Per-trial readiness doubles as setup: boots the simulator and reinstalls the
+# golden app fresh so every trial starts from a clean data container.
+[environment.healthcheck]
+command = "bash /app/driver/setup.sh"
+timeout_sec = 600.0
+retries = 2

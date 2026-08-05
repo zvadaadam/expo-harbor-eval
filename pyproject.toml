@@ -12,8 +12,12 @@ dependencies = [
 
 [project.scripts]
 expo-eval-score = "expo_harbor_evals.score_result:main"
+expo-eval-report = "expo_harbor_evals.report:main"
+expo-eval-viewer = "expo_harbor_evals.viewer:main"
+expo-eval-export = "expo_harbor_evals.export:main"
 expo-eas-import = "expo_harbor_evals.import_eas_eval_artifact:main"
-expo-callstack-import = "expo_harbor_evals.callstack_adapter:main"
+expo-codegen-import = "expo_harbor_evals.codegen_adapter:main"
+expo-codegen-calibrate = "expo_harbor_evals.codegen_calibrate:main"
 
 [dependency-groups]
 dev = [
