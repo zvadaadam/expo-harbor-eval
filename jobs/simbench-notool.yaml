@@ -1,0 +1,47 @@
+# No-tool baseline for the simbench ladder tiers, after AppControlBench's
+# strongest finding (appcontrolbench.swmansion.com: tool 92%/84% vs no tool
+# 22%): how far does a model get with only a neutral description of the
+# host's own simulator toolchain? The preface names what exists (shell,
+# xcrun simctl) and deliberately suggests no strategy. Paired variant of
+# jobs/simbench-ladder.yaml per CONTRIBUTING — same tasks, same brackets,
+# tool condition changed; merge with the ladder run for the comparison.
+jobs_dir: runs
+n_attempts: 3
+timeout_multiplier: 1.0
+n_concurrent_trials: 1
+quiet: false
+
+environment:
+  import_path: expo_harbor_evals.mac_sandbox_env:MacSandboxEnvironment
+  delete: true
+
+agents:
+  - name: nop
+  - name: oracle
+  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
+    model_name: "haiku#notool"
+    kwargs:
+      allowed_tools: "Bash Read Write Edit Glob Grep LS TodoWrite"
+      preface: &notool_preface |
+        You are operating directly on the macOS host for this task. Your
+        working directory is the task workspace (called /app in the
+        instructions).
+
+        No simulator driver tool is provided for this run. The host has the
+        standard POSIX shell utilities and the full Xcode command-line
+        toolchain, including `xcrun simctl` and its subcommands (list, boot,
+        launch, terminate, openurl, io screenshot, ui, spawn, and the rest).
+        A simulator device is already booted.
+
+  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
+    model_name: "sonnet#notool"
+    kwargs:
+      allowed_tools: "Bash Read Write Edit Glob Grep LS TodoWrite"
+      preface: *notool_preface
+
+datasets:
+  - path: tasks
+    task_names:
+      - simbench-ios-01-goldennotes-create-note
+      - simbench-ios-02-inventory-scroll-claim
+      - simbench-ios-03-register-occluded-form

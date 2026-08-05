@@ -92,6 +92,35 @@ the link, ticket, or thread that says why the task exists.
 - Tasks sharing a golden app must ship byte-identical app sources
   (`tests/test_task_sync.py`).
 
+## Simbench task shape: probes today, flows next
+
+The current simbench tiers are deliberately atomic capability probes — each
+isolates one thing a driver stack can fail at (scroll, occlusion, gesture
+precision, async, vision). Keep authoring those for new failure classes, but
+the next tier is **flows**: 5+ dependent steps in one golden app (create →
+edit → organize → search), because atomic device-use tasks saturate for good
+stacks (AppControlBench's top cell completes 97.5% of its 60 real-app tasks)
+while errors compound over flows. Rules for flow tasks:
+
+- **Verify the sequence, not just the end state.** The golden-app journal
+  must show the steps happened in order through the UI; a correct final
+  state reached out of order (or injected) scores zero. This is the
+  advantage over screenshot-judged benchmarks — a final screenshot cannot
+  grade a flow.
+- **Pair every flow with its atomic probes** so a flow failure localizes to
+  a capability instead of a shrug.
+- **Include a no-tool condition** when comparing driver stacks
+  (`jobs/simbench-notool.yaml`): the tool's contribution is only measurable
+  against the model's bare-toolchain baseline.
+
+Real production apps as surfaces (AppControlBench uses frozen Bluesky and
+Element builds) come after flows, as their own task family. When they do:
+pin every surface in a frozen manifest (version + upstream commit of the
+installed build), have the harness warn on drift, and prefer server-state
+verification (Matrix API, ATProto PDS, Immich server) over screenshot
+judging — a real app you cannot verify programmatically is a demo, not an
+eval.
+
 ## Results over time
 
 After a finished run: `make export` appends a summary row to
