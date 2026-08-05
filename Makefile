@@ -60,6 +60,10 @@ simbench-hard:
 simbench-notool:
 	uv run $(HARBOR_WITH) harbor run -c jobs/simbench-notool.yaml --job-name simbench-notool --yes
 
+# Flow tier: journal-sequence-verified multi-step flow (see CONTRIBUTING).
+simbench-flows:
+	uv run $(HARBOR_WITH) harbor run -c jobs/simbench-flows.yaml --job-name simbench-flows --yes
+
 report:
 	uv run expo-eval-report runs/codegen-judge runs/codegen-models -o outputs/eval-report.html
 

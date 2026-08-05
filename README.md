@@ -168,7 +168,17 @@ variable.
 ```bash
 make simbench-ladder   # 3 tiers x haiku/sonnet x agent-device/argent + brackets
 make simbench-hard     # failure-hunting tiers: dial precision, async, vision
+make simbench-flows    # flow tier: 4 ordered steps, journal-sequence verified
+make simbench-notool   # no-tool baseline: neutral shell+simctl preface only
 ```
+
+The flow tier (`simbench-ios-07`) chains the atomic tiers — typing, two
+scroll-and-find claims, the occluded form — into one ordered flow. The
+verifier requires the app's UI-event journal to show the four steps as an
+ordered subsequence: a byte-perfect end state reached out of order scores
+zero (calibrated: fresh 0.0, ordered oracle 1.0, complete-but-out-of-order
+0.0). That sequence check is what a final-screenshot judge cannot grade, and
+it is why flows stay on golden apps.
 
 The tasks are tool-neutral: each driver stack is an agent config whose preface
 documents its tool (see `jobs/simbench-ladder.yaml` — agent-device's ref-based CLI
