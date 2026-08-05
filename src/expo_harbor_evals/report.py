@@ -41,6 +41,7 @@ EFFORT_ORDER = {"": 1, "low": 0, "medium": 1, "high": 2, "xhigh": 3, "max": 4}
 
 @dataclass
 class Trial:
+    name: str
     task: str
     agent: str
     model: str
@@ -101,15 +102,24 @@ def series_for(agent: str, model: str) -> Series:
     return Series(key=f"{agent}|{model}", label=label, rank=rank)
 
 
+def read_json(path: Path) -> dict | list | None:
+    """Read JSON, returning None for missing, torn, or mid-write files."""
+    try:
+        return json.loads(path.read_text())
+    except (OSError, ValueError):
+        return None
+
+
 def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
     job: dict = {}
     trials: list[Trial] = []
     for run_dir in run_dirs:
-        job_result = run_dir / "result.json"
-        if job_result.exists() and not job:
-            job = json.loads(job_result.read_text())
+        if not job:
+            job = read_json(run_dir / "result.json") or {}
         for trial_result in sorted(run_dir.glob("*/result.json")):
-            raw = json.loads(trial_result.read_text())
+            raw = read_json(trial_result)
+            if not isinstance(raw, dict):
+                continue
             verifier_result = raw.get("verifier_result") or {}
             rewards = verifier_result.get("rewards") or {}
             exception = raw.get("exception_info") or None
@@ -118,9 +128,10 @@ def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
 
             criteria: list[dict] = []
             judge: dict = {}
-            details_path = trial_result.parent / "verifier" / "reward-details.json"
-            if details_path.exists():
-                details = json.loads(details_path.read_text())
+            details = read_json(
+                trial_result.parent / "verifier" / "reward-details.json"
+            )
+            if isinstance(details, dict):
                 reward_details = details.get("reward")
                 if isinstance(reward_details, dict):
                     criteria = reward_details.get("criteria") or []
@@ -132,6 +143,7 @@ def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
             task_name = raw.get("task_name") or raw.get("trial_name") or "unknown"
             trials.append(
                 Trial(
+                    name=trial_result.parent.name,
                     task=task_name.split("/")[-1],
                     agent=agent_info.get("name") or "unknown",
                     model=model_info.get("name") or "",
@@ -173,6 +185,37 @@ def fmt(value: float | None) -> str:
     return "—" if value is None else f"{value:.2f}"
 
 
+@dataclass(frozen=True)
+class SeriesStats:
+    mean: float | None
+    solved: int
+    n_tasks: int
+    mean_cost: float | None
+
+
+def series_stats(tasks: list[TaskRow], key: str) -> SeriesStats:
+    """One configuration's aggregate over its task cells (cell = all attempts).
+
+    The single source of these semantics for the report, viewer, and history
+    export. A task counts as solved only when every attempt in its cell has a
+    reward of 1.0 — an errored attempt (no reward) fails the cell.
+    """
+    cells = [task.by_series[key] for task in tasks if task.by_series.get(key)]
+    cell_means = [m for task in tasks if (m := task.cell_mean(key)) is not None]
+    costs = [t.cost_usd for cell in cells for t in cell if t.cost_usd is not None]
+    solved = sum(
+        1
+        for cell in cells
+        if all(t.reward is not None and t.reward >= 1.0 for t in cell)
+    )
+    return SeriesStats(
+        mean=mean(cell_means),
+        solved=solved,
+        n_tasks=len(cells),
+        mean_cost=sum(costs) / len(costs) if costs else None,
+    )
+
+
 def _bar_path(x: float, y: float, width: float, height: float, radius: float) -> str:
     """Horizontal bar: square at the baseline (left), rounded data-end (right)."""
     if width <= 0:
@@ -205,7 +248,7 @@ def _grid(left: float, top: float, plot_w: float, bottom_y: float) -> list[str]:
     return parts
 
 
-def render_summary_chart(series: list[Series], stats: dict[str, dict]) -> str:
+def render_summary_chart(series: list[Series], stats: dict[str, SeriesStats]) -> str:
     left, right, top, bottom = 190, 64, 10, 30
     bar_h, row_h, plot_w = 16, 34, 620
     width = left + plot_w + right
@@ -213,7 +256,7 @@ def render_summary_chart(series: list[Series], stats: dict[str, dict]) -> str:
 
     parts = _grid(left, top, plot_w, height - bottom)
     for index, entry in enumerate(series):
-        value = stats[entry.key]["mean"]
+        value = stats[entry.key].mean
         row_top = top + index * row_h
         bar_y = row_top + (row_h - bar_h) / 2
         parts.append(
@@ -290,17 +333,17 @@ def render_task_chart(tasks: list[TaskRow], series: list[Series]) -> str:
     )
 
 
-def render_summary_table(series: list[Series], stats: dict[str, dict]) -> str:
+def render_summary_table(series: list[Series], stats: dict[str, SeriesStats]) -> str:
     rows = []
     for entry in series:
         stat = stats[entry.key]
-        cost = stat["cost"]
+        cost = stat.mean_cost
         rows.append(
             "<tr>"
             f'<td><span class="swatch {entry.css}"></span> '
             f"{html.escape(entry.label)}</td>"
-            f'<td class="num">{fmt(stat["mean"])}</td>'
-            f'<td class="num">{stat["solved"]}/{stat["n"]}</td>'
+            f'<td class="num">{fmt(stat.mean)}</td>'
+            f'<td class="num">{stat.solved}/{stat.n_tasks}</td>'
             f'<td class="num">{f"${cost:.2f}" if cost is not None else "—"}</td>'
             "</tr>"
         )
@@ -379,35 +422,20 @@ def render_criteria_table(task: TaskRow, series: list[Series]) -> str:
     )
 
 
-def build_html(job: dict, trials: list[Trial], title: str, run_names: str) -> str:
+def build_html(
+    trials: list[Trial],
+    title: str,
+    run_names: str,
+    nav_html: str = "",
+    extra_html: str = "",
+    refresh: int | None = None,
+) -> str:
     tasks = group_tasks(trials)
     series = build_series(trials)
-
-    stats: dict[str, dict] = {}
-    for entry in series:
-        task_means = [
-            m
-            for task in tasks
-            if (m := task.cell_mean(entry.key)) is not None
-        ]
-        costs = [
-            t.cost_usd
-            for task in tasks
-            for t in task.by_series.get(entry.key, [])
-            if t.cost_usd is not None
-        ]
-        solved = sum(
-            1
-            for task in tasks
-            if (rewards := task.cell_rewards(entry.key))
-            and all(r >= 1.0 for r in rewards)
-        )
-        stats[entry.key] = {
-            "mean": mean(task_means),
-            "n": len(task_means),
-            "solved": solved,
-            "cost": sum(costs) / len(costs) if costs else None,
-        }
+    stats = {entry.key: series_stats(tasks, entry.key) for entry in series}
+    refresh_meta = (
+        f'<meta http-equiv="refresh" content="{refresh}">' if refresh else ""
+    )
 
     errors = [t for t in trials if t.error]
     criteria_count = sum(len(t.criteria) for t in trials)
@@ -483,7 +511,7 @@ def build_html(job: dict, trials: list[Trial], title: str, run_names: str) -> st
     return f"""<!doctype html>
 <html lang="en">
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+{refresh_meta}<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)}</title>
 <style>
 :root {{
@@ -566,7 +594,7 @@ details .reason {{ margin: 6px 0 0; color: var(--text-secondary); font-size: 12p
 .muted {{ color: var(--muted); }}
 footer {{ margin-top: 40px; font-size: 12px; color: var(--muted); }}
 </style>
-<main>
+<main>{nav_html}
   <h1>{html.escape(title)}</h1>
   <div class="meta">
     Runs: <strong>{html.escape(run_names)}</strong>
@@ -587,6 +615,7 @@ footer {{ margin-top: 40px; font-size: 12px; color: var(--muted); }}
   <h2>Per-criterion judge detail</h2>
   {"".join(sections)}
   {error_block}
+  {extra_html}
   <footer>
     expo-codegen tasks imported from callstackincubator/evals (MIT) · scored with
     harbor-rewardkit · run with Harbor. Rewards are weighted means of binary
@@ -673,13 +702,13 @@ def main() -> None:
     parser.add_argument("--title", default="Expo Harbor eval report")
     args = parser.parse_args()
 
-    job, trials = load_runs(args.run_dirs)
+    _, trials = load_runs(args.run_dirs)
     if not trials:
         raise SystemExit(f"No trial results found under {args.run_dirs}")
 
     run_names = ", ".join(d.name for d in args.run_dirs)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(build_html(job, trials, args.title, run_names))
+    args.output.write_text(build_html(trials, args.title, run_names))
     print(f"Wrote {args.output} ({len(trials)} trials)")
 
 

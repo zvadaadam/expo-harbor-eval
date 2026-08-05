@@ -15,6 +15,8 @@ from typing import override
 from harbor.environments.base import BaseEnvironment, ExecResult
 from harbor.environments.capabilities import EnvironmentCapabilities
 
+from expo_harbor_evals.codegen_rewardkit_runner import SCAFFOLDING_FILES
+
 
 class LocalHostEnvironment(BaseEnvironment):
     def __init__(self, *args, keep_root: bool = False, **kwargs) -> None:
@@ -61,9 +63,7 @@ class LocalHostEnvironment(BaseEnvironment):
                 self.environment_dir,
                 workdir_target,
                 dirs_exist_ok=True,
-                ignore=shutil.ignore_patterns(
-                    "Dockerfile", "docker-compose.yaml", "docker-compose.yml"
-                ),
+                ignore=shutil.ignore_patterns(*SCAFFOLDING_FILES),
             )
 
     @override

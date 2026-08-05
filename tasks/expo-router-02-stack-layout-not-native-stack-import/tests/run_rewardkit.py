@@ -69,14 +69,15 @@ def guard_reason(rubric_source: Path, workspace: Path) -> str | None:
     submitted = submission_manifest(workspace)
     if not submitted:
         return "Empty submission: the workspace contains no reviewable files."
+    # Every expo-codegen task ships the manifest (enforced by test_task_sync);
+    # a missing one is a broken task and must fail loudly, not skip the guard.
     manifest_path = rubric_source / "baseline-manifest.json"
-    if manifest_path.exists():
-        baseline = json.loads(manifest_path.read_text())["files"]
-        if submitted == baseline:
-            return (
-                "Unchanged submission: every workspace file is byte-identical "
-                "to the task's starting environment."
-            )
+    baseline = json.loads(manifest_path.read_text())["files"]
+    if submitted == baseline:
+        return (
+            "Unchanged submission: every workspace file is byte-identical "
+            "to the task's starting environment."
+        )
     return None
 
 

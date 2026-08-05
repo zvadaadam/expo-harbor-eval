@@ -25,7 +25,8 @@ from expo_harbor_evals.report import (
     fmt,
     group_tasks,
     load_runs,
-    mean,
+    read_json,
+    series_stats,
 )
 
 ACTIVE_WINDOW_SEC = 120
@@ -115,15 +116,8 @@ def latest_mtime(run_dir: Path) -> float:
     return newest
 
 
-def run_status(run_dir: Path, updated: float) -> str:
-    finished_at = None
-    result = run_dir / "result.json"
-    if result.exists():
-        try:
-            finished_at = json.loads(result.read_text()).get("finished_at")
-        except ValueError:
-            pass
-    if finished_at:
+def run_status(job: dict, updated: float) -> str:
+    if job.get("finished_at"):
         return "finished"
     return "running" if time.time() - updated < ACTIVE_WINDOW_SEC else "stopped"
 
@@ -133,20 +127,15 @@ def summarize_run(run_dir: Path) -> RunSummary:
     updated = latest_mtime(run_dir)
     series = build_series(trials)
     tasks = group_tasks(trials)
-    parts = []
-    for entry in series:
-        rewards = [
-            reward
-            for task in tasks
-            for reward in [task.cell_mean(entry.key)]
-            if reward is not None
-        ]
-        parts.append(f"{entry.label} {fmt(mean(rewards))}")
+    parts = [
+        f"{entry.label} {fmt(series_stats(tasks, entry.key).mean)}"
+        for entry in series
+    ]
     headline = " · ".join(parts[:5]) + (" · …" if len(parts) > 5 else "")
     return RunSummary(
         name=run_dir.name,
         path=run_dir,
-        status=run_status(run_dir, updated),
+        status=run_status(job, updated),
         n_trials=len(trials),
         updated=updated,
         headline=headline or "no trials yet",
@@ -244,7 +233,7 @@ def render_run(runs_dir: Path, name: str) -> str | None:
     if not run_dir.is_dir():
         return None
     job, trials = load_runs([run_dir])
-    status = run_status(run_dir, latest_mtime(run_dir))
+    status = run_status(job, latest_mtime(run_dir))
     if not trials:
         return page(
             name,
@@ -252,32 +241,20 @@ def render_run(runs_dir: Path, name: str) -> str | None:
             f"<h1>{html.escape(name)}</h1><p class='muted'>No trials yet.</p>",
             refresh=10 if status == "running" else None,
         )
-    document = build_html(job, trials, f"{name} — {status}", name)
 
     trial_rows = []
-    for trial_dir in sorted(run_dir.glob("*/"), key=lambda d: d.name):
-        if not (trial_dir / "result.json").exists():
-            continue
-        try:
-            raw = json.loads((trial_dir / "result.json").read_text())
-        except ValueError:
-            continue
-        agent = raw.get("agent_info") or {}
-        model = (agent.get("model_info") or {}).get("name") or ""
-        rewards = (raw.get("verifier_result") or {}).get("rewards") or {}
-        reward = rewards.get("reward")
-        exception = raw.get("exception_info")
+    for trial in sorted(trials, key=lambda t: t.name):
         state = (
             '<span class="chip fail">error</span>'
-            if exception
-            else f'<span class="num">{fmt(reward)}</span>'
+            if trial.error
+            else f'<span class="num">{fmt(trial.reward)}</span>'
         )
         trial_rows.append(
             "<tr>"
-            f'<td><a href="/run/{name}/trial/{trial_dir.name}">'
-            f"{html.escape(trial_dir.name)}</a></td>"
-            f"<td>{html.escape(raw.get('task_name', '').split('/')[-1])}</td>"
-            f"<td>{html.escape((agent.get('name') or '') + (' · ' + model if model else ''))}</td>"
+            f'<td><a href="/run/{name}/trial/{trial.name}">'
+            f"{html.escape(trial.name)}</a></td>"
+            f"<td>{html.escape(trial.task)}</td>"
+            f"<td>{html.escape(trial.agent + (' · ' + trial.model if trial.model else ''))}</td>"
             f'<td class="num">{state}</td>'
             "</tr>"
         )
@@ -290,29 +267,19 @@ def render_run(runs_dir: Path, name: str) -> str | None:
         f'<div class="nav" style="font: 13px system-ui, sans-serif; margin-bottom: 14px;">'
         f'<a href="/" style="color: inherit;">← all runs</a></div>'
     )
-    document = document.replace("<main>", f"<main>{nav}", 1)
-    document = document.replace(
-        "</main>", f"{trials_table}</main>", 1
+    return build_html(
+        trials,
+        f"{name} — {status}",
+        name,
+        nav_html=nav,
+        extra_html=trials_table,
+        refresh=30 if status == "running" else None,
     )
-    if status == "running":
-        document = document.replace(
-            '<meta name="viewport"',
-            '<meta http-equiv="refresh" content="30"><meta name="viewport"',
-            1,
-        )
-    return document
-
-
-def _read_json(path: Path):
-    try:
-        return json.loads(path.read_text())
-    except (OSError, ValueError):
-        return None
 
 
 def render_trial(runs_dir: Path, run_name: str, trial_name: str) -> str | None:
     trial_dir = runs_dir / run_name / trial_name
-    raw = _read_json(trial_dir / "result.json")
+    raw = read_json(trial_dir / "result.json")
     if raw is None:
         return None
 
@@ -362,7 +329,7 @@ def render_trial(runs_dir: Path, run_name: str, trial_name: str) -> str | None:
             + "</tbody></table>"
         )
 
-    judge_details = _read_json(trial_dir / "verifier" / "reward-details.json")
+    judge_details = read_json(trial_dir / "verifier" / "reward-details.json")
     if isinstance(judge_details, dict):
         reward_block = judge_details.get("reward")
         if isinstance(reward_block, dict) and reward_block.get("criteria"):
@@ -387,7 +354,7 @@ def render_trial(runs_dir: Path, run_name: str, trial_name: str) -> str | None:
                 + "</tbody></table>"
             )
 
-    sim_details = _read_json(trial_dir / "verifier" / "details.json")
+    sim_details = read_json(trial_dir / "verifier" / "details.json")
     if isinstance(sim_details, dict) and sim_details.get("checks"):
         rows = []
         for check in sim_details["checks"]:
@@ -423,7 +390,7 @@ def render_trial(runs_dir: Path, run_name: str, trial_name: str) -> str | None:
             + "</pre>"
         )
 
-    agent_envelope = _read_json(trial_dir / "agent" / "claude-host.json")
+    agent_envelope = read_json(trial_dir / "agent" / "claude-host.json")
     if isinstance(agent_envelope, dict) and agent_envelope.get("result"):
         sections.append(
             "<h2>Agent final message</h2><pre>"

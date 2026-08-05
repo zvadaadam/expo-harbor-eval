@@ -34,10 +34,9 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
 
+from expo_harbor_evals.codegen_rewardkit_runner import SCAFFOLDING_FILES
+
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-SCAFFOLDING_FILES = frozenset(
-    {"Dockerfile", "docker-compose.yaml", "docker-compose.yml"}
-)
 
 
 @dataclass(frozen=True)
@@ -160,10 +159,17 @@ def main() -> None:
     with tempfile.TemporaryDirectory(prefix="codegen-calibrate-") as scratch_str:
         scratch = Path(scratch_str)
         # Guard brackets are cheap and deterministic; run them serially first
-        # so a broken guard fails fast before any judge spend.
+        # and skip the judged brackets entirely if any guard fails, so a
+        # broken guard costs no judge spend.
         for task_dir in task_dirs:
             for bracket in ("empty", "baseline"):
                 results.append(_bracket(task_dir, bracket, scratch))
+        if judged and any(not result.ok for result in results):
+            print(
+                "Guard bracket violation(s) — skipping judged brackets.",
+                file=sys.stderr,
+            )
+            judged = []
         if judged:
             with ThreadPoolExecutor(max_workers=args.jobs) as pool:
                 results.extend(

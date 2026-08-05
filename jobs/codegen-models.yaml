@@ -34,14 +34,10 @@ agents:
 
 datasets:
   - path: tasks
+    # Family globs (fnmatch on task directory names): every expo-codegen
+    # task joins automatically; expo-mobile-eval-import does not match.
     task_names:
-      - expo-sdk-04-image-picker-canceled-assets-guard
-      - expo-sdk-10-notifications-listener-cleanup
-      - expo-sdk-12-filesystem-object-api-read-write
-      - expo-router-02-stack-layout-not-native-stack-import
-      - expo-router-07-protected-routes-auth
-      - expo-router-08-serializable-search-params
-      - expo-ui-01-universal-layout-controls
-      - expo-ui-02-bottom-sheet-controlled
-      - expo-ui-06-native-state-text-input
-      - expo-feedback-01-transparent-header-content-inset
+      - "expo-sdk-*"
+      - "expo-router-*"
+      - "expo-ui-*"
+      - "expo-feedback-*"

@@ -1,10 +1,10 @@
 # LLM-judged eval of every expo-codegen task, comparing the untouched
 # baseline app (nop) against the reference solution (oracle).
-# Judge selection:
-#   REWARDKIT_JUDGE unset        -> rubric default (anthropic/claude-sonnet-4-6,
-#                                   needs ANTHROPIC_API_KEY)
+# Judge selection (the env default below makes claude-code the effective
+# default; the rubric's own judge field is only reached by exporting it):
+#   REWARDKIT_JUDGE unset        -> claude-code: local logged-in `claude` CLI,
+#                                   pinned to claude-opus-4-8 for comparability
 #   REWARDKIT_JUDGE=<litellm-id> -> that model (needs its provider key)
-#   REWARDKIT_JUDGE=claude-code  -> local `claude` CLI as agent judge
 jobs_dir: runs
 n_attempts: 3
 timeout_multiplier: 1.0
@@ -29,14 +29,10 @@ agents:
 
 datasets:
   - path: tasks
+    # Family globs (fnmatch on task directory names): every expo-codegen
+    # task joins automatically; expo-mobile-eval-import does not match.
     task_names:
-      - expo-sdk-04-image-picker-canceled-assets-guard
-      - expo-sdk-10-notifications-listener-cleanup
-      - expo-sdk-12-filesystem-object-api-read-write
-      - expo-router-02-stack-layout-not-native-stack-import
-      - expo-router-07-protected-routes-auth
-      - expo-router-08-serializable-search-params
-      - expo-ui-01-universal-layout-controls
-      - expo-ui-02-bottom-sheet-controlled
-      - expo-ui-06-native-state-text-input
-      - expo-feedback-01-transparent-header-content-inset
+      - "expo-sdk-*"
+      - "expo-router-*"
+      - "expo-ui-*"
+      - "expo-feedback-*"

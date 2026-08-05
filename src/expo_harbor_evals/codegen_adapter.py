@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import shutil
 import stat
@@ -14,15 +13,14 @@ from typing import Any
 
 import yaml
 
+# The vendored runner is the canonical definition of what counts as
+# agent-visible content; the baseline manifest must hash exactly what the
+# guard will hash at verify time, so both sides use the same function.
+from expo_harbor_evals.codegen_rewardkit_runner import submission_manifest
+
 UPSTREAM_URL = "https://github.com/callstackincubator/evals"
 DEFAULT_JUDGE = "anthropic/claude-sonnet-4-6"
 GENERATED_MARKER = ".expo-codegen-generated.json"
-
-# Environment scaffolding excluded from the baseline manifest; must match
-# SCAFFOLDING_FILES in codegen_rewardkit_runner.py.
-SCAFFOLDING_FILES = frozenset(
-    {"Dockerfile", "docker-compose.yaml", "docker-compose.yml"}
-)
 
 DEFAULT_EVALS = (
     "evals/expo-sdk/04-rn-expo-image-picker-canceled-assets-guard",
@@ -120,30 +118,6 @@ def _source_commit(source: Path) -> str:
 def _write_executable(path: Path, content: str) -> None:
     path.write_text(content)
     path.chmod(path.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
-
-
-def _copy_contents(source: Path, destination: Path) -> None:
-    destination.mkdir(parents=True, exist_ok=True)
-    for child in source.iterdir():
-        target = destination / child.name
-        if child.is_dir():
-            shutil.copytree(child, target)
-        else:
-            shutil.copy2(child, target)
-
-
-def baseline_manifest(environment_dir: Path) -> dict[str, str]:
-    """Hash the starting files an agent receives, keyed by relative path."""
-    files: dict[str, str] = {}
-    for path in sorted(environment_dir.rglob("*")):
-        relative = path.relative_to(environment_dir)
-        if any(part.startswith(".") for part in relative.parts):
-            continue
-        if path.is_file() and path.name not in SCAFFOLDING_FILES:
-            files[relative.as_posix()] = hashlib.sha256(
-                path.read_bytes()
-            ).hexdigest()
-    return files
 
 
 def _render_task_toml(
@@ -329,7 +303,22 @@ def import_eval(
     for path in (environment_dir, solution_dir, tests_dir, rubric_dir):
         path.mkdir(parents=True, exist_ok=True)
 
-    _copy_contents(app_dir, environment_dir)
+    # Mark the directory as generated before populating it, so an interrupted
+    # import leaves a regenerable directory instead of tripping the
+    # non-generated guard above on every later run.
+    marker.write_text(
+        json.dumps(
+            {
+                "upstream_url": UPSTREAM_URL,
+                "upstream_commit": commit,
+                "upstream_eval": upstream_path,
+            },
+            indent=2,
+        )
+        + "\n"
+    )
+
+    shutil.copytree(app_dir, environment_dir, dirs_exist_ok=True)
     (environment_dir / "Dockerfile").write_text(DOCKERFILE)
 
     prompt = prompt_path.read_text().rstrip()
@@ -347,7 +336,7 @@ def import_eval(
     )
 
     _write_executable(solution_dir / "solve.sh", SOLUTION_SH)
-    _copy_contents(reference_dir, solution_dir / "reference")
+    shutil.copytree(reference_dir, solution_dir / "reference", dirs_exist_ok=True)
 
     _write_executable(tests_dir / "test.sh", TEST_SH)
     shutil.copy2(
@@ -358,25 +347,13 @@ def import_eval(
         Path(__file__).with_name("codegen_rewardkit_runner.py"),
         tests_dir / "run_rewardkit.py",
     )
-    _copy_contents(reference_dir, tests_dir / "reference")
+    shutil.copytree(reference_dir, tests_dir / "reference", dirs_exist_ok=True)
     shutil.copy2(requirements_path, tests_dir / "upstream-requirements.yaml")
     (rubric_dir / "rubric.toml").write_text(_render_rubric(requirements))
     (rubric_dir / "judge-prompt.md").write_text(JUDGE_PROMPT)
     (rubric_dir / "baseline-manifest.json").write_text(
         json.dumps(
-            {"schema": 1, "files": baseline_manifest(environment_dir)},
-            indent=2,
-        )
-        + "\n"
-    )
-
-    marker.write_text(
-        json.dumps(
-            {
-                "upstream_url": UPSTREAM_URL,
-                "upstream_commit": commit,
-                "upstream_eval": upstream_path,
-            },
+            {"schema": 1, "files": submission_manifest(environment_dir)},
             indent=2,
         )
         + "\n"

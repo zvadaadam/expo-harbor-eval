@@ -14,7 +14,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from expo_harbor_evals.report import build_series, group_tasks, load_runs, mean
+from expo_harbor_evals.report import build_series, group_tasks, load_runs, series_stats
 
 DEFAULT_HISTORY = Path("results/history.jsonl")
 
@@ -27,31 +27,17 @@ def summarize_run(run_dir: Path) -> dict | None:
     series = build_series(trials)
     rows = []
     for entry in series:
-        cell_means = [
-            m for task in tasks if (m := task.cell_mean(entry.key)) is not None
-        ]
-        cells = [task for task in tasks if task.by_series.get(entry.key)]
-        costs = [
-            t.cost_usd
-            for task in cells
-            for t in task.by_series[entry.key]
-            if t.cost_usd is not None
-        ]
+        stat = series_stats(tasks, entry.key)
         rows.append(
             {
                 "key": entry.key,
                 "label": entry.label,
-                "mean": round(m, 4) if (m := mean(cell_means)) is not None else None,
-                "solved": sum(
-                    1
-                    for task in cells
-                    if all(
-                        t.reward is not None and t.reward >= 1.0
-                        for t in task.by_series[entry.key]
-                    )
-                ),
-                "n_tasks": len(cells),
-                "mean_cost_usd": round(sum(costs) / len(costs), 4) if costs else None,
+                "mean": round(stat.mean, 4) if stat.mean is not None else None,
+                "solved": stat.solved,
+                "n_tasks": stat.n_tasks,
+                "mean_cost_usd": round(stat.mean_cost, 4)
+                if stat.mean_cost is not None
+                else None,
             }
         )
     return {

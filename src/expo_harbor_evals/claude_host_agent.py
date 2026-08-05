@@ -134,3 +134,10 @@ class ClaudeHostAgent(BaseAgent):
                 f"claude CLI exited with code {result.return_code}: "
                 f"{(read_back.stdout or '')[:200]}"
             )
+        if not envelope:
+            # A zero exit with no parseable envelope must not read as a healthy
+            # trial: it would record success with no usage, cost, or turns.
+            raise RuntimeError(
+                "claude CLI exited 0 but /logs/agent/claude-host.json has no "
+                f"parseable result envelope: {(read_back.stdout or '')[:200]!r}"
+            )

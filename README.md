@@ -60,9 +60,11 @@ For an LLM-judged run without a coding agent, score the untouched baseline
 task:
 
 ```bash
-# Default judge (anthropic/claude-sonnet-4-6) needs ANTHROPIC_API_KEY, or:
-REWARDKIT_JUDGE=claude-code make codegen-judge   # logged-in claude CLI
-REWARDKIT_JUDGE=openai/gpt-5.2 make codegen-judge # any LiteLLM judge + key
+# Default judge: the logged-in claude CLI (claude-code · claude-opus-4-8).
+make codegen-judge
+# Hosted LiteLLM judges need an explicit id plus their provider key:
+REWARDKIT_JUDGE=anthropic/claude-sonnet-4-6 make codegen-judge
+REWARDKIT_JUDGE=openai/gpt-5.2 make codegen-judge
 ```
 
 Judge-mode rewards land under Harbor's conventional `reward` key, same as
@@ -102,7 +104,10 @@ judge plus its provider credential. For example:
 ```bash
 uv run harbor run \
   --path tasks \
-  --include-task-name 'expo-harbor/expo-*' \
+  --include-task-name 'expo-sdk-*' \
+  --include-task-name 'expo-router-*' \
+  --include-task-name 'expo-ui-*' \
+  --include-task-name 'expo-feedback-*' \
   --agent codex \
   --model YOUR_AGENT_MODEL \
   --verifier-env REWARDKIT_JUDGE=YOUR_LITELLM_JUDGE \
