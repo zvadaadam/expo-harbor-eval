@@ -33,11 +33,5 @@ agents:
     model_name: fable@low
 
 datasets:
-  - path: tasks
-    # Family globs (fnmatch on task directory names): every expo-codegen
-    # task joins automatically; expo-mobile-eval-import does not match.
-    task_names:
-      - "expo-sdk-*"
-      - "expo-router-*"
-      - "expo-ui-*"
-      - "expo-feedback-*"
+  # The directory is the cohort: every task under tasks/codegen/ joins.
+  - path: tasks/codegen

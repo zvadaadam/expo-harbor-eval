@@ -406,7 +406,7 @@ Imported evals:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=Path("../callstack-evals"))
-    parser.add_argument("--output", type=Path, default=Path("tasks"))
+    parser.add_argument("--output", type=Path, default=Path("tasks/codegen"))
     parser.add_argument(
         "--attribution-dir",
         type=Path,

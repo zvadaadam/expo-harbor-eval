@@ -10,7 +10,7 @@ TASKS = Path(__file__).resolve().parent.parent / "tasks"
 
 
 def test_all_tasks_have_valid_metadata() -> None:
-    task_tomls = sorted(TASKS.glob("*/task.toml"))
+    task_tomls = sorted(TASKS.rglob("task.toml"))
     assert task_tomls, "expected tasks"
     failures = {
         toml.parent.name: problems

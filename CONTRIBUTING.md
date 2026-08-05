@@ -1,11 +1,14 @@
 # Contributing
 
 This repo packages Expo agent evals on top of Harbor. Three families live in
-`tasks/`: expo-codegen (code-gen, LLM-judged: imported `expo-{sdk,router,ui}-*`
-plus authored `expo-feedback-*`), `simbench-ios-*` (simulator-use,
-programmatically verified), and `expo-mobile-eval-import` (EAS evaluator
-bridge). Adding to any of them, keep the rules below — they are what make the
-numbers trustworthy.
+`tasks/`: expo-codegen under `tasks/codegen/` (code-gen, LLM-judged: imported
+`expo-{sdk,router,ui}-*` plus authored `expo-feedback-*`; the directory is the
+job cohort, so a new task joins every codegen job by existing), `simbench-ios-*`
+(simulator-use, programmatically verified), and `expo-mobile-eval-import` (EAS
+evaluator bridge). The simbench tasks stay at the top level until the paused
+ladder/hard runs finish — moving them would orphan those runs' pending trials.
+Adding to any family, keep the rules below — they are what make the numbers
+trustworthy.
 
 ## Scorer discipline
 

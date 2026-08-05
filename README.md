@@ -24,9 +24,10 @@ not a new Harbor data model.
 ```text
 jobs/                         Harbor job configs
 src/expo_harbor_evals/        Development helpers
+tasks/codegen/                expo-codegen: imported expo-{sdk,router,ui}-*
+                              plus field-sourced expo-feedback-* tasks
 tasks/expo-mobile-eval-import Harbor task that normalizes evaluator output
-tasks/expo-{sdk,router,ui}-*   expo-codegen: imported RN code-generation tasks
-tasks/expo-feedback-*          expo-codegen: tasks authored from field feedback
+tasks/simbench-ios-*          simulator-use benchmark golden-app tasks
 third_party/                   Upstream license and pinned-source metadata
 ```
 
@@ -103,11 +104,7 @@ judge plus its provider credential. For example:
 
 ```bash
 uv run harbor run \
-  --path tasks \
-  --include-task-name 'expo-sdk-*' \
-  --include-task-name 'expo-router-*' \
-  --include-task-name 'expo-ui-*' \
-  --include-task-name 'expo-feedback-*' \
+  --path tasks/codegen \
   --agent codex \
   --model YOUR_AGENT_MODEL \
   --verifier-env REWARDKIT_JUDGE=YOUR_LITELLM_JUDGE \
@@ -140,8 +137,8 @@ Each feedback task ships three artifacts:
   judge scores it below 1.0, so the task provably discriminates instead of
   rewarding anything that looks considered.
 
-`tasks/expo-feedback-01-transparent-header-content-inset` is the pattern's
-first instance: under a transparent large-title header,
+`tasks/codegen/expo-feedback-01-transparent-header-content-inset` is the
+pattern's first instance: under a transparent large-title header,
 `contentInsetAdjustmentBehavior="automatic"` (the guidance) applies no top
 inset on a cold launch, and the fix is explicit `useHeaderHeight()` /
 `useSafeAreaInsets()` content padding. When a skill's guidance changes in
