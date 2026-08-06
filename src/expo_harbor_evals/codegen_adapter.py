@@ -86,10 +86,12 @@ def _read_requirements(path: Path) -> list[Requirement]:
 def _task_dir_name(upstream_path: str) -> str:
     """Name a task for what it tests: <category>-<NN>-<subject>.
 
-    The upstream eval id repeats "rn-expo-<category>" in every slug
+    Tasks live under tasks/codegen/ in an Expo repo, so the name drops the
+    redundant "expo-" from the category (ui-02, not expo-ui-02). The
+    upstream eval id also repeats "rn-expo-<category>" in every slug
     ("02-rn-expo-ui-bottom-sheet-controlled"); the task name keeps the
     upstream number for traceability and drops the vendor and repetition:
-    expo-ui-02-bottom-sheet-controlled.
+    ui-02-bottom-sheet-controlled.
     """
     path = Path(upstream_path)
     if len(path.parts) != 3 or path.parts[0] != "evals":
@@ -102,7 +104,7 @@ def _task_dir_name(upstream_path: str) -> str:
         raise ValueError(f"Expected <NN>-<slug> eval id, got {path.name!r}")
     for prefix in ("rn-", f"{category}-", "expo-"):
         slug = slug.removeprefix(prefix)
-    return f"{category}-{number}-{slug}"
+    return f"{category.removeprefix('expo-')}-{number}-{slug}"
 
 
 def _source_commit(source: Path) -> str:
@@ -406,7 +408,7 @@ Imported evals:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=Path("../callstack-evals"))
-    parser.add_argument("--output", type=Path, default=Path("tasks"))
+    parser.add_argument("--output", type=Path, default=Path("tasks/codegen"))
     parser.add_argument(
         "--attribution-dir",
         type=Path,

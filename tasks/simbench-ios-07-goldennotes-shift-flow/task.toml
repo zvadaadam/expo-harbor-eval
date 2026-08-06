@@ -1,0 +1,34 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/simbench-ios-07-goldennotes-shift-flow"
+description = "Drive a four-step ordered flow through GoldenNotes (note, two claims, registration); the journal must show the sequence, no LLM judge."
+authors = [{ name = "Expo evals" }]
+keywords = ["expo", "ios", "simulator", "simbench", "agent-device", "flow"]
+
+[metadata]
+family = "simbench"
+motivation = "Flow tier (CONTRIBUTING, after the AppControlBench comparison 2026-08-05): atomic device-use tasks saturate for good driver stacks, so this tier chains the atomic capabilities — typing, scroll-and-find, keyboard occlusion — into one ordered flow where errors compound and the UI-event journal must show the steps in sequence."
+category = "simbench"
+difficulty = "hard"
+tier = "app-flows"
+requires = ["macos-host", "xcode-simulator", "agent-device-cli"]
+verifier = "app-state-programmatic"
+driver_tool = "agent-device"
+
+[agent]
+timeout_sec = 1500.0
+
+[verifier]
+timeout_sec = 120.0
+
+[environment]
+build_timeout_sec = 600.0
+workdir = "/app"
+
+# Per-trial readiness doubles as setup: boots the simulator and reinstalls the
+# golden app fresh so every trial starts from a clean data container.
+[environment.healthcheck]
+command = "bash /app/driver/setup.sh"
+timeout_sec = 600.0
+retries = 2

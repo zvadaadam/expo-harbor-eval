@@ -1,0 +1,30 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "two-tone-title"
+id = "two-tone-title"
+description = "The title must render 'Session Pro' with 'Pro' styled in the #FF6B35 accent color (nested Text spans or equivalent per-word styling)."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "custom-title-in-native-header"
+id = "custom-title-in-native-header"
+description = "The two-tone title must be supplied through the stack screen's options (e.g. a headerTitle custom component) so the navigation header itself renders it — not a text element in the page body standing in for the title."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "native-stack-preserved"
+id = "native-stack-preserved"
+description = "The home screen must keep its native stack header (no headerShown: false or header removal), and the Details screen must remain a Stack screen so its native back affordance keeps working."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

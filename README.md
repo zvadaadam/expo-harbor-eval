@@ -24,9 +24,10 @@ not a new Harbor data model.
 ```text
 jobs/                         Harbor job configs
 src/expo_harbor_evals/        Development helpers
+tasks/codegen/                expo-codegen: imported {sdk,router,ui}-NN-* tasks
+                              plus field-sourced feedback-NN-* tasks
 tasks/expo-mobile-eval-import Harbor task that normalizes evaluator output
-tasks/expo-{sdk,router,ui}-*   expo-codegen: imported RN code-generation tasks
-tasks/expo-feedback-*          expo-codegen: tasks authored from field feedback
+tasks/simbench-ios-*          simulator-use benchmark golden-app tasks
 third_party/                   Upstream license and pinned-source metadata
 ```
 
@@ -103,11 +104,7 @@ judge plus its provider credential. For example:
 
 ```bash
 uv run harbor run \
-  --path tasks \
-  --include-task-name 'expo-sdk-*' \
-  --include-task-name 'expo-router-*' \
-  --include-task-name 'expo-ui-*' \
-  --include-task-name 'expo-feedback-*' \
+  --path tasks/codegen \
   --agent codex \
   --model YOUR_AGENT_MODEL \
   --verifier-env REWARDKIT_JUDGE=YOUR_LITELLM_JUDGE \
@@ -120,9 +117,9 @@ commit provenance, and MIT attribution. Use `--all-expo` with
 `expo-codegen-import` when the first cohort is stable enough to expand from 9
 to all upstream Expo tasks.
 
-### Field-sourced tasks (`expo-feedback-*`)
+### Field-sourced tasks (`feedback-*`)
 
-Alongside the imported cohort, `expo-feedback-*` tasks are authored from real
+Alongside the imported cohort, `feedback-*` tasks are authored from real
 failure reports submitted against the Expo agent skills
 (`task.toml [metadata] feedback_id` cites the report). They exist because
 field reports surface the highest-signal eval shape there is: **traps**, where
@@ -140,8 +137,8 @@ Each feedback task ships three artifacts:
   judge scores it below 1.0, so the task provably discriminates instead of
   rewarding anything that looks considered.
 
-`tasks/expo-feedback-01-transparent-header-content-inset` is the pattern's
-first instance: under a transparent large-title header,
+`tasks/codegen/feedback-01-transparent-header-content-inset` is the
+pattern's first instance: under a transparent large-title header,
 `contentInsetAdjustmentBehavior="automatic"` (the guidance) applies no top
 inset on a cold launch, and the fix is explicit `useHeaderHeight()` /
 `useSafeAreaInsets()` content padding. When a skill's guidance changes in
@@ -171,7 +168,17 @@ variable.
 ```bash
 make simbench-ladder   # 3 tiers x haiku/sonnet x agent-device/argent + brackets
 make simbench-hard     # failure-hunting tiers: dial precision, async, vision
+make simbench-flows    # flow tier: 4 ordered steps, journal-sequence verified
+make simbench-notool   # no-tool baseline: neutral shell+simctl preface only
 ```
+
+The flow tier (`simbench-ios-07`) chains the atomic tiers — typing, two
+scroll-and-find claims, the occluded form — into one ordered flow. The
+verifier requires the app's UI-event journal to show the four steps as an
+ordered subsequence: a byte-perfect end state reached out of order scores
+zero (calibrated: fresh 0.0, ordered oracle 1.0, complete-but-out-of-order
+0.0). That sequence check is what a final-screenshot judge cannot grade, and
+it is why flows stay on golden apps.
 
 The tasks are tool-neutral: each driver stack is an agent config whose preface
 documents its tool (see `jobs/simbench-ladder.yaml` — agent-device's ref-based CLI

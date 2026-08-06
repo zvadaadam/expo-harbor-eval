@@ -1,11 +1,14 @@
 # Contributing
 
 This repo packages Expo agent evals on top of Harbor. Three families live in
-`tasks/`: expo-codegen (code-gen, LLM-judged: imported `expo-{sdk,router,ui}-*`
-plus authored `expo-feedback-*`), `simbench-ios-*` (simulator-use,
-programmatically verified), and `expo-mobile-eval-import` (EAS evaluator
-bridge). Adding to any of them, keep the rules below — they are what make the
-numbers trustworthy.
+`tasks/`: expo-codegen under `tasks/codegen/` (code-gen, LLM-judged: imported
+`{sdk,router,ui}-NN-*` plus authored `feedback-NN-*`; the directory is the
+job cohort, so a new task joins every codegen job by existing), `simbench-ios-*`
+(simulator-use, programmatically verified), and `expo-mobile-eval-import` (EAS
+evaluator bridge). The simbench tasks stay at the top level until the paused
+ladder/hard runs finish — moving them would orphan those runs' pending trials.
+Adding to any family, keep the rules below — they are what make the numbers
+trustworthy.
 
 ## Scorer discipline
 
@@ -45,9 +48,9 @@ the distractor proves it rejects a convincing wrong one. Rerun calibration
 after any rubric, judge-prompt, or runner change (`--only <task-dir-name>`
 scopes it while authoring).
 
-## Field-sourced tasks (expo-feedback)
+## Field-sourced tasks (feedback-*)
 
-`expo-feedback-*` tasks turn real failure reports about the Expo agent skills
+`tasks/codegen/feedback-*` tasks turn real failure reports about the Expo agent skills
 into regression evals. The best candidates are **traps**: setups where the
 popular guidance produces the wrong answer, because they separate agents that
 reason about the bug from agents that pattern-match best practices. Rules:
@@ -88,6 +91,35 @@ the link, ticket, or thread that says why the task exists.
   reinstall their golden app per trial via the healthcheck.
 - Tasks sharing a golden app must ship byte-identical app sources
   (`tests/test_task_sync.py`).
+
+## Simbench task shape: probes today, flows next
+
+The current simbench tiers are deliberately atomic capability probes — each
+isolates one thing a driver stack can fail at (scroll, occlusion, gesture
+precision, async, vision). Keep authoring those for new failure classes, but
+the next tier is **flows**: 5+ dependent steps in one golden app (create →
+edit → organize → search), because atomic device-use tasks saturate for good
+stacks (AppControlBench's top cell completes 97.5% of its 60 real-app tasks)
+while errors compound over flows. Rules for flow tasks:
+
+- **Verify the sequence, not just the end state.** The golden-app journal
+  must show the steps happened in order through the UI; a correct final
+  state reached out of order (or injected) scores zero. This is the
+  advantage over screenshot-judged benchmarks — a final screenshot cannot
+  grade a flow.
+- **Pair every flow with its atomic probes** so a flow failure localizes to
+  a capability instead of a shrug.
+- **Include a no-tool condition** when comparing driver stacks
+  (`jobs/simbench-notool.yaml`): the tool's contribution is only measurable
+  against the model's bare-toolchain baseline.
+
+Real production apps as surfaces (AppControlBench uses frozen Bluesky and
+Element builds) come after flows, as their own task family. When they do:
+pin every surface in a frozen manifest (version + upstream commit of the
+installed build), have the harness warn on drift, and prefer server-state
+verification (Matrix API, ATProto PDS, Immich server) over screenshot
+judging — a real app you cannot verify programmatically is a demo, not an
+eval.
 
 ## Results over time
 

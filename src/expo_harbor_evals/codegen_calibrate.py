@@ -50,9 +50,11 @@ class BracketResult:
 
 
 def codegen_task_dirs(tasks_root: Path) -> list[Path]:
+    """Find family members by metadata at any depth, so folder layout is free
+    to group tasks (tasks/codegen/ today) without touching discovery."""
     dirs = [
         toml.parent
-        for toml in sorted(tasks_root.glob("*/task.toml"))
+        for toml in sorted(tasks_root.rglob("task.toml"))
         if tomllib.loads(toml.read_text())["metadata"].get("family")
         == "expo-codegen"
     ]

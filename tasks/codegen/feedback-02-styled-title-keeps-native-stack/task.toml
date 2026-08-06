@@ -1,0 +1,33 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/feedback-02-styled-title-keeps-native-stack"
+description = "Expo code-gen eval authored from a field-reported failure of popular navigation-title guidance."
+authors = [{ name = "Expo Harbor Evals" }]
+keywords = ["react-native", "expo", "harbor", "codegen", "llm-judge", "expo-feedback"]
+
+[metadata]
+family = "expo-codegen"
+category = "expo-feedback"
+tier = "code-gen"
+difficulty = "medium"
+motivation = "Expo skills feedback bca74ecdb803 (expo-native-ui), second finding: 'ALWAYS use a navigation stack title instead of a custom text element' is unachievable for multi-color headlines, and the common workaround (headerShown: false plus a page-level headline) silently discards native stack behaviors. The right escape hatch is a custom headerTitle component inside the native header."
+source = "expo-skills-feedback"
+feedback_id = "bca74ecdb803"
+distractor = "Meets the two-tone design with headerShown: false and a page-level headline padded by a magic number — the common workaround that loses the native header."
+requirements = 3
+verifier = "rewardkit-weighted-binary"
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 900.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+workdir = "/app"
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240

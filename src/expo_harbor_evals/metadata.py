@@ -36,6 +36,8 @@ TIERS = {
     "gesture-precision",
     "async-patience",
     "vision-no-tree",
+    # simbench flow tier: multi-step sequences over the atomic tiers
+    "app-flows",
     # eas-bridge
     "result-import",
 }

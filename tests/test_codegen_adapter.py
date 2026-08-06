@@ -35,17 +35,17 @@ requirements:
 def test_task_names_drop_vendor_and_slug_repetition() -> None:
     assert (
         _task_dir_name("evals/expo-ui/02-rn-expo-ui-bottom-sheet-controlled")
-        == "expo-ui-02-bottom-sheet-controlled"
+        == "ui-02-bottom-sheet-controlled"
     )
     assert (
         _task_dir_name("evals/expo-sdk/04-rn-expo-image-picker-canceled-assets-guard")
-        == "expo-sdk-04-image-picker-canceled-assets-guard"
+        == "sdk-04-image-picker-canceled-assets-guard"
     )
     assert (
         _task_dir_name(
             "evals/expo-router/02-rn-expo-router-stack-layout-not-native-stack-import"
         )
-        == "expo-router-02-stack-layout-not-native-stack-import"
+        == "router-02-stack-layout-not-native-stack-import"
     )
 
 
@@ -56,14 +56,14 @@ def test_import_eval_generates_a_harbor_task(tmp_path: Path) -> None:
     imported = import_eval(upstream, tmp_path / "tasks", relative, "abc123")
 
     assert imported.requirement_count == 1
-    assert imported.task_name == "expo-sdk-99-example"
+    assert imported.task_name == "sdk-99-example"
     task = imported.output_path
     assert (task / "environment" / "App.tsx").read_text() == "export default null\n"
     assert (task / "solution" / "reference" / "App.tsx").exists()
     assert (task / "tests" / "reference" / "App.tsx").exists()
 
     task_config = tomllib.loads((task / "task.toml").read_text())
-    assert task_config["task"]["name"] == "expo-harbor/expo-sdk-99-example"
+    assert task_config["task"]["name"] == "expo-harbor/sdk-99-example"
     assert task_config["metadata"]["family"] == "expo-codegen"
     assert task_config["metadata"]["upstream_commit"] == "abc123"
     assert task_config["metadata"]["requirements"] == 1

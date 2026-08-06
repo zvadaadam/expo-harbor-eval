@@ -1,0 +1,33 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/feedback-03-shop-grid-sticky-header"
+description = "Expo code-gen eval authored from a field-reported failure repairing a percentage-height grid and scroll-driven navigation chrome."
+authors = [{ name = "Expo Harbor Evals" }]
+keywords = ["react-native", "expo", "harbor", "codegen", "llm-judge", "expo-feedback"]
+
+[metadata]
+family = "expo-codegen"
+category = "expo-feedback"
+tier = "code-gen"
+difficulty = "hard"
+motivation = "Expo CLI feedback 911b52e0e368 (Codex/GPT-5.6 on an SDK 54 app, reproduced on a physical iPhone): a percentage-height card stretched the first ScrollView-grid row and clipped the item copy, and sticky-header chrome coupled to a native-driver scroll Animated.Value stayed visible at offset zero across freezeOnBlur tab switches — two attempted fixes that re-reset the native value both failed."
+source = "expo-skills-feedback"
+feedback_id = "911b52e0e368"
+distractor = "Keeps the native-driven Animated.Value coupling and adds more imperative resets on focus and blur, plus a cosmetic minHeight on the still-percentage-sized cards — the repeated-reset approach the field report saw fail twice."
+requirements = 4
+verifier = "rewardkit-weighted-binary"
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 900.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+workdir = "/app"
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240

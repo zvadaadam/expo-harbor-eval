@@ -55,6 +55,15 @@ simbench-ladder:
 simbench-hard:
 	uv run $(HARBOR_WITH) harbor run -c jobs/simbench-hard.yaml --job-name simbench-hard --yes
 
+# No-tool baseline over the ladder tiers (neutral simctl-only preface);
+# merge with the ladder run to see how much of a score the tool is worth.
+simbench-notool:
+	uv run $(HARBOR_WITH) harbor run -c jobs/simbench-notool.yaml --job-name simbench-notool --yes
+
+# Flow tier: journal-sequence-verified multi-step flow (see CONTRIBUTING).
+simbench-flows:
+	uv run $(HARBOR_WITH) harbor run -c jobs/simbench-flows.yaml --job-name simbench-flows --yes
+
 report:
 	uv run expo-eval-report runs/codegen-judge runs/codegen-models -o outputs/eval-report.html
 
