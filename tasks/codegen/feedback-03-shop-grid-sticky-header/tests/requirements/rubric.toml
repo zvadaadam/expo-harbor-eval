@@ -1,0 +1,37 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "intrinsic-card-height"
+id = "intrinsic-card-height"
+description = "Grid cards must size to their content: the card style carries no percentage or screen-derived height (a percentage width for columns is fine), and the full product copy is laid out by the card rather than clipped — truncating the copy (e.g. numberOfLines) or hiding overflow does not count as a fix."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "sticky-bar-derived-from-offset"
+id = "sticky-bar-derived-from-offset"
+description = "The condensed bar's shown/hidden state must be recomputed from the offset carried by each scroll event (e.g. an onScroll handler comparing contentOffset.y against the reveal threshold), so offset zero yields hidden by derivation. State updated exclusively by the scroll handler passes; a visibility source that needs out-of-band writes (focus/blur effects, navigation listeners) to stay in agreement with the offset fails."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "no-imperative-native-reset"
+id = "no-imperative-native-reset"
+description = "No code path outside the scroll events themselves may write to a scroll-tracking Animated value (no setValue/stopAnimation/resetAnimation from focus, blur, or navigation listeners on a value fed by a native-driver Animated.event): with freezeOnBlur tabs those resets are unreliable. Removing the native-driven scroll value entirely also satisfies this, provided the bar still works via the scroll events."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "product-behaviors-preserved"
+id = "product-behaviors-preserved"
+description = "The stated product requirements survive the fix: the bottom tabs keep freezeOnBlur enabled (and enableFreeze is not turned off), the condensed bar still fades in once the scroll position passes the hero rather than being deleted or always visible, and regaining focus still returns the grid to the top."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"
