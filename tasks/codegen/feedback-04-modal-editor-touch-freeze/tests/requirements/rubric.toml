@@ -1,0 +1,37 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "no-sibling-modal-overlap"
+id = "no-sibling-modal-overlap"
+description = "The design must never be able to request two native modal presentations from the same presenting screen at once. On iOS, React Native's modal host marks itself presented before UIKit answers and never re-checks, and a host whose presentation failed or lags stays mounted as an invisible screen-sized layer that claims every touch — so overlapped presents freeze the app. An editor rendered inside the still-open detail Modal's children, a single Modal that switches its content, or a flow with only one Modal mounted at a time by construction passes; two sibling <Modal> elements whose visible flags can be true together fails."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "no-timer-gated-presentation"
+id = "no-timer-gated-presentation"
+description = "No setTimeout/setInterval or similar delay may sequence any modal presentation or dismissal: a timer that presents the next surface after a guessed transition duration races the real iOS dismissal and intermittently reproduces the freeze. If a dismiss-then-present handoff exists at all, it must be gated on the dismissed modal's completion callback (onDismiss or equivalent); designs that need no handoff — content switch inside one modal, inline editing — also pass."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "single-visibility-source"
+id = "single-visibility-source"
+description = "Modal visibility derives from one source of truth with mutually exclusive states — for example a single mode value ('closed' | 'viewing' | 'editing') or one visible flag plus an internal content switch — such that no reachable combination of state requests two presentations. Two independently settable booleans for the detail and the editor fail even when current call sites happen to sequence them."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "product-behaviors-preserved"
+id = "product-behaviors-preserved"
+description = "The post detail still presents modally over the feed, the description editor is reachable from the detail view, saving persists the new description into the posts data (the feed card reflects it), cancelling leaves the description unchanged, and completing or abandoning the flow leaves no modal mounted visible — the feed is interactive again by construction."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

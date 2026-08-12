@@ -1,0 +1,37 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "sibling-motion-not-commit-driven"
+id = "sibling-motion-not-commit-driven"
+description = "While a drag is active, displaced tiles must move via continuously-controlled animated values (Reanimated shared values or core Animated) — for example absolute positions or transforms retargeted per slot change — and not by re-committing React layout and letting a layout transition animate the change: no layout transition (LinearTransition or friends), itemLayoutAnimation, or LayoutAnimation.configureNext may be the mechanism that moves grid items mid-gesture. Layout/entering/exiting transitions used only for adding or removing photos, or for a settle after the drop, are acceptable."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "single-order-commit"
+id = "single-order-commit"
+description = "The React-visible order (component state or props data) is written at most once per completed gesture, at drop or cancel: crossing several slot boundaries mid-drag produces no intermediate setState or data reorder. While the gesture is active, order changes may live only in shared values or refs. A runOnJS state reorder invoked from the pan's onUpdate at each threshold fails."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "dragged-tile-decoupled"
+id = "dragged-tile-decoupled"
+description = "The dragged tile stays mounted for the whole gesture under a stable identity key (not an array index), and while the drag is active its on-screen position is driven by the gesture — grab origin plus finger translation on an absolutely positioned or otherwise layout-decoupled layer — so a change in the grid's order cannot move the tile under the finger. A tile whose finger transform is stacked on top of a flex-flow slot that shifts when the data reorders fails."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "product-behaviors-preserved"
+id = "product-behaviors-preserved"
+description = "Long-press pickup is retained (the pan activates only after a long press), the grid stays 3 columns and renders every photo, displaced tiles animate toward their new slots during the drag rather than teleporting only on drop, and releasing commits the new order so the saved data matches what is on screen."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"
