@@ -1,0 +1,33 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/feedback-06-sortable-grid-stable-layers"
+description = "Expo code-gen eval authored from a field-reported failure building a glitch-free long-press sortable photo grid with Gesture Handler and Reanimated."
+authors = [{ name = "Expo Harbor Evals" }]
+keywords = ["react-native", "expo", "harbor", "codegen", "llm-judge", "expo-feedback"]
+
+[metadata]
+family = "expo-codegen"
+category = "expo-feedback"
+tier = "code-gen"
+difficulty = "hard"
+motivation = "Expo CLI feedback 1610fc625460 (Codex on an SDK 54 app, two failed attempts): a long-press sortable 3-column photo grid built by reordering React children at every drag threshold and letting Reanimated layout transitions animate the result flashed and jumped; the field fix was an absolute-layer shared-value grid. Deep-verified 2026-08-12: layout transitions are commit-triggered snapshots that cannot track a continuous gesture (Reanimated's itemLayoutAnimation is documented single-column-only, and the retrigger flicker class recurs across majors — software-mansion/react-native-reanimated#4006), while every credible implementation (react-native-sortables, react-native-draggable-flatlist, the Candillon sortable pattern) keeps items mounted, drives motion from shared values on stable layers, and commits order once on drop."
+source = "expo-skills-feedback"
+feedback_id = "1610fc625460"
+distractor = "Keeps the per-threshold setPhotos reorder and the layout-transition-driven sibling motion, adding a springified LinearTransition, an active-tile zIndex and scale lift, and a redundant-reorder guard — the polish-the-same-architecture second attempt the field report saw fail."
+requirements = 4
+verifier = "rewardkit-weighted-binary"
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 900.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+workdir = "/app"
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240

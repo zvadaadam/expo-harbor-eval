@@ -8,7 +8,8 @@ description: Decide whether an Expo CLI/skills feedback signal becomes a tasks/c
 A feedback signal only becomes an eval when it measures a **durable model
 capability**. Most signals are instead (or additionally) product feedback that
 belongs upstream. Run every signal through this procedure before writing any
-task files; record the verdict before starting authoring.
+task files; record the verdict as a row in `tasks/TRIAGE.md` before starting
+authoring.
 
 ## Gate 0 — dedupe
 
@@ -19,6 +20,11 @@ Grep the signal's feedback id against existing tasks first:
 One report can hold several findings (bca74ecdb803 produced feedback-01 AND
 feedback-02) — dedupe per *finding*, not per report. Anything already covered
 needs no new task.
+
+A hit may land in `tasks/TRIAGE.md` rather than a task dir — that is the
+verdict ledger, and it means the id was already triaged (possibly dropped or
+held). Read its row instead of re-deriving the verdict; dropped and held ids
+exist ONLY there.
 
 ## The three questions
 
@@ -67,6 +73,17 @@ needs no new task.
 - If the report contains no verified correct fix, the reference solution is
   yours to reconstruct — budget for self-verification and say so in the
   task's motivation.
+- Check `latest` as well as the pinned version: a trap still shipping in the
+  current release (slider falsy-zero, present in 5.0.1 AND 5.2.0) hardens
+  durability and usually warrants a parallel upstream issue.
+- Maintainer intent is durability evidence: an explicit wontfix or a
+  merged-then-reverted fix on the platform tracker (RN modal overlap,
+  facebook/react-native#50399) is the strongest possible Q2 answer.
+- A report marked "resolution pending" blocks authoring only while the
+  mechanism is unverifiable. If public platform docs pin the accounting and
+  arithmetic (EAS Hosting subrequest budget), ground truth can be built
+  without the reporter's fix — but parameterize every number the platform
+  can change (the paid subrequest limit went 1,000→10,000 on 2026-02-11).
 
 ## Verdicts and required artifacts
 
@@ -94,3 +111,50 @@ needs no new task.
   reference was reconstructed and the rubric judges properties (intrinsic
   heights, visibility derived from offset, no imperative native resets),
   not one library choice.
+
+## Worked examples (2026-08-12 batch)
+
+- **029b2a2da3d2** (overlapping Modals freeze touch, SDK 56): verified in RN
+  0.85.3 source — `_isPresented` flips before presenting with no failure
+  check, and the iOS `isRendered` latch keeps an invisible screen-sized,
+  touch-claiming host view mounted; the frozen state is absorbing and the
+  sibling-overlap repro is fully deterministic. Identical code in RN 0.87,
+  Meta explicitly declined to fix (#50399) → eval feedback-04. Rubric judges
+  properties (single visibility source of truth, completion-signal
+  sequencing, product behaviors preserved); the
+  editor-nested-inside-the-open-modal pattern is legit and must pass, as is
+  an onDismiss-gated handoff. Strong later simbench variant. Authored as
+  feedback-04-modal-editor-touch-freeze; calibrated empty=0, baseline=0,
+  reference=1.0, distractor=0.0 on two stable judged runs.
+- **3892d1c10f3c** (slider recenter, 5.0.1): three verified layers — the JS
+  wrapper coerces falsy 0→undefined (in 5.0.1 AND latest 5.2.0), the Fabric
+  codegen default is 0 so the native `oldProps.value != newProps.value`
+  guard never fires, and no `prepareForRecycle` means remounts can recycle
+  stale thumbs → eval feedback-05 (pin 5.0.1) + upstream issue to
+  react-native-slider. The reference makes every recenter a real prop
+  transition: controlled onValueChange tracking with a reset to the
+  non-default positive midpoint (a keyed remount with a truthy initial
+  value is the equivalent alternative) — a constant midpoint prop alone
+  never re-sends to native. Authored as
+  feedback-05-slider-relative-recenter with the real 5.0.1 wrapper vendored
+  into environment/node_modules/ so the read-the-installed-source capability
+  is exercisable; calibrated empty=0, baseline=0, reference=1.0,
+  distractor=0.5 on two stable judged runs.
+- **1610fc625460** (sortable grid): glitch is inherent — layout transitions
+  are commit-triggered snapshots and cannot track a continuous gesture;
+  every credible implementation (react-native-sortables,
+  draggable-flatlist, Candillon) keeps layers stable, drives motion from
+  shared values, and commits order once on drop → eval feedback-06. Rubric
+  bans mid-gesture commit-driven sibling motion and multiple order commits —
+  NOT LinearTransition per se (post-drop settle and add/remove transitions
+  are legitimate). Authored as feedback-06-sortable-grid-stable-layers;
+  calibrated empty=0, baseline=0, reference=1.0, distractor=0.25 on two
+  stable judged runs.
+- **019ff4bd-822c…** (EAS Hosting subrequest budget): upgraded HOLD → eval
+  feedback-07. Cloudflare docs pin the accounting the model ignored (every
+  fetch, every redirect hop, `connect()` per connection, the 6-connection
+  concurrency gate) and Google Calendar docs pin the arithmetic (2,500
+  maxResults/page, 1,000 calls per batch = 1 subrequest, `nextSyncToken`) —
+  an offline fetch-counting mock with a stipulated budget B separates
+  batched from naive syncs by >1000x. The reporter's pending resolution is
+  not load-bearing.
