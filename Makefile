@@ -4,7 +4,7 @@
 HARBOR_WITH ?=
 CALLSTACK_EVALS_SRC ?= ../callstack-evals
 
-.PHONY: test fixture partial codegen-import codegen-calibrate codegen-oracle codegen-baseline codegen-judge codegen-models simbench-ladder simbench-hard report viewer export
+.PHONY: test fixture partial codegen-import codegen-calibrate codegen-oracle codegen-baseline codegen-judge codegen-models simbench-ladder simbench-hard simbench-notool simbench-flows report viewer export
 
 test:
 	uv run pytest -q
