@@ -40,10 +40,19 @@ const yForSlot = (slot: number) => {
   return Math.floor(slot / COLUMNS) * (TILE_SIZE + TILE_GAP)
 }
 
+// Inverts a tile CENTRE back to its slot: subtracting half a tile before
+// rounding puts the flip boundary halfway between neighbouring slots in
+// every direction, so a hovered swap needs the same travel left or right.
 const slotForPoint = (x: number, y: number) => {
   'worklet'
-  const column = Math.min(COLUMNS - 1, Math.max(0, Math.round(x / (TILE_SIZE + TILE_GAP))))
-  const row = Math.max(0, Math.round(y / (TILE_SIZE + TILE_GAP)))
+  const column = Math.min(
+    COLUMNS - 1,
+    Math.max(0, Math.round((x - TILE_SIZE / 2) / (TILE_SIZE + TILE_GAP))),
+  )
+  const row = Math.min(
+    GRID_ROWS - 1,
+    Math.max(0, Math.round((y - TILE_SIZE / 2) / (TILE_SIZE + TILE_GAP))),
+  )
   return Math.min(PHOTOS.length - 1, row * COLUMNS + column)
 }
 

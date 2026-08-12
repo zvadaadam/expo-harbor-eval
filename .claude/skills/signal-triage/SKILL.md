@@ -121,8 +121,9 @@ exist ONLY there.
   sibling-overlap repro is fully deterministic. Identical code in RN 0.87,
   Meta explicitly declined to fix (#50399) → eval feedback-04. Rubric judges
   properties (single visibility source of truth, completion-signal
-  sequencing, post-flow tap oracle); the editor-nested-inside-the-open-modal
-  pattern is legit and must pass. Strong later simbench variant. Authored as
+  sequencing, product behaviors preserved); the
+  editor-nested-inside-the-open-modal pattern is legit and must pass, as is
+  an onDismiss-gated handoff. Strong later simbench variant. Authored as
   feedback-04-modal-editor-touch-freeze; calibrated empty=0, baseline=0,
   reference=1.0, distractor=0.0 on two stable judged runs.
 - **3892d1c10f3c** (slider recenter, 5.0.1): three verified layers — the JS
@@ -130,9 +131,11 @@ exist ONLY there.
   codegen default is 0 so the native `oldProps.value != newProps.value`
   guard never fires, and no `prepareForRecycle` means remounts can recycle
   stale thumbs → eval feedback-05 (pin 5.0.1) + upstream issue to
-  react-native-slider. The reference must force a real prop transition
-  (remount keyed per release + a non-default positive midpoint); a constant
-  midpoint prop alone never re-sends to native. Authored as
+  react-native-slider. The reference makes every recenter a real prop
+  transition: controlled onValueChange tracking with a reset to the
+  non-default positive midpoint (a keyed remount with a truthy initial
+  value is the equivalent alternative) — a constant midpoint prop alone
+  never re-sends to native. Authored as
   feedback-05-slider-relative-recenter with the real 5.0.1 wrapper vendored
   into environment/node_modules/ so the read-the-installed-source capability
   is exercisable; calibrated empty=0, baseline=0, reference=1.0,

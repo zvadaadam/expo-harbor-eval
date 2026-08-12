@@ -8,7 +8,7 @@ reasoning_effort = "medium"
 [[criterion]]
 name = "no-sibling-modal-overlap"
 id = "no-sibling-modal-overlap"
-description = "The design must never be able to request two native modal presentations from the same presenting screen at once. On iOS, React Native's modal host marks itself presented before UIKit answers and never re-checks, and a host whose presentation failed or lags stays mounted as an invisible screen-sized layer that claims every touch — so overlapped presents freeze the app. An editor rendered inside the still-open detail Modal's children, a single Modal that switches its content, or a flow with only one Modal mounted at a time by construction passes; two sibling <Modal> elements whose visible flags can be true together fails."
+description = "The design must never be able to request two native modal presentations from the same presenting screen at once. On iOS, React Native's modal host marks itself presented before UIKit answers and never re-checks, and a host whose presentation failed or lags stays mounted as an invisible screen-sized layer that claims every touch — so overlapped presents freeze the app. An editor rendered inside the still-open detail Modal's children, a single Modal that switches its content, a flow with only one Modal mounted at a time by construction, or a two-Modal flow whose second presentation is requested exclusively from the first modal's onDismiss completion callback all pass; two sibling <Modal> elements whose visible flags can otherwise be true together fail."
 type = "binary"
 weight = 1
 
@@ -22,7 +22,7 @@ weight = 1
 [[criterion]]
 name = "single-visibility-source"
 id = "single-visibility-source"
-description = "Modal visibility derives from one source of truth with mutually exclusive states — for example a single mode value ('closed' | 'viewing' | 'editing') or one visible flag plus an internal content switch — such that no reachable combination of state requests two presentations. Two independently settable booleans for the detail and the editor fail even when current call sites happen to sequence them."
+description = "Modal visibility derives from one source of truth with mutually exclusive states — for example a single mode value ('closed' | 'viewing' | 'editing') or one visible flag plus an internal content switch — such that no reachable combination of state requests two presentations. Two independently settable booleans for the detail and the editor fail when ordinary call sites merely happen to sequence them; the one exception is booleans coupled exclusively through the dismissed modal's completion callback (the onDismiss handoff no-timer-gated-presentation permits), which makes the two states mutually exclusive by construction."
 type = "binary"
 weight = 1
 
