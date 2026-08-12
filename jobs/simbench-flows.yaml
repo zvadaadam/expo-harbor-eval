@@ -74,6 +74,6 @@ agents:
       preface: *argent_preface
 
 datasets:
-  - path: tasks
+  - path: tasks/simbench
     task_names:
       - simbench-ios-07-goldennotes-shift-flow

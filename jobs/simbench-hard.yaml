@@ -98,7 +98,7 @@ agents:
         on PATH; see `argent tools` and `argent run <tool> --help`).
 
 datasets:
-  - path: tasks
+  - path: tasks/simbench
     task_names:
       - simbench-ios-04-goldenlab-dial-precision
       - simbench-ios-05-goldenlab-reveal-code

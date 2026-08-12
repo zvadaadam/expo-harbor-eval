@@ -27,7 +27,7 @@ src/expo_harbor_evals/        Development helpers
 tasks/codegen/                expo-codegen: imported {sdk,router,ui}-NN-* tasks
                               plus field-sourced feedback-NN-* tasks
 tasks/expo-mobile-eval-import Harbor task that normalizes evaluator output
-tasks/simbench-ios-*          simulator-use benchmark golden-app tasks
+tasks/simbench/               simulator-use benchmark golden-app tasks
 third_party/                   Upstream license and pinned-source metadata
 ```
 
@@ -147,7 +147,7 @@ that change.
 
 ## Simulator-Use Benchmark (simbench)
 
-`tasks/simbench-*` prototypes a benchmark for how well model × driver-tool
+`tasks/simbench/` prototypes a benchmark for how well model × driver-tool
 stacks operate a real iOS simulator. The design inverts the app evals above:
 the app is a fixed, known-good "golden app" and the driver stack is the
 variable.

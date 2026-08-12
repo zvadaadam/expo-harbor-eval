@@ -117,7 +117,7 @@ def test_codegen_baseline_manifest_matches_environment() -> None:
 def test_simbench_tasks_share_their_golden_app() -> None:
     """Tasks built on the same golden app must ship identical app sources."""
     groups: dict[str, list] = {}
-    for task_dir in sorted(TASKS.glob("simbench-ios-*")):
+    for task_dir in sorted((TASKS / "simbench").glob("simbench-ios-*")):
         sources = sorted((task_dir / "environment" / "app-src").glob("*.swift"))
         assert sources, f"{task_dir.name} has no app source"
         groups.setdefault(sources[0].name, []).append(task_dir)
