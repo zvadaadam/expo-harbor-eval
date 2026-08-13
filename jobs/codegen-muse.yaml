@@ -1,0 +1,40 @@
+# Muse Code over the expo-codegen tasks using the host's logged-in muse CLI
+# (see expo_harbor_evals.muse_host_agent). Two cells: muse-spark-1.2@low to
+# line up with the claude ladder's low-effort rungs, and the CLI's shipping
+# default effort (high) as the as-shipped datapoint. Shell is disabled
+# CLI-side (--disable-shell) to match the claude cells' file-tools-only
+# allowlist. Judged by the same claude-code judge as jobs/codegen-judge.yaml
+# so results are comparable; merge runs with:
+#   uv run expo-eval-report runs/codegen-judge runs/codegen-models runs/codegen-muse
+# Needs a logged-in muse CLI (muse login) on the STANDARD tier — the
+# post-install Contributor default lets Meta train on submitted data, which
+# would leak eval task content into future models.
+jobs_dir: runs
+n_attempts: 3
+timeout_multiplier: 1.0
+n_concurrent_trials: 3
+quiet: false
+
+environment:
+  import_path: expo_harbor_evals.mac_sandbox_env:MacSandboxEnvironment
+  delete: true
+
+verifier:
+  env:
+    EXPO_EVAL_VERIFIER_MODE: judge
+    REWARDKIT_JUDGE: claude-code
+    REWARDKIT_MODEL: "${REWARDKIT_MODEL:-claude-opus-4-8}"
+
+agents:
+  - import_path: expo_harbor_evals.muse_host_agent:MuseHostAgent
+    model_name: muse-spark-1.2@low
+    kwargs:
+      max_model_steps: 200
+  - import_path: expo_harbor_evals.muse_host_agent:MuseHostAgent
+    model_name: muse-spark-1.2
+    kwargs:
+      max_model_steps: 200
+
+datasets:
+  # The directory is the cohort: every task under tasks/codegen/ joins.
+  - path: tasks/codegen

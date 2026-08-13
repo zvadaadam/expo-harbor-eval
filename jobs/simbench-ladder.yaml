@@ -74,7 +74,7 @@ agents:
       preface: *argent_preface
 
 datasets:
-  - path: tasks
+  - path: tasks/simbench
     task_names:
       - simbench-ios-01-goldennotes-create-note
       - simbench-ios-02-inventory-scroll-claim

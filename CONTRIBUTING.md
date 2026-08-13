@@ -3,10 +3,11 @@
 This repo packages Expo agent evals on top of Harbor. Three families live in
 `tasks/`: expo-codegen under `tasks/codegen/` (code-gen, LLM-judged: imported
 `{sdk,router,ui}-NN-*` plus authored `feedback-NN-*`; the directory is the
-job cohort, so a new task joins every codegen job by existing), `simbench-ios-*`
-(simulator-use, programmatically verified), and `expo-mobile-eval-import` (EAS
-evaluator bridge). The simbench tasks stay at the top level until the paused
-ladder/hard runs finish — moving them would orphan those runs' pending trials.
+job cohort, so a new task joins every codegen job by existing), simbench under
+`tasks/simbench/` (simulator-use, programmatically verified), and
+`expo-mobile-eval-import` (EAS evaluator bridge). Simbench task dirs keep their
+`simbench-ios-` prefix: the dir name is the Harbor task name, and those names
+are the join keys for existing run data — renaming them would orphan it.
 Adding to any family, keep the rules below — they are what make the numbers
 trustworthy.
 
@@ -127,3 +128,11 @@ After a finished run: `make export` appends a summary row to
 `results/history.jsonl` (tracked in git); the viewer's History section renders
 it. Export before changing prompts, tools, or models so regressions are
 attributable.
+
+Token usage and cost are part of the results, not telemetry to discard: every
+agent must populate Harbor's `AgentContext` usage fields (`n_input_tokens`,
+`n_cache_tokens`, `n_output_tokens`, `cost_usd` — `ClaudeHostAgent` reads them
+from the claude CLI envelope), and the report, viewer, and history export carry
+per-series and per-run totals. Absent usage exports as `null`, never a fake 0.
+Known gap: judge spend (harbor-rewardkit) is not reported upstream and is
+excluded from all totals.

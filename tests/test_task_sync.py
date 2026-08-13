@@ -6,6 +6,8 @@ import importlib.util
 import json
 from pathlib import Path
 
+import yaml
+
 from expo_harbor_evals import codegen_adapter
 from expo_harbor_evals.codegen_calibrate import codegen_task_dirs
 from expo_harbor_evals.codegen_rewardkit_runner import submission_manifest
@@ -14,6 +16,7 @@ from expo_harbor_evals.scoring import normalize_evaluator_result
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SRC = REPO_ROOT / "src" / "expo_harbor_evals"
 TASKS = REPO_ROOT / "tasks"
+JOBS = REPO_ROOT / "jobs"
 
 VENDORED_CODEGEN_SCRIPTS = {
     "run_rewardkit.py": "codegen_rewardkit_runner.py",
@@ -117,7 +120,7 @@ def test_codegen_baseline_manifest_matches_environment() -> None:
 def test_simbench_tasks_share_their_golden_app() -> None:
     """Tasks built on the same golden app must ship identical app sources."""
     groups: dict[str, list] = {}
-    for task_dir in sorted(TASKS.glob("simbench-ios-*")):
+    for task_dir in sorted((TASKS / "simbench").glob("simbench-ios-*")):
         sources = sorted((task_dir / "environment" / "app-src").glob("*.swift"))
         assert sources, f"{task_dir.name} has no app source"
         groups.setdefault(sources[0].name, []).append(task_dir)
@@ -132,6 +135,29 @@ def test_simbench_tasks_share_their_golden_app() -> None:
                     f"{task_dir.name}/environment/{rel} drifted from "
                     f"{task_dirs[0].name}; tasks sharing a golden app must be identical"
                 )
+
+
+def test_simbench_job_agents_stay_in_sync() -> None:
+    """The same agent variant must be configured identically in every simbench job.
+
+    Prefaces and tool lists are part of the experimental condition: if
+    sonnet#agent-device drifts between ladder and flows, their numbers stop
+    being comparable across tiers.
+    """
+    groups: dict[str, dict[str, dict]] = {}
+    for job_path in sorted(JOBS.glob("simbench-*.yaml")):
+        for agent in yaml.safe_load(job_path.read_text())["agents"]:
+            key = agent.get("model_name") or agent["name"]
+            groups.setdefault(key, {})[job_path.name] = agent
+    assert groups, "no agents found in jobs/simbench-*.yaml"
+    for key, by_job in groups.items():
+        job_names = sorted(by_job)
+        reference = by_job[job_names[0]]
+        for job_name in job_names[1:]:
+            assert by_job[job_name] == reference, (
+                f"agent {key!r} in {job_name} drifted from {job_names[0]}; "
+                "the same variant must be identical in every simbench job"
+            )
 
 
 def test_vendored_score_result_matches_scoring_module() -> None:

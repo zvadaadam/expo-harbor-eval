@@ -4,7 +4,7 @@
 HARBOR_WITH ?=
 CALLSTACK_EVALS_SRC ?= ../callstack-evals
 
-.PHONY: test fixture partial codegen-import codegen-calibrate codegen-oracle codegen-baseline codegen-judge codegen-models simbench-ladder simbench-hard report viewer export
+.PHONY: test fixture partial codegen-import codegen-calibrate codegen-oracle codegen-baseline codegen-judge codegen-models codegen-muse simbench-ladder simbench-hard simbench-notool simbench-flows simbench-muse report viewer export
 
 test:
 	uv run pytest -q
@@ -45,6 +45,12 @@ codegen-judge:
 codegen-models:
 	uv run $(HARBOR_WITH) harbor run -c jobs/codegen-models.yaml --job-name codegen-models --yes
 
+# Muse Code (Meta) cells over the expo-codegen tasks, judged like
+# codegen-models. Requires a logged-in muse CLI on the Standard tier (the
+# Contributor default trains on submitted data — see jobs/codegen-muse.yaml).
+codegen-muse:
+	uv run $(HARBOR_WITH) harbor run -c jobs/codegen-muse.yaml --job-name codegen-muse --yes
+
 # Simulator-use benchmark: (model x driver-tool) cells on golden apps with
 # nop floor + scripted oracle ceiling. Requires macOS + Xcode simulators +
 # agent-device CLI + logged-in claude. Rerunning a target resumes its
@@ -63,6 +69,12 @@ simbench-notool:
 # Flow tier: journal-sequence-verified multi-step flow (see CONTRIBUTING).
 simbench-flows:
 	uv run $(HARBOR_WITH) harbor run -c jobs/simbench-flows.yaml --job-name simbench-flows --yes
+
+# Muse Code (Meta) x driver-tool cells over the ladder tiers + flow task;
+# floors/ceilings live in the ladder/flows runs (merge reports to compare).
+# Same shared-simulator rule as the other simbench targets.
+simbench-muse:
+	uv run $(HARBOR_WITH) harbor run -c jobs/simbench-muse.yaml --job-name simbench-muse --yes
 
 report:
 	uv run expo-eval-report runs/codegen-judge runs/codegen-models -o outputs/eval-report.html

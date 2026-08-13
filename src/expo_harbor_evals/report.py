@@ -50,6 +50,8 @@ class Trial:
     judge: dict
     error: str | None
     cost_usd: float | None
+    input_tokens: int | None
+    cache_tokens: int | None
     output_tokens: int | None
 
     @property
@@ -152,6 +154,8 @@ def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
                     judge=judge,
                     error=exception,
                     cost_usd=agent_result.get("cost_usd"),
+                    input_tokens=agent_result.get("n_input_tokens"),
+                    cache_tokens=agent_result.get("n_cache_tokens"),
                     output_tokens=agent_result.get("n_output_tokens"),
                 )
             )
@@ -185,12 +189,30 @@ def fmt(value: float | None) -> str:
     return "—" if value is None else f"{value:.2f}"
 
 
+def fmt_tokens(value: int | None) -> str:
+    if value is None:
+        return "—"
+    if value >= 1_000_000:
+        return f"{value / 1e6:.{0 if value >= 10_000_000 else 1}f}M"
+    if value >= 1_000:
+        return f"{value / 1e3:.{0 if value >= 10_000 else 1}f}k"
+    return str(value)
+
+
 @dataclass(frozen=True)
 class SeriesStats:
     mean: float | None
     solved: int
     n_tasks: int
     mean_cost: float | None
+    total_cost: float | None
+    input_tokens: int | None
+    cache_tokens: int | None
+    output_tokens: int | None
+
+
+def _total(values: list[int]) -> int | None:
+    return sum(values) if values else None
 
 
 def series_stats(tasks: list[TaskRow], key: str) -> SeriesStats:
@@ -198,11 +220,14 @@ def series_stats(tasks: list[TaskRow], key: str) -> SeriesStats:
 
     The single source of these semantics for the report, viewer, and history
     export. A task counts as solved only when every attempt in its cell has a
-    reward of 1.0 — an errored attempt (no reward) fails the cell.
+    reward of 1.0 — an errored attempt (no reward) fails the cell. Cost and
+    token totals sum every attempt that recorded usage, errored or not: spend
+    is spend.
     """
     cells = [task.by_series[key] for task in tasks if task.by_series.get(key)]
+    attempts = [t for cell in cells for t in cell]
     cell_means = [m for task in tasks if (m := task.cell_mean(key)) is not None]
-    costs = [t.cost_usd for cell in cells for t in cell if t.cost_usd is not None]
+    costs = [t.cost_usd for t in attempts if t.cost_usd is not None]
     solved = sum(
         1
         for cell in cells
@@ -213,6 +238,16 @@ def series_stats(tasks: list[TaskRow], key: str) -> SeriesStats:
         solved=solved,
         n_tasks=len(cells),
         mean_cost=sum(costs) / len(costs) if costs else None,
+        total_cost=sum(costs) if costs else None,
+        input_tokens=_total(
+            [t.input_tokens for t in attempts if t.input_tokens is not None]
+        ),
+        cache_tokens=_total(
+            [t.cache_tokens for t in attempts if t.cache_tokens is not None]
+        ),
+        output_tokens=_total(
+            [t.output_tokens for t in attempts if t.output_tokens is not None]
+        ),
     )
 
 
@@ -339,19 +374,32 @@ def render_summary_table(series: list[Series], stats: dict[str, SeriesStats]) ->
     rows = []
     for entry in series:
         stat = stats[entry.key]
-        cost = stat.mean_cost
+        mean_cost, total_cost = stat.mean_cost, stat.total_cost
+        context_tokens = (
+            (stat.input_tokens or 0) + (stat.cache_tokens or 0)
+            if stat.input_tokens is not None or stat.cache_tokens is not None
+            else None
+        )
+        tokens = (
+            f"{fmt_tokens(context_tokens)} / {fmt_tokens(stat.output_tokens)}"
+            if context_tokens is not None or stat.output_tokens is not None
+            else "—"
+        )
         rows.append(
             "<tr>"
             f'<td><span class="swatch {entry.css}"></span> '
             f"{html.escape(entry.label)}</td>"
             f'<td class="num">{fmt(stat.mean)}</td>'
             f'<td class="num">{stat.solved}/{stat.n_tasks}</td>'
-            f'<td class="num">{f"${cost:.2f}" if cost is not None else "—"}</td>'
+            f'<td class="num">{f"${mean_cost:.2f}" if mean_cost is not None else "—"}</td>'
+            f'<td class="num">{f"${total_cost:.2f}" if total_cost is not None else "—"}</td>'
+            f'<td class="num">{tokens}</td>'
             "</tr>"
         )
     return (
         '<table><thead><tr><th>Configuration</th><th class="num">Mean reward</th>'
-        '<th class="num">Solved (all attempts)</th><th class="num">Agent cost</th>'
+        '<th class="num">Solved (all attempts)</th><th class="num">Cost / attempt</th>'
+        '<th class="num">Total cost</th><th class="num">Tokens in / out</th>'
         f"</tr></thead><tbody>{''.join(rows)}</tbody></table>"
     )
 
@@ -453,6 +501,17 @@ def build_html(
     )
     generated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
+    costs = [t.cost_usd for t in trials if t.cost_usd is not None]
+    spend = f"${sum(costs):.2f}" if costs else "—"
+    output_tokens = [
+        t.output_tokens for t in trials if t.output_tokens is not None
+    ]
+    spend_sub = (
+        f"{fmt_tokens(sum(output_tokens))} output tokens · agent only"
+        if output_tokens
+        else "no usage recorded"
+    )
+
     tiles = (
         f'<div class="tile"><div class="label">Tasks</div>'
         f'<div class="value">{len(tasks)}</div></div>'
@@ -462,6 +521,9 @@ def build_html(
         f'<div class="value">{len(trials)}</div>'
         f'<div class="sub">{len(errors)} errored · up to {attempts_per_cell} '
         f"attempts/cell</div></div>"
+        f'<div class="tile"><div class="label">Agent spend</div>'
+        f'<div class="value">{spend}</div>'
+        f'<div class="sub">{spend_sub}</div></div>'
         f'<div class="tile"><div class="label">Criteria judged</div>'
         f'<div class="value">{criteria_count}</div>'
         f'<div class="sub">judge: {html.escape(str(judge_label))}</div></div>'
@@ -621,7 +683,9 @@ footer {{ margin-top: 40px; font-size: 12px; color: var(--muted); }}
   <footer>
     expo-codegen tasks imported from callstackincubator/evals (MIT) · scored with
     harbor-rewardkit · run with Harbor. Rewards are weighted means of binary
-    criteria in [0, 1]; agent cost is the mean claude CLI cost per task.
+    criteria in [0, 1]. Cost and tokens are claude CLI usage summed over every
+    attempt (in = input + cache reads); judge spend is not included —
+    harbor-rewardkit does not report it.
   </footer>
 </main>
 <div id="tooltip" role="status"></div>

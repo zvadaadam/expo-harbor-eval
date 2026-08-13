@@ -1,8 +1,14 @@
-# Flow tier: the four-step ordered GoldenNotes flow x two models x two
-# driver tools, 3 attempts per cell, bracketed by nop floor and scripted
-# oracle ceiling. The journal must show the steps in sequence, so a
-# correct end state reached out of order scores zero. The simulator is
-# shared host state: trials must not run concurrently.
+# Muse Code cells for the simulator-use benchmark: Meta's muse CLI
+# (muse-spark-1.2, its shipping default effort) x two driver tools over the
+# ladder tiers plus the flow task. The nop floor and scripted-oracle ceiling
+# for these tasks already live in the simbench-ladder / simbench-flows runs;
+# compare by merging:
+#   uv run expo-eval-report runs/simbench-ladder runs/simbench-flows runs/simbench-muse
+# Needs a logged-in muse CLI (muse login) on the STANDARD tier — the
+# post-install Contributor default lets Meta train on submitted data, which
+# would leak eval task content into future models. The simulator is shared
+# host state: trials must not run concurrently, and never run this while
+# another simbench job is resuming.
 jobs_dir: runs
 n_attempts: 3
 timeout_multiplier: 1.0
@@ -14,13 +20,12 @@ environment:
   delete: true
 
 agents:
-  - name: nop
-  - name: oracle
-  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
-    model_name: "haiku#agent-device"
+  - import_path: expo_harbor_evals.muse_host_agent:MuseHostAgent
+    model_name: "muse-spark-1.2#agent-device"
     kwargs:
-      allowed_tools: "Bash Read Write Edit Glob Grep LS TodoWrite"
-      preface: &agent_device_preface |
+      allow_shell: true
+      max_model_steps: 200
+      preface: |
         You are operating directly on the macOS host for this task. Your
         working directory is the task workspace (called /app in the
         instructions).
@@ -38,11 +43,12 @@ agents:
         again after each mutating action and use fresh refs. Run
         `agent-device help workflow` for the full command reference if needed.
 
-  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
-    model_name: "haiku#argent"
+  - import_path: expo_harbor_evals.muse_host_agent:MuseHostAgent
+    model_name: "muse-spark-1.2#argent"
     kwargs:
-      allowed_tools: "Bash Read Write Edit Glob Grep LS TodoWrite"
-      preface: &argent_preface |
+      allow_shell: true
+      max_model_steps: 200
+      preface: |
         You are operating directly on the macOS host for this task. Your
         working directory is the task workspace (called /app in the
         instructions).
@@ -61,19 +67,10 @@ agents:
         --force true, then continue. Run `argent tools` for the full tool list
         if needed.
 
-  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
-    model_name: "sonnet#agent-device"
-    kwargs:
-      allowed_tools: "Bash Read Write Edit Glob Grep LS TodoWrite"
-      preface: *agent_device_preface
-
-  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
-    model_name: "sonnet#argent"
-    kwargs:
-      allowed_tools: "Bash Read Write Edit Glob Grep LS TodoWrite"
-      preface: *argent_preface
-
 datasets:
   - path: tasks/simbench
     task_names:
+      - simbench-ios-01-goldennotes-create-note
+      - simbench-ios-02-inventory-scroll-claim
+      - simbench-ios-03-register-occluded-form
       - simbench-ios-07-goldennotes-shift-flow
