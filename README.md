@@ -91,6 +91,14 @@ make codegen-models     # haiku/sonnet/opus/fable @ low effort + haiku @ high
 make report             # merged HTML report in outputs/eval-report.html
 ```
 
+The same pattern covers Meta's Muse Code CLI (`muse`, dev-only,
+host-executed — see `expo_harbor_evals.muse_host_agent`): `make codegen-muse`
+runs muse-spark-1.2 over the codegen tasks under the identical judge, and
+`make simbench-muse` fills its (model x driver-tool) simbench cells. Both
+need a logged-in `muse` on the Standard tier — the post-install Contributor
+default lets Meta train on submitted data, which would leak eval task
+content into future models.
+
 Both judged jobs run 3 attempts per task/config and pin the judge to
 `claude-code · claude-opus-4-8` so runs are comparable. On macOS they execute
 inside `expo_harbor_evals.mac_sandbox_env:MacSandboxEnvironment`, a

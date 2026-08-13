@@ -210,11 +210,14 @@ def render_history_section(history_path: Path = Path("results/history.jsonl")) -
             if s.get("mean") is not None
         )
         finished = str(entry.get("finished_at", ""))[:16].replace("T", " ")
+        total_cost = entry.get("total_cost_usd")
         rows.append(
             "<tr>"
             f"<td>{html.escape(str(entry.get('run', '')))}</td>"
             f'<td class="muted">{html.escape(finished)}</td>'
             f'<td class="num">{entry.get("n_trials", "")}</td>'
+            f'<td class="num">'
+            f'{f"${total_cost:.2f}" if total_cost is not None else "—"}</td>'
             f'<td class="series">{html.escape(headline)}</td>'
             "</tr>"
         )
@@ -223,7 +226,8 @@ def render_history_section(history_path: Path = Path("results/history.jsonl")) -
         '<div class="nav">Exported snapshots from results/history.jsonl — '
         "re-export after each run to track results over time.</div>"
         "<table><thead><tr><th>Run</th><th>Finished</th>"
-        '<th class="num">Trials</th><th>Mean reward by configuration</th>'
+        '<th class="num">Trials</th><th class="num">Cost</th>'
+        "<th>Mean reward by configuration</th>"
         f"</tr></thead><tbody>{''.join(rows)}</tbody></table>"
     )
 
@@ -249,6 +253,7 @@ def render_run(runs_dir: Path, name: str) -> str | None:
             if trial.error
             else f'<span class="num">{fmt(trial.reward)}</span>'
         )
+        cost = f"${trial.cost_usd:.2f}" if trial.cost_usd is not None else "—"
         trial_rows.append(
             "<tr>"
             f'<td><a href="/run/{name}/trial/{trial.name}">'
@@ -256,12 +261,13 @@ def render_run(runs_dir: Path, name: str) -> str | None:
             f"<td>{html.escape(trial.task)}</td>"
             f"<td>{html.escape(trial.agent + (' · ' + trial.model if trial.model else ''))}</td>"
             f'<td class="num">{state}</td>'
+            f'<td class="num">{cost}</td>'
             "</tr>"
         )
     trials_table = (
         "<h2>Trials</h2><table><thead><tr><th>Trial</th><th>Task</th>"
-        '<th>Agent</th><th class="num">Reward</th></tr></thead>'
-        f"<tbody>{''.join(trial_rows)}</tbody></table>"
+        '<th>Agent</th><th class="num">Reward</th><th class="num">Cost</th>'
+        f"</tr></thead><tbody>{''.join(trial_rows)}</tbody></table>"
     )
     nav = (
         f'<div class="nav" style="font: 13px system-ui, sans-serif; margin-bottom: 14px;">'
@@ -300,6 +306,16 @@ def render_trial(runs_dir: Path, run_name: str, trial_name: str) -> str | None:
         "Agent cost": f"${agent_result['cost_usd']:.2f}"
         if agent_result.get("cost_usd") is not None
         else "—",
+        "Agent tokens": " · ".join(
+            f"{agent_result[field]:,} {label}"
+            for field, label in (
+                ("n_input_tokens", "in"),
+                ("n_cache_tokens", "cache"),
+                ("n_output_tokens", "out"),
+            )
+            if agent_result.get(field) is not None
+        )
+        or "—",
         "Agent turns": str(metadata.get("num_turns") or "—"),
     }
     sections.append(

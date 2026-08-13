@@ -38,14 +38,24 @@ def summarize_run(run_dir: Path) -> dict | None:
                 "mean_cost_usd": round(stat.mean_cost, 4)
                 if stat.mean_cost is not None
                 else None,
+                "total_cost_usd": round(stat.total_cost, 4)
+                if stat.total_cost is not None
+                else None,
+                "n_input_tokens": stat.input_tokens,
+                "n_cache_tokens": stat.cache_tokens,
+                "n_output_tokens": stat.output_tokens,
             }
         )
+    costs = [t.cost_usd for t in trials if t.cost_usd is not None]
     return {
         "run": run_dir.name,
         "finished_at": job["finished_at"],
         "exported_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "n_trials": len(trials),
         "n_tasks": len(tasks),
+        # Agent-side claude CLI spend for the whole run; judge spend is not
+        # reported by harbor-rewardkit and is not included.
+        "total_cost_usd": round(sum(costs), 4) if costs else None,
         "series": rows,
     }
 

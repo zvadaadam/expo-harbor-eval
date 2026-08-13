@@ -1,0 +1,76 @@
+# Muse Code cells for the simulator-use benchmark: Meta's muse CLI
+# (muse-spark-1.2, its shipping default effort) x two driver tools over the
+# ladder tiers plus the flow task. The nop floor and scripted-oracle ceiling
+# for these tasks already live in the simbench-ladder / simbench-flows runs;
+# compare by merging:
+#   uv run expo-eval-report runs/simbench-ladder runs/simbench-flows runs/simbench-muse
+# Needs a logged-in muse CLI (muse login) on the STANDARD tier — the
+# post-install Contributor default lets Meta train on submitted data, which
+# would leak eval task content into future models. The simulator is shared
+# host state: trials must not run concurrently, and never run this while
+# another simbench job is resuming.
+jobs_dir: runs
+n_attempts: 3
+timeout_multiplier: 1.0
+n_concurrent_trials: 1
+quiet: false
+
+environment:
+  import_path: expo_harbor_evals.mac_sandbox_env:MacSandboxEnvironment
+  delete: true
+
+agents:
+  - import_path: expo_harbor_evals.muse_host_agent:MuseHostAgent
+    model_name: "muse-spark-1.2#agent-device"
+    kwargs:
+      allow_shell: true
+      max_model_steps: 200
+      preface: |
+        You are operating directly on the macOS host for this task. Your
+        working directory is the task workspace (called /app in the
+        instructions).
+
+        Simulator driver tool for this run: the agent-device CLI. Typical loop:
+          agent-device open --platform ios --device "iPhone 17" <bundle-id>
+          agent-device snapshot -i                 # interactive elements with @refs
+          agent-device fill @eN "some text" --settle
+          agent-device press @eN --settle
+          agent-device swipe <x1> <y1> <x2> <y2> [durationMs]   # screen points
+          agent-device close
+        Selectors also work as targets, e.g. press 'label="Add"' or
+        press 'id="some-accessibility-id"'. Element refs go stale whenever the
+        UI changes (for example when the keyboard appears) — run snapshot
+        again after each mutating action and use fresh refs. Run
+        `agent-device help workflow` for the full command reference if needed.
+
+  - import_path: expo_harbor_evals.muse_host_agent:MuseHostAgent
+    model_name: "muse-spark-1.2#argent"
+    kwargs:
+      allow_shell: true
+      max_model_steps: 200
+      preface: |
+        You are operating directly on the macOS host for this task. Your
+        working directory is the task workspace (called /app in the
+        instructions).
+
+        Simulator driver tool for this run: the argent CLI (tool-server).
+        Typical loop:
+          UDID=$(xcrun simctl list devices booted | grep -oE '[A-F0-9-]{36}' | head -1)
+          argent run launch-app --udid "$UDID" --bundleId <bundle-id>
+          argent run describe --udid "$UDID"    # accessibility tree
+          argent run gesture-tap --udid "$UDID" --x 0.42 --y 0.21
+          argent run gesture-swipe --udid "$UDID" --fromX 0.5 --fromY 0.7 --toX 0.5 --toY 0.3
+          argent run keyboard --udid "$UDID" --text "hello"
+        describe returns normalized [0,1] fractional coordinates; tap element
+        centers (x + width/2, y + height/2). If describe returns an empty tree
+        with a boot hint, follow it: argent run boot-device --udid "$UDID"
+        --force true, then continue. Run `argent tools` for the full tool list
+        if needed.
+
+datasets:
+  - path: tasks/simbench
+    task_names:
+      - simbench-ios-01-goldennotes-create-note
+      - simbench-ios-02-inventory-scroll-claim
+      - simbench-ios-03-register-occluded-form
+      - simbench-ios-07-goldennotes-shift-flow

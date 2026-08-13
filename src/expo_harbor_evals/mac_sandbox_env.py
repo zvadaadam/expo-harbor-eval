@@ -36,6 +36,8 @@ PROFILE_TEMPLATE = """(version 1)
   (subpath "{home}/.agent-device")
   (subpath "{home}/.argent")
   (subpath "{home}/.maestro")
+  (subpath "{home}/.config/muse")
+  (subpath "{home}/.local/share/muse")
   (subpath "{home}/Library/Caches")
 )
 """
