@@ -158,3 +158,26 @@ exist ONLY there.
   an offline fetch-counting mock with a stipulated budget B separates
   batched from naive syncs by >1000x. The reporter's pending resolution is
   not load-bearing.
+
+## Worked examples (2026-08-13 batch)
+
+- **aa72f3888091** (modal keyboard, Android edge-to-edge): triage verified
+  the window-level trap in RN 0.85.3 source (the modal dialog requests
+  adjustResize but is forced edge-to-edge, which Android ignores), and the
+  authoring research then OVERTURNED the planned design: core Keyboard
+  events fire for modal-window IME (activity-insets emitter) and core
+  KeyboardAvoidingView consumes exactly them, so the dependency-free fix is
+  a full-window behavior='padding' KAV directly inside the Modal — and the
+  distractor is a KAV misplaced around the centered card → eval
+  feedback-08-modal-keyboard-viewport, calibrated 1.0/0.25 on two stable
+  judged runs. Lesson: verify the FIX mechanism, not only the bug
+  mechanism — the research step can flip the reference/distractor design.
+- **4711ed525356** (invite links 404 outside the app): the model treated
+  platform association as a replacement for serving the canonical URL;
+  Apple/Android/Chrome docs pin every browser-landing case, so the
+  contract is permanent → eval feedback-09-invite-links-web-fallback
+  (env = association-only + static web output; reference = server output +
+  a web-branched invite route with a gesture-driven scheme attempt, store
+  links, and context), calibrated 1.0/0.5 on two stable judged runs.
+  Lesson: knowledge-contract signals verify from vendor docs alone — no
+  pinned-source repro required.

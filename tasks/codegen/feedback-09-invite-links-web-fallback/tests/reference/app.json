@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "Emberline",
+    "slug": "emberline",
+    "version": "1.0.0",
+    "scheme": "emberline",
+    "ios": {
+      "bundleIdentifier": "app.emberline",
+      "associatedDomains": ["applinks:emberline.app"]
+    },
+    "android": {
+      "package": "app.emberline",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "emberline.app",
+              "pathPrefix": "/invite"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "server"
+    },
+    "plugins": ["expo-router"]
+  }
+}

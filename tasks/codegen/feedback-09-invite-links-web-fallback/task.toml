@@ -1,0 +1,33 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/feedback-09-invite-links-web-fallback"
+description = "Expo code-gen eval authored from a field-reported failure where universal/app-link association was treated as a replacement for serving the canonical invite URL on the web."
+authors = [{ name = "Expo Harbor Evals" }]
+keywords = ["react-native", "expo", "harbor", "codegen", "llm-judge", "expo-feedback", "expo-router"]
+
+[metadata]
+family = "expo-codegen"
+category = "expo-feedback"
+tier = "code-gen"
+difficulty = "hard"
+motivation = "Expo CLI feedback 4711ed525356 (Codex, multiple user corrections): the agent configured iOS Universal Links and Android App Links for canonical HTTPS invitation links but omitted the server route, so the canonical URL 404'd whenever native interception did not occur; the field fix was a validated browser fallback that attempts the native custom scheme and returns a usable page. Deep-verified 2026-08-13 against vendor docs: Apple documents the browser as the designed destination when the app is missing, after an open-in-browser choice, on same-domain navigation, and on address-bar entry (TN3155; 'Allowing apps and websites to link to your content'), Android 12+ resolves unverified or user-disabled web intents to the default browser (web-intent resolution behavior change), third-party in-app browsers need not implement universal links at all, and link previews require a real HTML document (TN3156) — association files route URLs, they never serve content. Chrome additionally requires a user gesture for JS to launch an external app, so the fallback needs a gesture-driven scheme attempt, not a bare timer. Expo's static web output cannot render arbitrary dynamic invite codes without generateStaticParams, so the reference switches web.output to 'server' and web-branches the shared invite route; Expo's own linking guides stop at association plus a smart-banner meta tag, which is exactly the trap the field agent fell into."
+source = "expo-skills-feedback"
+feedback_id = "4711ed525356"
+distractor = "Doubles down on association — adds www and activitycontinuation associated domains, pathPattern intent-filter variants, and AASA catch-all components — the field report's wrong approach of treating platform association as a replacement for handling the canonical web route; none of it produces an HTTP response for the browser-landing cases, which keep returning 404."
+requirements = 4
+verifier = "rewardkit-weighted-binary"
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 900.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+workdir = "/app"
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240

@@ -1,0 +1,37 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "keyboard-driven-outer-viewport"
+id = "keyboard-driven-outer-viewport"
+description = "The popup's available space must shrink by the keyboard's size using a keyboard signal, applied at the outermost level of the modal content. Under Android edge-to-edge (enabled in app.json and required) the modal's window never resizes for the keyboard — the dialog requests adjustResize but goes edge-to-edge, which Android ignores — so only JS-side handling can work: a full-window flex-1 KeyboardAvoidingView placed directly inside the Modal (its padding shrinks the window box from the keyboard events, which do fire for inputs inside the modal), or equivalent explicit container-height math driven by Keyboard event / IME-inset values. A KeyboardAvoidingView wrapped around only the centered card fails (its padding inflates the card's own box inside an unshrunken, still-centered window instead of shrinking the viewport), and content padding alone fails."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "actions-inside-bounded-card"
+id = "actions-inside-bounded-card"
+description = "The Save and Cancel row is laid out inside the popup card as a sibling below the scrollable composer — not inside the ScrollView's scrolled content, and not absolutely positioned against the window — and the card is bounded by the shrunken viewport (e.g. maxHeight 100% plus flexShrink within the keyboard-avoiding box), so the actions stay on screen above the keyboard while it is open."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "composer-usable-while-keyboard-open"
+id = "composer-usable-while-keyboard-open"
+description = "The verse composer stays usable with the keyboard up: the multiline input lives in a scrollable region that shrinks with the card so long verses remain reachable, and taps on Save/Cancel register on the first tap while the keyboard is open (e.g. keyboardShouldPersistTaps on the scrollable ancestor), rather than being swallowed by keyboard dismissal."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "product-behaviors-preserved"
+id = "product-behaviors-preserved"
+description = "The product constraints survive: the popup remains a transparent Modal over a dimmed backdrop (not replaced by a plain screen or bottom sheet library), Android edge-to-edge stays enabled (no app.json opt-out and no softwareKeyboardLayoutMode workaround), the popup naturally returns to full size when the keyboard hides (no permanently reserved keyboard space), onRequestClose still cancels for Android back, and the iOS layout keeps working (the mechanism is cross-platform or properly branched)."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

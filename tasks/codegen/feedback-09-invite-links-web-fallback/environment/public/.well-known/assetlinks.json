@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.emberline",
+      "sha256_cert_fingerprints": [
+        "3C:5E:91:0A:7B:44:D2:18:6F:E3:AA:09:5D:C1:74:2B:88:F0:16:9E:4D:A7:53:0C:B9:62:EE:85:1F:D8:40:27"
+      ]
+    }
+  }
+]

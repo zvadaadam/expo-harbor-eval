@@ -1,0 +1,37 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "canonical-invite-url-serves-page"
+id = "canonical-invite-url-serves-page"
+description = "The project serves a real page at the canonical invite path on the web: the web output supports arbitrary dynamic invite codes (web.output 'server', or static output whose invite route provides generateStaticParams covering the shared codes), and the invite route renders human-usable content in a web context rather than being a native-only screen the deployed web build cannot serve. Submissions that only touch association configuration (associatedDomains, intent filters, .well-known files) fail: association routes URLs to the app, it never serves content for the documented browser landings — app not installed, an earlier open-in-browser choice, same-domain navigation, address-bar entry, third-party in-app browsers, Android verification off, desktop clicks."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "fallback-attempts-app-with-store-context"
+id = "fallback-attempts-app-with-store-context"
+description = "The web fallback gives the visitor a way into the app and a way to get it: a user-gesture control that attempts the app's custom scheme with the invite code preserved (browsers only launch an external app from a user gesture, so an automatic timer alone is insufficient), plus explicit App Store and Play Store links, plus human-readable invite context such as what the invite is or its code. A page missing the gesture-driven open attempt or missing the store links fails; an automatic attempt may exist in addition."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "native-association-retained"
+id = "native-association-retained"
+description = "Native interception keeps working: app.json retains the iOS associatedDomains applinks entry for the invite host and an Android autoVerify intent filter matching the https invite path, consistent with the app's custom scheme and identifiers. Removing, renaming, or breaking either platform's association — for example to make the web page the only handler — fails."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "single-canonical-share-url"
+id = "single-canonical-share-url"
+description = "Invites continue to be shared as the one canonical HTTPS URL (https://emberline.app/invite/<code>): the share flow is not switched to custom-scheme-only links or a second domain or path shape, and the invite code parameter flows unchanged from the shared URL through both the native route and the web fallback."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

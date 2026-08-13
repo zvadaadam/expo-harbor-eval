@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["QQ57RJ5UTD.app.emberline"],
+        "components": [
+          {
+            "/": "/invite/*",
+            "comment": "Invitation links open the invite screen"
+          }
+        ]
+      }
+    ]
+  }
+}
