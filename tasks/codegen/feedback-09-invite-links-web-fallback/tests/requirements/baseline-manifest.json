@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "files": {
+    "app/_layout.tsx": "72753f386ae178b93a594dbecd67235a060c21ccd210a742c37adce37069c894",
+    "app/index.tsx": "5f067f9ba2e45a0ae1445086fce6d7a006acf918c5aed8aae048a9c6201e7a15",
+    "app/invite/[code].tsx": "6f933fae39f8e0334e505b32ab782682ef5f3896f4eefbc4c413f858559a3c11",
+    "app.json": "e2c21139f05715f7869824f2579e0eb4e2136f0a3416cb9bbefe3a66ecca73ca",
+    "package.json": "e8dae1566589c6a6b86c0b62cc7a36dcfe7bc82b20322c8b5135662aefaf88a8"
+  }
+}

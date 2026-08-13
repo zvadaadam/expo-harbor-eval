@@ -1,0 +1,33 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/feedback-08-modal-keyboard-viewport"
+description = "Expo code-gen eval authored from a field-reported failure keeping a transparent modal popup usable above the keyboard on Android edge-to-edge."
+authors = [{ name = "Expo Harbor Evals" }]
+keywords = ["react-native", "expo", "harbor", "codegen", "llm-judge", "expo-feedback"]
+
+[metadata]
+family = "expo-codegen"
+category = "expo-feedback"
+tier = "code-gen"
+difficulty = "hard"
+motivation = "Expo CLI feedback aa72f3888091 (Codex on the SDK 56 app the-abyssal-bard): scroll padding revealed a transparent modal's input but the popup never resized and its action buttons stayed under the keyboard; the field fix required 'a keyboard-sized outer viewport'. Verified against the react-native 0.85.3 tarball: ReactModalHostView requests SOFT_INPUT_ADJUST_RESIZE (line 329) but the statusBar/navigationBarTranslucent getters force-true under the edge-to-edge feature flag (lines 83-94) and the dialog window calls enableEdgeToEdge(), and Android ignores adjustResize for windows that manage their own insets — so the modal window can never resize (unchanged in RN 0.87). Also verified: keyboard events are emitted from the activity window's IME insets (ReactRootView.java 963-1006, no dialog-window emitter exists) and still fire while the modal hosts the focused input, and core KeyboardAvoidingView consumes exactly those events — so a full-window behavior='padding' KAV directly inside the Modal is the dependency-free keyboard-sized viewport (react-native-edge-to-edge documents KAV as the adjustResize replacement). Mechanism is source-verified; no Android device was available for a live repro, so the reference's placement rules follow KeyboardAvoidingView's parent-relative padding math (a KAV around only the centered card inflates the card instead of shrinking the viewport)."
+source = "expo-skills-feedback"
+feedback_id = "aa72f3888091"
+distractor = "Keeps the scroll padding and wraps a KeyboardAvoidingView around only the centered card — the plausible next attempt after padding alone; KAV's padding inflates the card's own box inside a still-centered, never-shrunken modal window, so the action row stays covered by the keyboard."
+requirements = 4
+verifier = "rewardkit-weighted-binary"
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 900.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+workdir = "/app"
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240

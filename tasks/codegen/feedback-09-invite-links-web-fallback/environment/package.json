@@ -1,0 +1,11 @@
+{
+  "name": "emberline",
+  "version": "1.0.0",
+  "main": "expo-router/entry",
+  "dependencies": {
+    "expo": "56.0.17",
+    "expo-router": "56.2.16",
+    "react": "19.2.0",
+    "react-native": "0.85.3"
+  }
+}

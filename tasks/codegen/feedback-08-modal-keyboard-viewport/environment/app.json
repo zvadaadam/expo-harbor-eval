@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Lantern & Reverie",
+    "slug": "the-abyssal-bard",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "android": {
+      "package": "app.abyssalbard",
+      "edgeToEdgeEnabled": true
+    },
+    "ios": {
+      "bundleIdentifier": "app.abyssalbard"
+    }
+  }
+}

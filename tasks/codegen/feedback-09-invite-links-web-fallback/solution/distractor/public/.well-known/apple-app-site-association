@@ -1,0 +1,24 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["QQ57RJ5UTD.app.emberline"],
+        "components": [
+          {
+            "/": "/invite/*",
+            "comment": "Invitation links open the invite screen"
+          },
+          {
+            "/": "/invite/*",
+            "?": "*",
+            "comment": "Also intercept invite links carrying query parameters"
+          },
+          {
+            "/": "*",
+            "comment": "Catch-all so no shared link ever falls through to the website"
+          }
+        ]
+      }
+    ]
+  }
+}

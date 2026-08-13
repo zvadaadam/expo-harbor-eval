@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "files": {
+    "App.tsx": "1604efd4978a55d965fbfa6cf90ef59554924caa8d67d6570c5a54c24a9515bb",
+    "VersePopup.tsx": "750156544f09136f244040f8f47ea91bc7515e5b607e0293d6fd28891fd6eb28",
+    "app.json": "aa4307bc5807869fbba516ddecc4962e92de8a4687b856c90816abe8ce570722",
+    "package.json": "8db84257bd44b558be4050d77a1255c82650df4154eb0413561377bd7b49a61b"
+  }
+}
