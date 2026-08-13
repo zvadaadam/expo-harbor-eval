@@ -1,0 +1,10 @@
+{
+  "name": "ckm",
+  "version": "1.0.0",
+  "dependencies": {
+    "@react-native-community/slider": "5.0.1",
+    "expo": "54.0.36",
+    "react": "19.1.0",
+    "react-native": "0.81.5"
+  }
+}

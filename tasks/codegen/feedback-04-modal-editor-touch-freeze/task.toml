@@ -1,0 +1,33 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/feedback-04-modal-editor-touch-freeze"
+description = "Expo code-gen eval authored from a field-reported failure where overlapping React Native modals left an invisible layer consuming all touch input."
+authors = [{ name = "Expo Harbor Evals" }]
+keywords = ["react-native", "expo", "harbor", "codegen", "llm-judge", "expo-feedback"]
+
+[metadata]
+family = "expo-codegen"
+category = "expo-feedback"
+tier = "code-gen"
+difficulty = "hard"
+motivation = "Expo CLI feedback 029b2a2da3d2 (Codex on the SDK 56 app Iron Body): two modal-based attempts at a post-detail description editor left an invisible layer consuming every touch; the field fix was editing inline within the existing modal. Deep-verified 2026-08-12 against the react-native 0.85.3 source: RCTModalHostViewComponentView sets _isPresented before calling presentViewController with no failure detection, UIKit silently rejects a second present from the same presenter, and the iOS-only isRendered latch in Modal.js keeps the unpresented host — a screen-sized view whose onStartShouldSetResponder returns true — mounted and eating touches. The frozen state is absorbing (no visible-flag toggling recovers), the sibling-overlap repro is deterministic, the code is unchanged in RN 0.87, and Meta has explicitly declined to fix (facebook/react-native#50399; fix PRs #54858/#55005 closed unmerged)."
+source = "expo-skills-feedback"
+feedback_id = "029b2a2da3d2"
+distractor = "Keeps the two sibling Modals and sequences them with setTimeout handoffs sized to the slide transition — the timing-based second attempt the field report saw fail, which still co-presents whenever a timer lands inside the real iOS dismissal and leaves the same invisible touch-eating host."
+requirements = 4
+verifier = "rewardkit-weighted-binary"
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 900.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+workdir = "/app"
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240

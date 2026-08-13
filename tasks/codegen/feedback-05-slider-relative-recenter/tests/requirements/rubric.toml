@@ -1,0 +1,37 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "truthy-centre-scale"
+id = "truthy-centre-scale"
+description = "The slider's centre/resting position must be a truthy number. The vendored wrapper (node_modules/@react-native-community/slider/dist/Slider.js, version 5.0.1) computes passedValue = Number.isNaN(value) || !value ? undefined : value, so a recenter that writes 0 — e.g. a zero-centred −1…+1 range resting at 0 — is dropped in JS before it reaches the native component and fails. Passing requires an internal scale whose resting centre is non-zero (such as 0…1 resting at 0.5, with drag offsets measured from the centre), or an equivalent design in which every recenter write is truthy."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "recenter-reaches-native"
+id = "recenter-reaches-native"
+description = "The recenter must be a real value change at the native layer whenever the thumb is released away from the centre: either the slider's value prop tracks the drag (e.g. onValueChange state), so the post-release reset to the centre differs from the last rendered prop value, or the component remounts with a changed key AND a truthy initial value different from the native default of 0. Re-rendering with the same constant value prop as the previous render, or remounting back to a value of 0, cannot move the native thumb and fails."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "relative-accumulation"
+id = "relative-accumulation"
+description = "Each completed drag adds its released offset from the centre — scaled so a full centre-to-end drag contributes 0.50 EV — to the running total shown in the readout; releasing at the centre adds zero; and the accumulated total is not clamped to the slider's own range, so repeated same-direction nudges can push the total past ±0.50 EV."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "product-behaviors-preserved"
+id = "product-behaviors-preserved"
+description = "The control is still rendered with @react-native-community/slider — not replaced by a custom PanResponder/GestureDetector implementation or a different slider library — package.json keeps the exact 5.0.1 slider pin with no replacement dependency added, and the trimmer still presents the running EV readout alongside the slider."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

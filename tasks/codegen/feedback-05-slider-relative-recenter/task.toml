@@ -1,0 +1,33 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/feedback-05-slider-relative-recenter"
+description = "Expo code-gen eval authored from a field-reported failure recentering a relative @react-native-community/slider after every release."
+authors = [{ name = "Expo Harbor Evals" }]
+keywords = ["react-native", "expo", "harbor", "codegen", "llm-judge", "expo-feedback"]
+
+[metadata]
+family = "expo-codegen"
+category = "expo-feedback"
+tier = "code-gen"
+difficulty = "hard"
+motivation = "Expo CLI feedback 3892d1c10f3c (Codex on an SDK 54 app): a relative slider that must recenter after every release stayed stuck on iOS through two attempts — a zero-centred −1…+1 range reset with value 0, then a forced remount on top. Verified against the 5.0.1 npm tarball (the same line still ships in 5.2.0): dist/Slider.js computes passedValue = Number.isNaN(value) || !value ? undefined : value, so a zero write is dropped in JS, the unset prop resolves to the native default of 0, and the Fabric view's oldProps != newProps guard (plus its missing prepareForRecycle) turns every reset into a no-op. The field fix — an internal scale resting at a positive midpoint, so each recenter is a truthy write that differs from the last rendered value — is the reference architecture."
+source = "expo-skills-feedback"
+feedback_id = "3892d1c10f3c"
+distractor = "Keeps the zero-centred −1…+1 range and the value-0 reset and adds a forced remount via a changed key after every release — the second implementation the field report tested and saw fail, since the remounted view still resolves the falsy-coerced value to the native default of 0."
+requirements = 4
+verifier = "rewardkit-weighted-binary"
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 900.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+workdir = "/app"
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240

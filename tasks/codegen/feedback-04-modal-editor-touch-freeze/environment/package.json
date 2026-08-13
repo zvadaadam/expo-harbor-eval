@@ -1,0 +1,9 @@
+{
+  "name": "iron-body",
+  "version": "1.0.0",
+  "dependencies": {
+    "expo": "56.0.18",
+    "react": "19.2.0",
+    "react-native": "0.85.3"
+  }
+}
