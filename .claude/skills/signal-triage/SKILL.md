@@ -84,6 +84,12 @@ exist ONLY there.
   arithmetic (EAS Hosting subrequest budget), ground truth can be built
   without the reporter's fix — but parameterize every number the platform
   can change (the paid subrequest limit went 1,000→10,000 on 2026-02-11).
+- After shipping, probe the task with a mid-tier agent and READ its passing
+  submission. A pass through a shape the rubric never considered is a
+  rubric gap, not a solve: feedback-09's sonnet probe scored 1.0 by
+  switching web output to 'single' (an SPA shell that cannot fix link
+  previews). Harden the criterion, re-hold all brackets, then re-judge the
+  same submission to prove the fix bites (it dropped to 0.75).
 
 ## Verdicts and required artifacts
 
