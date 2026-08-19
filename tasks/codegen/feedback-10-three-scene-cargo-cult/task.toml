@@ -1,0 +1,33 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/feedback-10-three-scene-cargo-cult"
+description = "Expo code-gen eval authored from a field-reported failure to retire cargo-cult GL workarounds in an SDK 57 @react-three/fiber/native scene."
+authors = [{ name = "Expo Harbor Evals" }]
+keywords = ["react-native", "expo", "harbor", "codegen", "llm-judge", "expo-feedback", "expo-gl"]
+
+[metadata]
+family = "expo-codegen"
+category = "expo-feedback"
+tier = "code-gen"
+difficulty = "hard"
+motivation = "Expo CLI feedback (2026-08-14 batch, id pending backfill from the feedback record): an SDK 57 Three.js terrain scene retained an eight-second warm-up, a double-render loop, a bindFramebuffer remap, and an old three pin as unexplained requirements; a Claude agent repeatedly failed to clean it up (it inferred causation from isolated successful runs and kept the rituals) while a Codex agent isolated each variable on an iPhone 17 / iOS 26.5 simulator and verified the simplified build with three 0.185.1 — the first Claude-failure signal in this ledger. Deep-verified 2026-08-19 at source level: expo-gl readiness is event-driven (onSurfaceCreate → onContextCreate; the fiber Canvas defers the GL view until layout; the delay-era races were fixed in @react-three/fiber 9.1.3 PR #3539 and expo-gl 15.0.1 PR #32675); the fiber native renderer wraps exactly one render + endFrameEXP per frame and iOS coalesces to at most one present per vsync (GLView.swift), so a priming render is discarded work descending from the expo-three manual-loop era; expo-gl natively remaps null/0 binds to the view's default framebuffer for every target (EXWebGLMethods.cpp bindFramebuffer) and three 0.185.1 never queries FRAMEBUFFER_BINDING in its render path, so the userland remap is pure ritual from the 2018-2020 shadow-map-workaround era; and the 0.166 pin descends from expo-three peer pins plus r163 WebGL1-removal fears that do not apply to expo-gl 57's GLES3/WebGL2 path (@react-three/fiber's peer range is three >=0.156, and 0.185.1 is current). Judge-only note: this task tests the knowledge half of the variable-isolation capability — recognizing which workarounds the current stack has obsoleted; the empirical half (bisecting on a device) needs a runtime harness the family does not have."
+source = "expo-skills-feedback"
+feedback_id = "not-captured-r3f-cargo-cult-20260814"
+distractor = "The hedge: bumps the three pin (the easy win) but keeps every runtime ritual in softened form — warm-up reduced to two seconds, the priming render kept behind a default-on flag, the bindFramebuffer patch narrowed to null binds — exactly the inferred-causation-from-isolated-runs behavior the field report describes."
+requirements = 4
+verifier = "rewardkit-weighted-binary"
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 900.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+workdir = "/app"
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240

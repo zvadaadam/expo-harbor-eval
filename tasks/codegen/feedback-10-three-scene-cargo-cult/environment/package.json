@@ -1,0 +1,12 @@
+{
+  "name": "ridgeline",
+  "version": "1.0.0",
+  "dependencies": {
+    "@react-three/fiber": "^9.7.0",
+    "expo": "57.0.9",
+    "expo-gl": "~57.0.2",
+    "react": "19.2.3",
+    "react-native": "0.86.2",
+    "three": "0.166.1"
+  }
+}

@@ -1,0 +1,37 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "no-warmup-timer"
+id = "no-warmup-timer"
+description = "The scene mounts and renders without any artificial time gate: no setTimeout/delay/countdown stands between launch and the canvas. expo-gl readiness is event-driven — the native surface delivers the context via onContextCreate and the fiber Canvas already defers the GL view until layout — so a reduced-but-still-present warm-up timer fails just like the original eight seconds. A submission may keep a brief loading state only if it is driven by an actual readiness event rather than a timer."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "single-render-per-frame"
+id = "single-render-per-frame"
+description = "Exactly one scene render per presented frame: either @react-three/fiber's automatic frame loop (no manual gl.render at all), or a manual loop that renders once. Any second 'priming' render per frame fails — the fiber native renderer already wraps its single render with the expo-gl frame presentation, and the platform presents at most once per vsync, so a duplicate render is discarded GPU work kept only by superstition; keeping it behind a flag that defaults on also fails."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "no-gl-api-patching"
+id = "no-gl-api-patching"
+description = "The GL context is not monkey-patched: no reassignment or wrapping of bindFramebuffer (or other context methods) survives. expo-gl natively remaps null/0 framebuffer binds to the view's real default framebuffer for every bind target, which is exactly what three's setRenderTarget(null) path requires — the userland remap was redundant at best and corrupted the separate READ/DRAW targets at worst. A narrowed or conditional version of the patch fails the same as the original."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "scene-preserved-on-current-stack"
+id = "scene-preserved-on-current-stack"
+description = "The product survives the cleanup on the current stack: package.json moves three to the current 0.185 line (a partial bump to an intermediate version fails), no expo-three or alternative GL/WebView stack is introduced, Canvas still comes from @react-three/fiber/native, and the terrain semantics are intact — the displaced ridge plane geometry, the ambient plus directional lighting, and the slow drift animation all remain."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"
