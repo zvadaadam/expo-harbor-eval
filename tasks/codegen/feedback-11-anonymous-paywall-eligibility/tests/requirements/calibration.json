@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "baseline-comment": { "must_fail": ["anonymous-and-identified-eligibility"] },
+  "distractor": { "must_fail": ["anonymous-and-identified-eligibility", "resource-and-entitlement-gates", "placement-specific-offering"] }
+}

@@ -1,0 +1,39 @@
+jobs_dir: runs
+n_attempts: 1
+timeout_multiplier: 1.0
+n_concurrent_trials: 3
+quiet: false
+
+environment:
+  import_path: expo_harbor_evals.local_env:LocalHostEnvironment
+  delete: true
+
+verifier:
+  env:
+    EXPO_EVAL_VERIFIER_MODE: reference
+
+agents:
+  - name: nop
+
+datasets:
+  # Frozen cohort; update deliberately alongside suites/mobile-v2.json.
+  - path: tasks/codegen
+    task_names:
+      - feedback-01-transparent-header-content-inset
+      - feedback-02-styled-title-keeps-native-stack
+      - feedback-03-shop-grid-sticky-header
+      - feedback-04-modal-editor-touch-freeze
+      - feedback-05-slider-relative-recenter
+      - feedback-06-sortable-grid-stable-layers
+      - feedback-08-modal-keyboard-viewport
+      - feedback-09-invite-links-web-fallback
+      - feedback-10-three-scene-cargo-cult
+      - router-02-stack-layout-not-native-stack-import
+      - router-07-protected-routes-auth
+      - router-08-serializable-search-params
+      - sdk-04-image-picker-canceled-assets-guard
+      - sdk-10-notifications-listener-cleanup
+      - sdk-12-filesystem-object-api-read-write
+      - ui-01-universal-layout-controls
+      - ui-02-bottom-sheet-controlled
+      - ui-06-native-state-text-input

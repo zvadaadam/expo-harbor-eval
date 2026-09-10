@@ -1,22 +1,21 @@
 """Deterministic oracle: tap the red square in the vision grid.
 
-Grid cells are hidden from the accessibility tree, so the oracle computes the
-red cell's center from the grid container's frame and the app's fixed layout
-(row 3, column 1, zero-based; 58pt cells with 8pt spacing), then taps by
-coordinate via argent. Screen frames are in points on a 402x874pt device.
+The trusted oracle reads this installation's randomized layout, locates the
+container in the accessibility tree, and taps the target through the UI.
+Candidates do not receive the layout file as task input.
 """
 
 from __future__ import annotations
 
 import json
-import re
+import os
 import subprocess
 import sys
+import tempfile
 import time
 
 BUNDLE_ID = "com.expo.simbench.goldenlab"
-DEVICE = "iPhone 17"
-RED_ROW, RED_COLUMN = 3, 1
+DEVICE = os.environ.get("SIMBENCH_DEVICE", "iPhone 17")
 CELL, SPACING = 58.0, 8.0
 SCREEN_W, SCREEN_H = 402.0, 874.0
 
@@ -34,13 +33,11 @@ def run_text(*args: str, check: bool = True) -> str:
 
 
 def close_stale_sessions() -> None:
-    listing = run_text("session", "list", check=False)
-    for name in re.findall(r'"name":\s*"([^"]+)"', listing):
-        subprocess.run(
-            ["agent-device", "close", "--session", name],
-            capture_output=True,
-            timeout=60,
-        )
+    # Only the trial-owned session: other agents may be using this Mac.
+    subprocess.run(
+        ["agent-device", "close", "--session", os.environ.get("AGENT_DEVICE_SESSION", "default")],
+        capture_output=True, timeout=60,
+    )
 
 
 def grid_rect() -> dict:
@@ -54,7 +51,7 @@ def grid_rect() -> dict:
 
 def red_tapped() -> bool:
     container = subprocess.run(
-        ["xcrun", "simctl", "get_app_container", "booted", BUNDLE_ID, "data"],
+        ["xcrun", "simctl", "get_app_container", DEVICE, BUNDLE_ID, "data"],
         capture_output=True,
         text=True,
         timeout=60,
@@ -71,35 +68,39 @@ def red_tapped() -> bool:
 
 def main() -> None:
     subprocess.run(
-        ["xcrun", "simctl", "terminate", "booted", BUNDLE_ID], capture_output=True
+        ["xcrun", "simctl", "terminate", DEVICE, BUNDLE_ID], capture_output=True
     )
     close_stale_sessions()
-    run_text("open", "--platform", "ios", "--device", DEVICE, BUNDLE_ID)
+    run_text("open", "--platform", "ios", "--device", os.environ.get("SIMBENCH_DEVICE_NAME", DEVICE), BUNDLE_ID)
     run_text("press", 'label="Grid"', "--settle")
 
+    container = subprocess.run(
+        ["xcrun", "simctl", "get_app_container", DEVICE, BUNDLE_ID, "data"],
+        check=True, capture_output=True, text=True, timeout=60,
+    ).stdout.strip()
+    with open(container + "/Documents/grid-layout.json") as stream:
+        layout = json.load(stream)
+    red_row, red_column = next((r, c) for r, row in enumerate(layout)
+                              for c, color in enumerate(row) if color == "red")
     rect = grid_rect()
-    x = rect["x"] + RED_COLUMN * (CELL + SPACING) + CELL / 2
-    y = rect["y"] + RED_ROW * (CELL + SPACING) + CELL / 2
+    x = rect["x"] + red_column * (CELL + SPACING) + CELL / 2
+    y = rect["y"] + red_row * (CELL + SPACING) + CELL / 2
 
-    udid_out = subprocess.run(
-        ["xcrun", "simctl", "list", "devices", "booted"],
-        capture_output=True,
-        text=True,
-        timeout=60,
-    ).stdout
-    match = re.search(r"[A-F0-9-]{36}", udid_out)
-    if not match:
-        raise SystemExit("oracle: no booted simulator")
-    subprocess.run(
-        [
-            "argent", "run", "gesture-tap",
-            "--udid", match.group(0),
-            "--x", f"{x / SCREEN_W:.4f}",
-            "--y", f"{y / SCREEN_H:.4f}",
-        ],
-        capture_output=True,
-        timeout=120,
-    )
+    # Argent can start a persistent server that inherits its output handles.
+    # A file lets us wait for the CLI exit without waiting for daemon pipe EOF.
+    with tempfile.TemporaryFile() as output:
+        subprocess.run(
+            [
+                "argent", "run", "gesture-tap",
+                "--udid", DEVICE,
+                "--x", f"{x / SCREEN_W:.4f}",
+                "--y", f"{y / SCREEN_H:.4f}",
+            ],
+            stdout=output,
+            stderr=subprocess.STDOUT,
+            check=True,
+            timeout=120,
+        )
     time.sleep(1)
 
     run_text("close", check=False)

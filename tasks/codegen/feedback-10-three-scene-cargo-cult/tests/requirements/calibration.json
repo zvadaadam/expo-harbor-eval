@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "baseline-comment": {
+    "must_fail": [
+      "no-warmup-timer"
+    ]
+  },
+  "distractor": {
+    "must_fail": [
+      "no-warmup-timer"
+    ]
+  }
+}

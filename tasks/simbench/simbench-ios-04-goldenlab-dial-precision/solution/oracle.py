@@ -8,6 +8,7 @@ the read-act-verify loop the tier exists to test.
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 import sys
@@ -15,7 +16,7 @@ import time
 
 BUNDLE_ID = "com.expo.simbench.goldenlab"
 TARGET = 72
-DEVICE = "iPhone 17"
+DEVICE = os.environ.get("SIMBENCH_DEVICE", "iPhone 17")
 THUMB_INSET = 13.0  # slider thumb radius: usable track is inset on both ends
 MAX_ROUNDS = 25
 
@@ -33,13 +34,11 @@ def run_text(*args: str, check: bool = True) -> str:
 
 
 def close_stale_sessions() -> None:
-    listing = run_text("session", "list", check=False)
-    for name in re.findall(r'"name":\s*"([^"]+)"', listing):
-        subprocess.run(
-            ["agent-device", "close", "--session", name],
-            capture_output=True,
-            timeout=60,
-        )
+    # Only the trial-owned session: other agents may be using this Mac.
+    subprocess.run(
+        ["agent-device", "close", "--session", os.environ.get("AGENT_DEVICE_SESSION", "default")],
+        capture_output=True, timeout=60,
+    )
 
 
 def snapshot_nodes() -> list[dict]:
@@ -73,7 +72,7 @@ def thumb_x(rect: dict, value: int) -> float:
 
 def saved_ok() -> bool:
     container = subprocess.run(
-        ["xcrun", "simctl", "get_app_container", "booted", BUNDLE_ID, "data"],
+        ["xcrun", "simctl", "get_app_container", DEVICE, BUNDLE_ID, "data"],
         capture_output=True,
         text=True,
         timeout=60,
@@ -89,10 +88,10 @@ def saved_ok() -> bool:
 
 def main() -> None:
     subprocess.run(
-        ["xcrun", "simctl", "terminate", "booted", BUNDLE_ID], capture_output=True
+        ["xcrun", "simctl", "terminate", DEVICE, BUNDLE_ID], capture_output=True
     )
     close_stale_sessions()
-    run_text("open", "--platform", "ios", "--device", DEVICE, BUNDLE_ID)
+    run_text("open", "--platform", "ios", "--device", os.environ.get("SIMBENCH_DEVICE_NAME", DEVICE), BUNDLE_ID)
 
     for _ in range(MAX_ROUNDS):
         value, rect = read_state()

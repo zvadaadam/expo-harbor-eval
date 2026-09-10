@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "baseline-comment": {
+    "must_fail": [
+      "link-carries-id-and-tab"
+    ]
+  }
+}

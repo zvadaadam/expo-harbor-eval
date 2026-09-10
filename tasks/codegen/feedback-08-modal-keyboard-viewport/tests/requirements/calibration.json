@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "baseline-comment": {
+    "must_fail": [
+      "keyboard-driven-outer-viewport"
+    ]
+  },
+  "distractor": {
+    "must_fail": [
+      "keyboard-driven-outer-viewport"
+    ]
+  }
+}

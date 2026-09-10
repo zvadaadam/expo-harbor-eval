@@ -9,8 +9,14 @@ __pycache__/
 .DS_Store
 runs/
 outputs/
-# Harbor's default jobs_dir is jobs/; keep ad-hoc run output out of the
-# config directory (config yamls are files, output dirs are directories).
-jobs/*/
+# Only the three configuration groups belong under jobs/. Harbor defaults
+# to writing runs there; repository configs explicitly write to runs/ instead.
+/jobs/*/
+!/jobs/codegen/
+!/jobs/native/
+!/jobs/simbench/
 *.tar.gz
 .env
+.env.*
+!.env.example
+/eval-output/

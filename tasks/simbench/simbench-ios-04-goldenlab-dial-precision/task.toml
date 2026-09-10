@@ -2,16 +2,16 @@ schema_version = "1.3"
 
 [task]
 name = "expo-harbor/simbench-ios-04-goldenlab-dial-precision"
-description = "Set a slider to an exact value and save it; fine adjustment defeats naive drags. Verified from app state, no LLM judge."
+description = "Adjust and save an exact value using the available slider and stepper controls. Verified from app state, no LLM judge."
 authors = [{ name = "Expo evals" }]
-keywords = ["expo", "ios", "simulator", "simbench", "gesture-precision"]
+keywords = ["expo", "ios", "simulator", "simbench", "exact-value-adjustment"]
 
 [metadata]
 family = "simbench"
 motivation = "Expo simulator-use benchmark: compare model x driver-tool stacks (agent-device, argent, ...) on verifiable simulator tasks; internal thread 2026-07 (szymon/david/brent)"
 category = "simbench"
 difficulty = "hard"
-tier = "gesture-precision"
+tier = "exact-value-adjustment"
 requires = ["macos-host", "xcode-simulator"]
 verifier = "app-state-programmatic"
 

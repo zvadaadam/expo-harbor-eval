@@ -64,33 +64,20 @@ def find_ref(nodes: list[dict], role: str, label: str) -> str:
 
 
 def close_stale_sessions() -> None:
-    listing = subprocess.run(
-        ["agent-device", "session", "list"],
-        capture_output=True,
-        text=True,
-        timeout=60,
+    # Only the trial-owned session: other agents may be using this Mac.
+    subprocess.run(
+        ["agent-device", "close", "--session", os.environ.get("AGENT_DEVICE_SESSION", "default")],
+        capture_output=True, timeout=60,
     )
-    try:
-        sessions = json.loads(listing.stdout).get("sessions", [])
-    except ValueError:
-        sessions = []
-    for session in sessions:
-        name = session.get("name")
-        if name:
-            subprocess.run(
-                ["agent-device", "close", "--session", name],
-                capture_output=True,
-                timeout=60,
-            )
 
 
 def main() -> None:
     subprocess.run(
-        ["xcrun", "simctl", "terminate", "booted", BUNDLE_ID],
+        ["xcrun", "simctl", "terminate", DEVICE, BUNDLE_ID],
         capture_output=True,
     )
     close_stale_sessions()
-    run("open", "--platform", "ios", "--device", DEVICE, BUNDLE_ID)
+    run("open", "--platform", "ios", "--device", os.environ.get("SIMBENCH_DEVICE_NAME", DEVICE), BUNDLE_ID)
 
     field = find_ref(snapshot_nodes(), "text-field", "note-title-field")
     run("fill", field, TARGET_TITLE, "--settle")

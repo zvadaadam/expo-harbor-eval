@@ -33,5 +33,12 @@ description = "Must not pass functions, class instances, or non-serializable obj
 type = "binary"
 weight = 1
 
+[[criterion]]
+name = "details-renders-both-params"
+id = "details-renders-both-params"
+description = "The Details screen must render both received values (product id and selected tab); reading parameters into unused variables or rendering constants fails. Missing values must render the specified sensible fallbacks."
+type = "binary"
+weight = 1
+
 [scoring]
 aggregation = "weighted_mean"

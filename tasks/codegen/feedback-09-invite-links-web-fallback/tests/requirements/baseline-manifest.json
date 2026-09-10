@@ -5,6 +5,8 @@
     "app/index.tsx": "5f067f9ba2e45a0ae1445086fce6d7a006acf918c5aed8aae048a9c6201e7a15",
     "app/invite/[code].tsx": "6f933fae39f8e0334e505b32ab782682ef5f3896f4eefbc4c413f858559a3c11",
     "app.json": "e2c21139f05715f7869824f2579e0eb4e2136f0a3416cb9bbefe3a66ecca73ca",
-    "package.json": "e8dae1566589c6a6b86c0b62cc7a36dcfe7bc82b20322c8b5135662aefaf88a8"
+    "package.json": "b9cf2815664f1d38891f3579c029235197dcf1f6ce79a3d0049370498a79399a",
+    "public/.well-known/apple-app-site-association": "cbbfa93b3475faca6c00cfc986eadf27071c069abec9aa1e59523b721841b4ac",
+    "public/.well-known/assetlinks.json": "cf83a5b0352c380fed6888440630e7ccbce6b48f3318ac02a7b9f42a4d2fa830"
   }
 }

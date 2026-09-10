@@ -11,3 +11,7 @@ Product requirements that must stay: the control remains `@react-native-communit
 Fix the exposure trimmer so the knob reliably recenters on iOS while the relative accumulation keeps working.
 
 Work in `/app`. Modify the existing files and add any files required to complete the task.
+
+Preserve the existing `testID` values on their corresponding interactive controls and displayed results; native checks use these identifiers.
+
+Native verification contract: the harness supplies Expo 54.0.36, React 19.1.0, React Native 0.81.5, and @react-native-community/slider 5.0.1. Keep App.tsx as the entry point. Dependency and native app configuration changes are outside this task.

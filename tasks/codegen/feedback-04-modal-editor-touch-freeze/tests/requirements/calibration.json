@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "baseline-comment": {
+    "must_fail": [
+      "no-sibling-modal-overlap"
+    ]
+  },
+  "distractor": {
+    "must_fail": [
+      "no-timer-gated-presentation"
+    ]
+  }
+}

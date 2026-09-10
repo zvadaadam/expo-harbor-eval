@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "HarborCandidate",
+    "slug": "harbor-candidate",
+    "version": "1.0.0",
+    "ios": {
+      "bundleIdentifier": "dev.expo.harbor.candidate",
+      "supportsTablet": false
+    },
+    "plugins": [
+      "expo-image-picker"
+    ]
+  }
+}

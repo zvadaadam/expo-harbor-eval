@@ -11,6 +11,7 @@ and short swipes fling with momentum.
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 import sys
@@ -18,7 +19,7 @@ import time
 
 BUNDLE_ID = "com.expo.simbench.goldennotes"
 TARGET_ITEM = "Item 047"
-DEVICE = "iPhone 17"
+DEVICE = os.environ.get("SIMBENCH_DEVICE", "iPhone 17")
 MAX_SCROLLS = 30
 
 NODE_RE = re.compile(r"(@e\d+)\s+\[([\w-]+)\]\s+\"([^\"]*)\"")
@@ -40,13 +41,11 @@ def run_text(*args: str, check: bool = True) -> str:
 
 
 def close_stale_sessions() -> None:
-    listing = run_text("session", "list", check=False)
-    for name in re.findall(r'"name":\s*"([^"]+)"', listing):
-        subprocess.run(
-            ["agent-device", "close", "--session", name],
-            capture_output=True,
-            timeout=60,
-        )
+    # Only the trial-owned session: other agents may be using this Mac.
+    subprocess.run(
+        ["agent-device", "close", "--session", os.environ.get("AGENT_DEVICE_SESSION", "default")],
+        capture_output=True, timeout=60,
+    )
 
 
 def claim_ref_for(snapshot: str, item: str) -> str | None:
@@ -73,7 +72,7 @@ def visible_item_numbers(snapshot: str) -> list[int]:
 
 def claim_registered() -> bool:
     container = subprocess.run(
-        ["xcrun", "simctl", "get_app_container", "booted", BUNDLE_ID, "data"],
+        ["xcrun", "simctl", "get_app_container", DEVICE, BUNDLE_ID, "data"],
         capture_output=True,
         text=True,
         timeout=60,
@@ -91,10 +90,10 @@ def claim_registered() -> bool:
 def main() -> None:
     target_number = int(TARGET_ITEM.split()[-1])
     subprocess.run(
-        ["xcrun", "simctl", "terminate", "booted", BUNDLE_ID], capture_output=True
+        ["xcrun", "simctl", "terminate", DEVICE, BUNDLE_ID], capture_output=True
     )
     close_stale_sessions()
-    run_text("open", "--platform", "ios", "--device", DEVICE, BUNDLE_ID)
+    run_text("open", "--platform", "ios", "--device", os.environ.get("SIMBENCH_DEVICE_NAME", DEVICE), BUNDLE_ID)
     run_text("press", 'label="Inventory"', "--settle")
 
     for _ in range(MAX_SCROLLS):

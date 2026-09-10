@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "baseline-comment": {
+    "must_fail": [
+      "canonical-invite-url-serves-page"
+    ]
+  },
+  "distractor": {
+    "must_fail": [
+      "canonical-invite-url-serves-page"
+    ]
+  }
+}

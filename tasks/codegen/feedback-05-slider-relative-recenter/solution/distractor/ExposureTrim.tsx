@@ -23,11 +23,12 @@ export default function ExposureTrim() {
 
   return (
     <View style={styles.card}>
-      <Text style={styles.readout}>
+      <Text testID="exposure-readout" style={styles.readout}>
         {totalEv >= 0 ? '+' : ''}
         {totalEv.toFixed(2)} EV
       </Text>
       <Slider
+        testID="exposure-control"
         key={sliderEpoch}
         style={styles.slider}
         minimumValue={-1}

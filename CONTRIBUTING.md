@@ -1,15 +1,21 @@
 # Contributing
 
-This repo packages Expo agent evals on top of Harbor. Three families live in
-`tasks/`: expo-codegen under `tasks/codegen/` (code-gen, LLM-judged: imported
-`{sdk,router,ui}-NN-*` plus authored `feedback-NN-*`; the directory is the
-job cohort, so a new task joins every codegen job by existing), simbench under
-`tasks/simbench/` (simulator-use, programmatically verified), and
-`expo-mobile-eval-import` (EAS evaluator bridge). Simbench task dirs keep their
+This repo packages Expo agent evals on top of Harbor. Two families live in
+`tasks/`: expo-codegen under `tasks/codegen/` (API exercises and field-report
+regressions), and simbench under `tasks/simbench/` (operating fixed apps).
+Coding tasks support source review; three also support experimental native
+verification. Jobs are grouped under `jobs/codegen/`, `jobs/native/` and
+`jobs/simbench/`, and explicitly select their cohort. Suite definitions are
+versioned in `suites/mobile-v2.json`. Simbench task dirs keep their
 `simbench-ios-` prefix: the dir name is the Harbor task name, and those names
 are the join keys for existing run data — renaming them would orphan it.
 Adding to any family, keep the rules below — they are what make the numbers
 trustworthy.
+
+Use [the repository map](docs/repository-map.md) to place new work. Shared coding
+task templates live in `src/expo_harbor_evals/codegen_scaffold.py`; update their
+task copies together. The tasks are maintained locally, without re-importing
+an upstream repository. Preserve attribution in `NOTICE.md` and task metadata.
 
 ## Scorer discipline
 
@@ -38,16 +44,20 @@ means anything:
 If the oracle cannot reach 1.0 deterministically, fix the task or the
 verifier — do not ship it.
 
-For the expo-codegen family, `make codegen-calibrate` asserts all three
-brackets per task: an empty workspace and an unchanged baseline must score 0
-through the deterministic guard (no judge call — this is what keeps
-negatively-phrased criteria from passing vacuously and a misfiring judge from
-rewarding a no-op), and the reference must judge to 1.0. Tasks that ship a
-`solution/distractor/` get a fourth bracket: the plausible-but-wrong solution
-must judge below 1.0 — reference proves the judge rewards the right answer,
-the distractor proves it rejects a convincing wrong one. Rerun calibration
-after any rubric, judge-prompt, or runner change (`--only <task-dir-name>`
-scopes it while authoring).
+For the expo-codegen family, calibration checks empty and unchanged guards,
+then sends a commented baseline through the real judge. Declare its missing
+behaviors in `tests/requirements/calibration.json`. Every reference criterion
+must pass; each distractor must fail the particular criterion it breaks.
+An unrelated deduction does not establish that the judge recognizes the bug.
+Supply alternative valid references when the rubric allows different designs.
+Rerun calibration after changing task behavior, criteria, prompts or the judge.
+
+The native lane is opt-in and experimental. `expo-mobile-calibrate` requires
+complete references to build and pass all native checks, while baselines and
+applicable distractors must build and fail UI assertions. An infrastructure or
+compilation failure cannot establish a negative control. Follow
+[the native guide](docs/evaluation-quality.md) before interpreting its scores.
+Do not label a task calibrated based only on source review or unit tests.
 
 ## Field-sourced tasks (feedback-*)
 
@@ -81,6 +91,8 @@ the link, ticket, or thread that says why the task exists.
 
 ## Benchmark hygiene
 
+- Review suite membership and refresh `expo-eval-suite lock` deliberately after
+  a task or evaluator change. Never pool source-review and native UI scores.
 - Repeat trials (`n_attempts: 2+`) before comparing configurations; simulator
   and judge runs are stochastic.
 - One variable per axis: same model across tools to compare tools, same tool
@@ -88,16 +100,21 @@ the link, ticket, or thread that says why the task exists.
   `model_name: "<model>[@effort][#variant]"`.
 - Ship paired variants for prompt/skill A/Bs (e.g. `#argent` vs
   `#argent-nodocs`) rather than editing a config in place.
-- The simulator is shared host state: `n_concurrent_trials: 1`, and tasks
-  reinstall their golden app per trial via the healthcheck.
+- Simbench jobs use `SimbenchEnvironment` and explicit per-trial device IDs.
+  Keep `n_concurrent_trials: 1` until resource capacity is measured; tasks
+  install their golden app per trial via the healthcheck. Never select an
+  arbitrary `booted` simulator or close another trial's tool session.
+- Simbench verifiers share the vendored `simbench_evidence.py` collector.
+  Update the source and all task copies together; the sync test guards drift.
+  Keep task checks independent of local/remote evidence transport.
 - Tasks sharing a golden app must ship byte-identical app sources
   (`tests/test_task_sync.py`).
 
 ## Simbench task shape: probes today, flows next
 
 The current simbench tiers are deliberately atomic capability probes — each
-isolates one thing a driver stack can fail at (scroll, occlusion, gesture
-precision, async, vision). Keep authoring those for new failure classes, but
+isolates one thing a driver stack can fail at (scroll, occlusion, exact-value
+adjustment, async, vision). Keep authoring those for new failure classes, but
 the next tier is **flows**: 5+ dependent steps in one golden app (create →
 edit → organize → search), because atomic device-use tasks saturate for good
 stacks (AppControlBench's top cell completes 97.5% of its 60 real-app tasks)
@@ -110,9 +127,9 @@ while errors compound over flows. Rules for flow tasks:
   grade a flow.
 - **Pair every flow with its atomic probes** so a flow failure localizes to
   a capability instead of a shrug.
-- **Include a no-tool condition** when comparing driver stacks
-  (`jobs/simbench-notool.yaml`): the tool's contribution is only measurable
-  against the model's bare-toolchain baseline.
+- **Name conditions honestly.** `jobs/simbench/unguided.yaml` is an unguided
+  condition: the tools remain installed. A true no-tool comparison requires
+  enforcing a restricted tool surface, not merely changing the preface.
 
 Real production apps as surfaces (AppControlBench uses frozen Bluesky and
 Element builds) come after flows, as their own task family. When they do:

@@ -13,6 +13,24 @@ final class LabStore: ObservableObject {
     @Published var revealedCode: String? = nil
     @Published var submittedCode: String? = nil
     @Published var tappedColors: [String] = []
+    @Published var gridLayout: [[String]] = []
+
+    init() {
+        let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("grid-layout.json")
+        if let data = try? Data(contentsOf: url),
+           let saved = try? JSONDecoder().decode([[String]].self, from: data),
+           saved.count == 5, saved.allSatisfy({ $0.count == 5 }) {
+            gridLayout = saved
+        } else {
+            let colors = ["navy", "teal", "olive", "plum", "slate"]
+            var cells = (0..<24).map { colors[$0 % colors.count] }
+            cells.append("red")
+            cells.shuffle()
+            gridLayout = stride(from: 0, to: 25, by: 5).map { Array(cells[$0..<$0 + 5]) }
+            write(gridLayout, to: "grid-layout.json")
+        }
+    }
 
     private var docs: URL {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -190,9 +208,8 @@ struct RevealView: View {
 struct GridView: View {
     @ObservedObject var store: LabStore
 
-    // Fixed arrangement; exactly one red cell (row 3, column 1, zero-based).
-    // Cells are hidden from the accessibility tree — only pixels identify
-    // them.
+    // Randomized per fresh app installation; the layout persists across launches.
+    // Cells have no accessibility labels, so candidates must inspect pixels.
     private static let palette: [String: Color] = [
         "navy": Color(red: 0.16, green: 0.22, blue: 0.55),
         "teal": Color(red: 0.11, green: 0.55, blue: 0.55),
@@ -200,13 +217,6 @@ struct GridView: View {
         "plum": Color(red: 0.48, green: 0.19, blue: 0.46),
         "slate": Color(red: 0.35, green: 0.40, blue: 0.46),
         "red": Color(red: 0.86, green: 0.14, blue: 0.13),
-    ]
-    private static let layout: [[String]] = [
-        ["navy", "teal", "olive", "plum", "slate"],
-        ["olive", "slate", "navy", "teal", "plum"],
-        ["teal", "plum", "slate", "olive", "navy"],
-        ["slate", "red", "plum", "navy", "teal"],
-        ["plum", "navy", "teal", "slate", "olive"],
     ]
 
     var body: some View {
@@ -216,7 +226,7 @@ struct GridView: View {
                     ForEach(0..<5, id: \.self) { row in
                         GridRow {
                             ForEach(0..<5, id: \.self) { column in
-                                let name = Self.layout[row][column]
+                                let name = store.gridLayout[row][column]
                                 Rectangle()
                                     .fill(Self.palette[name] ?? .black)
                                     .frame(width: 58, height: 58)

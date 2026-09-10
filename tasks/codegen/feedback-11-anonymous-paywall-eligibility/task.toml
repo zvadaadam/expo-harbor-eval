@@ -1,0 +1,36 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/feedback-11-anonymous-paywall-eligibility"
+description = "Repair anonymous purchase eligibility without losing identity, entitlement or placement guards."
+authors = [{ name = "Expo Harbor Evals" }]
+keywords = ["react-native", "expo", "harbor", "codegen", "llm-judge", "expo-feedback", "state-management"]
+
+[metadata]
+family = "expo-codegen"
+category = "expo-feedback"
+tier = "code-gen"
+difficulty = "medium"
+source = "expo-cli-feedback"
+feedback_id = "948661c68c62"
+feedback_record_id = "01a0293f-6528-7e96-a649-39441d1b4f25"
+motivation = "Reconstructed from a report where valid anonymous sessions never reached a placement paywall because a JavaScript identity guard returned early; repeated OTA changes did not repair app logic. Official RevenueCat Identifying Customers docs confirm anonymous customer IDs and a new anonymous ID after logout. The original application code was not supplied, so the fixture and reference are explicitly reconstructed from the documented identity semantics and the stated product contract. This measures state reasoning and preserving guards, not RevenueCat SDK configuration, native purchase presentation or deployment skill."
+distractor = "Reconstructed plausible wrong fix: remove every early gate and fall back to the default offering. It reveals the anonymous paywall but also exposes stale, premium and mismatched sessions and wrong placements. This exact patch was not supplied by the reporter."
+requirements = 4
+verifier = "rewardkit-weighted-binary"
+validation_status = "requires-judge-calibration"
+reference_validation = "offline Node contract checks only; no judge, model or native run"
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 900.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+workdir = "/app"
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240

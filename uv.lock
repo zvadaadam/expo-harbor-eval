@@ -429,6 +429,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "harbor" },
+    { name = "python-dotenv" },
     { name = "pyyaml" },
     { name = "tomli-w" },
 ]
@@ -441,6 +442,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "harbor", specifier = ">=0.16.1" },
+    { name = "python-dotenv", specifier = ">=1.2.2" },
     { name = "pyyaml", specifier = ">=6.0.2" },
     { name = "tomli-w", specifier = ">=1.2.0" },
 ]
