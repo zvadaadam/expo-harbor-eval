@@ -64,9 +64,9 @@ thead th { border-top: 0; font-size: 12px; color: var(--text-secondary);
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .chip { display: inline-flex; align-items: center; gap: 5px; font-size: 12px;
   font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid; }
-.chip.running { color: var(--accent); border-color: var(--accent); }
+.chip.active { color: var(--accent); border-color: var(--accent); }
 .chip.finished { color: var(--text-secondary); border-color: var(--grid); }
-.chip.stopped { color: var(--warning); border-color: var(--warning); }
+.chip.unfinished { color: var(--warning); border-color: var(--warning); }
 .chip.pass { color: var(--good); border-color: var(--good); }
 .chip.fail { color: var(--critical); border-color: var(--critical); }
 .muted { color: var(--muted); }
@@ -119,7 +119,7 @@ def latest_mtime(run_dir: Path) -> float:
 def run_status(job: dict, updated: float) -> str:
     if job.get("finished_at"):
         return "finished"
-    return "running" if time.time() - updated < ACTIVE_WINDOW_SEC else "stopped"
+    return "active" if time.time() - updated < ACTIVE_WINDOW_SEC else "unfinished"
 
 
 def summarize_run(run_dir: Path) -> RunSummary:
@@ -128,7 +128,8 @@ def summarize_run(run_dir: Path) -> RunSummary:
     series = build_series(trials)
     tasks = group_tasks(trials)
     parts = [
-        f"{entry.label} {fmt(series_stats(tasks, entry.key).mean)}"
+        f"{entry.label}: {sum(t.outcome == 'pass' for t in trials if t.series_key == entry.key)}/"
+        f"{series_stats(tasks, entry.key).attempts} complete, {series_stats(tasks, entry.key).errors} errors"
         for entry in series
     ]
     headline = " · ".join(parts[:5]) + (" · …" if len(parts) > 5 else "")
@@ -160,7 +161,7 @@ def render_index(runs_dir: Path) -> str:
                 "</td></tr>"
             )
             continue
-        any_running = any_running or summary.status == "running"
+        any_running = any_running or summary.status != "finished"
         rows.append(
             "<tr>"
             f'<td><a href="/run/{summary.name}">{html.escape(summary.name)}</a></td>'
@@ -175,7 +176,7 @@ def render_index(runs_dir: Path) -> str:
         f'<div class="nav">{len(run_dirs)} runs in {html.escape(str(runs_dir))}'
         " · refreshes automatically</div>"
         "<table><thead><tr><th>Run</th><th>Status</th>"
-        '<th class="num">Trials</th><th>Mean reward by configuration</th>'
+        '<th class="num">Trials</th><th>Recorded outcomes by configuration</th>'
         "<th>Updated</th></tr></thead>"
         f"<tbody>{''.join(rows)}</tbody></table>"
         f"{render_history_section()}"
@@ -243,32 +244,9 @@ def render_run(runs_dir: Path, name: str) -> str | None:
             name,
             f'<div class="nav"><a href="/">← all runs</a></div>'
             f"<h1>{html.escape(name)}</h1><p class='muted'>No trials yet.</p>",
-            refresh=10 if status == "running" else None,
+            refresh=10 if status != "finished" else None,
         )
 
-    trial_rows = []
-    for trial in sorted(trials, key=lambda t: t.name):
-        state = (
-            '<span class="chip fail">error</span>'
-            if trial.error
-            else f'<span class="num">{fmt(trial.reward)}</span>'
-        )
-        cost = f"${trial.cost_usd:.2f}" if trial.cost_usd is not None else "—"
-        trial_rows.append(
-            "<tr>"
-            f'<td><a href="/run/{name}/trial/{trial.name}">'
-            f"{html.escape(trial.name)}</a></td>"
-            f"<td>{html.escape(trial.task)}</td>"
-            f"<td>{html.escape(trial.agent + (' · ' + trial.model if trial.model else ''))}</td>"
-            f'<td class="num">{state}</td>'
-            f'<td class="num">{cost}</td>'
-            "</tr>"
-        )
-    trials_table = (
-        "<h2>Trials</h2><table><thead><tr><th>Trial</th><th>Task</th>"
-        '<th>Agent</th><th class="num">Reward</th><th class="num">Cost</th>'
-        f"</tr></thead><tbody>{''.join(trial_rows)}</tbody></table>"
-    )
     nav = (
         f'<div class="nav" style="font: 13px system-ui, sans-serif; margin-bottom: 14px;">'
         f'<a href="/" style="color: inherit;">← all runs</a></div>'
@@ -278,8 +256,7 @@ def render_run(runs_dir: Path, name: str) -> str | None:
         f"{name} — {status}",
         name,
         nav_html=nav,
-        extra_html=trials_table,
-        refresh=30 if status == "running" else None,
+        refresh=30 if status != "finished" else None,
     )
 
 

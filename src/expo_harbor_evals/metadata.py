@@ -11,7 +11,7 @@ from __future__ import annotations
 import tomllib
 from pathlib import Path
 
-FAMILIES = {"expo-codegen", "simbench", "eas-bridge"}
+FAMILIES = {"expo-codegen", "simbench"}
 
 CATEGORIES = {
     # expo-codegen: upstream eval category
@@ -22,8 +22,6 @@ CATEGORIES = {
     "expo-feedback",
     # simulator-use benchmark
     "simbench",
-    # EAS evaluator bridge
-    "mobile-eval",
 }
 
 TIERS = {
@@ -34,12 +32,11 @@ TIERS = {
     "scroll-and-find",
     "keyboard-occlusion",
     "gesture-precision",
+    "exact-value-adjustment",
     "async-patience",
     "vision-no-tree",
     # simbench flow tier: multi-step sequences over the atomic tiers
     "app-flows",
-    # eas-bridge
-    "result-import",
 }
 
 DIFFICULTIES = {"easy", "medium", "hard", "mixed"}

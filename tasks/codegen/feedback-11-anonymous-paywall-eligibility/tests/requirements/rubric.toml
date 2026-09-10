@@ -1,0 +1,37 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = ["/app"]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "anonymous-and-identified-eligibility"
+id = "anonymous-and-identified-eligibility"
+description = "Trace App.tsx's getPaywallOffering call. Ready logged-out sessions with a nonempty $RCAnonymousID: suffix can show the assigned paywall, both on fresh install and after logout. Ready signed-in sessions can show it when the nonempty session user ID exactly matches customer.appUserId. Null/empty customer IDs, logged-out sessions still holding an identified customer, and signed-in customer mismatches must hide it. Requiring login for everyone or removing identity synchronization fails. Accept equivalent implementations; this is an app's explicit anonymous-purchase policy, not a universal rule for every RevenueCat app."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "resource-and-entitlement-gates"
+id = "resource-and-entitlement-gates"
+description = "For either identity type, the paywall is hidden unless session, customer and offerings are all ready. Loading/error in any resource blocks display even if stale data exists. The premium entitlement blocks this upsell; an unrelated entitlement alone does not block it. Deleting guards to make the fresh-install screen appear fails. Trace these guards to the rendered paywall."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "placement-specific-offering"
+id = "placement-specific-offering"
+description = "Eligible snapshots select the nonempty offering identifier assigned to the requested placement in offerings.byPlacement. Switching onboarding/settings changes the offering accordingly. Missing, null or empty assignments return null. Never substitute offerings.current, a different placement, or a hard-coded offering. A successful anonymous fix with a placement fallback still fails this criterion."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "state-driven-screen-preserved"
+id = "state-driven-screen-preserved"
+description = "App.tsx keeps every supplied fixture and selection control and derives its visible paywall state from getPaywallOffering in paywall.js on the current snapshot. The helper preserves its public contract, does not mutate the snapshot, and does not cache an eligibility result that survives login/logout or placement changes. No blanket always-show/always-hide screen, removed fixtures, or helper disconnected from rendering. Function-only edits are sufficient when the existing screen wiring stays intact."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

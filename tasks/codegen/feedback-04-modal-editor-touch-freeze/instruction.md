@@ -11,3 +11,7 @@ Product requirements that must stay: the post detail still presents modally over
 Rework the description editing flow so touch input always survives: opening the editor, saving, cancelling, and closing the detail must every time leave the app responsive.
 
 Work in `/app`. Modify the existing files and add any files required to complete the task.
+
+Preserve the existing `testID` values on their corresponding interactive controls and displayed results; native checks use these identifiers.
+
+Native verification contract: the harness supplies Expo 56.0.18, React 19.2.3, and React Native 0.85.3. Keep App.tsx as the entry point. Dependency and native app configuration changes are outside this task.

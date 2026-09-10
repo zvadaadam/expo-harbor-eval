@@ -1,0 +1,32 @@
+name: Simbench calibration
+defaults:
+  tools:
+    node: "24"
+jobs:
+  calibrate:
+    runs_on: macos-medium
+    image: macos-tahoe-26.4-xcode-26.4
+    steps:
+      - uses: eas/checkout
+      - name: Install pinned tools
+        run: |
+          python3 -m venv /tmp/expo-eval-tools
+          /tmp/expo-eval-tools/bin/pip install uv==0.11.17
+          npm install -g agent-device@0.19.3
+          /tmp/expo-eval-tools/bin/uv sync --frozen --python 3.13
+      - name: Calibrate on the worker simulator
+        run: |
+          env -u EXPO_TOKEN -u __API_SERVER_URL SIMBENCH_BACKEND=eas-macos \
+            /tmp/expo-eval-tools/bin/uv run --frozen python scripts/eas_simbench.py
+      - name: Package evidence even on failure
+        if: ${{ always() }}
+        run: |
+          mkdir -p eval-output
+          tar -czf eval-artifacts.tar.gz -C eval-output .
+      - name: Upload calibration and Harbor trials
+        if: ${{ always() }}
+        uses: eas/upload_artifact
+        with:
+          type: other
+          path: eval-artifacts.tar.gz
+          name: simbench-evidence

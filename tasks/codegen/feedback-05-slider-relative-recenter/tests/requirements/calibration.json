@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "baseline-comment": {
+    "must_fail": [
+      "truthy-centre-scale"
+    ]
+  },
+  "distractor": {
+    "must_fail": [
+      "truthy-centre-scale"
+    ]
+  }
+}

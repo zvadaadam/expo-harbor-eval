@@ -1,0 +1,26 @@
+# EXPERIMENTAL: calibrate all three scenarios before using model scores.
+# See docs/evaluation-quality.md. This runs real builds and simulator trials.
+jobs_dir: runs
+n_attempts: 3
+n_concurrent_trials: 1
+quiet: false
+
+environment:
+  import_path: expo_harbor_evals.mac_sandbox_env:MacSandboxEnvironment
+  delete: true
+
+verifier:
+  override_timeout_sec: 3300
+  env:
+    EXPO_EVAL_VERIFIER_MODE: mobile
+
+agents:
+  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
+    model_name: sonnet@low
+
+datasets:
+  - path: tasks/codegen
+    task_names:
+      - feedback-04-modal-editor-touch-freeze
+      - feedback-05-slider-relative-recenter
+      - sdk-04-image-picker-canceled-assets-guard

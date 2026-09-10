@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "suite": "expo-mobile-v2",
+  "tasks": {
+    "feedback-01-transparent-header-content-inset": {
+      "path": "tasks/codegen/feedback-01-transparent-header-content-inset",
+      "family": "expo-codegen",
+      "definition_sha256": "b53c42ce146cb6f131c52d5339900dba83737ffe21f74854c9f8204558a41bf7"
+    },
+    "feedback-02-styled-title-keeps-native-stack": {
+      "path": "tasks/codegen/feedback-02-styled-title-keeps-native-stack",
+      "family": "expo-codegen",
+      "definition_sha256": "6a0f454fec87638d56995bdc3dade42f434af56952ed8aed06937318d6449640"
+    },
+    "feedback-03-shop-grid-sticky-header": {
+      "path": "tasks/codegen/feedback-03-shop-grid-sticky-header",
+      "family": "expo-codegen",
+      "definition_sha256": "dfffd06d01646343dcf1508a5142fea30a78b8eff809775d871b3f7d05356817"
+    },
+    "feedback-04-modal-editor-touch-freeze": {
+      "path": "tasks/codegen/feedback-04-modal-editor-touch-freeze",
+      "family": "expo-codegen",
+      "definition_sha256": "7cc0fc358b38492153c27e40ed24516d9f82244a78cb51392c3fcfa3cf38014e"
+    },
+    "feedback-05-slider-relative-recenter": {
+      "path": "tasks/codegen/feedback-05-slider-relative-recenter",
+      "family": "expo-codegen",
+      "definition_sha256": "11ee1762f1c0fe33d9d684b5cfcc6999bd943c67c1ce0225d67d2ee4e5c5c321"
+    },
+    "feedback-06-sortable-grid-stable-layers": {
+      "path": "tasks/codegen/feedback-06-sortable-grid-stable-layers",
+      "family": "expo-codegen",
+      "definition_sha256": "7492a5b9bd767dbb19d6c508a74435bd434780bd7fe5e03a798ffecac6b05de7"
+    },
+    "feedback-08-modal-keyboard-viewport": {
+      "path": "tasks/codegen/feedback-08-modal-keyboard-viewport",
+      "family": "expo-codegen",
+      "definition_sha256": "3cbfe058db83cd8319cbbd57c1f71c92383f5264d577abb1c2947df4df07af27"
+    },
+    "feedback-09-invite-links-web-fallback": {
+      "path": "tasks/codegen/feedback-09-invite-links-web-fallback",
+      "family": "expo-codegen",
+      "definition_sha256": "9ff007de85064e36313104d0bd8be35769e3321ae715817d7b2ef121c9c58a44"
+    },
+    "feedback-10-three-scene-cargo-cult": {
+      "path": "tasks/codegen/feedback-10-three-scene-cargo-cult",
+      "family": "expo-codegen",
+      "definition_sha256": "c2b3ea1b52a325508ea7825aa9e7e9b82207239d4f4cedf90cfefbd0419ce9d0"
+    },
+    "feedback-11-anonymous-paywall-eligibility": {
+      "path": "tasks/codegen/feedback-11-anonymous-paywall-eligibility",
+      "family": "expo-codegen",
+      "definition_sha256": "e0d46e649d4162fc143bd441d032b82211bdd09e94ee9b82d55ad695cbf1d4af"
+    },
+    "router-02-stack-layout-not-native-stack-import": {
+      "path": "tasks/codegen/router-02-stack-layout-not-native-stack-import",
+      "family": "expo-codegen",
+      "definition_sha256": "e81246af16cb0afa4cbb56e1bfe08ba6b854ca24a56ac8160434f11e290094ca"
+    },
+    "router-07-protected-routes-auth": {
+      "path": "tasks/codegen/router-07-protected-routes-auth",
+      "family": "expo-codegen",
+      "definition_sha256": "c054e4edd54f21c189be4ab812c84ca66b9c80b46c4ad50e4ddda4caba9e5bd8"
+    },
+    "router-08-serializable-search-params": {
+      "path": "tasks/codegen/router-08-serializable-search-params",
+      "family": "expo-codegen",
+      "definition_sha256": "786a634f0ab68861b7f50fa805e7e821a28bf5008bf5de38c964ac8ad77b4cf3"
+    },
+    "sdk-04-image-picker-canceled-assets-guard": {
+      "path": "tasks/codegen/sdk-04-image-picker-canceled-assets-guard",
+      "family": "expo-codegen",
+      "definition_sha256": "fc2946a151371f069c0b881e24cb8506829d36168f379cbdb04e3129bd4e21c4"
+    },
+    "sdk-10-notifications-listener-cleanup": {
+      "path": "tasks/codegen/sdk-10-notifications-listener-cleanup",
+      "family": "expo-codegen",
+      "definition_sha256": "16db918af03238379258952cf8eea6f55214f84cebebf0de78a7b9af3d766d2b"
+    },
+    "sdk-12-filesystem-object-api-read-write": {
+      "path": "tasks/codegen/sdk-12-filesystem-object-api-read-write",
+      "family": "expo-codegen",
+      "definition_sha256": "5cffce1dd399133082c9073226c298281ccc313d9e53e6884fb690fa4694f7e0"
+    },
+    "ui-01-universal-layout-controls": {
+      "path": "tasks/codegen/ui-01-universal-layout-controls",
+      "family": "expo-codegen",
+      "definition_sha256": "2b013692abc2d000958e199686a01265f5bcd46bf4615f450e74c0e59e9f03e2"
+    },
+    "ui-02-bottom-sheet-controlled": {
+      "path": "tasks/codegen/ui-02-bottom-sheet-controlled",
+      "family": "expo-codegen",
+      "definition_sha256": "1f9cb158990093502c55c8ac06d1ec4bfd74a5be6e97522b278e7fbed5b2a96f"
+    },
+    "ui-06-native-state-text-input": {
+      "path": "tasks/codegen/ui-06-native-state-text-input",
+      "family": "expo-codegen",
+      "definition_sha256": "0dfde3b20e2a1010b248e3a7d8f19808e29ddf640c111d844b6e9eee3757ab8f"
+    },
+    "simbench-ios-01-goldennotes-create-note": {
+      "path": "tasks/simbench/simbench-ios-01-goldennotes-create-note",
+      "family": "simbench",
+      "definition_sha256": "bbaa52a8e6073bafd574c83fd896c405f76d1c16f3f660fc760b0319ecf99391"
+    },
+    "simbench-ios-02-inventory-scroll-claim": {
+      "path": "tasks/simbench/simbench-ios-02-inventory-scroll-claim",
+      "family": "simbench",
+      "definition_sha256": "03406a1c3074cddb7cfb2b504aa7252694fdf57eef20a53144a82bbe567aac1b"
+    },
+    "simbench-ios-03-register-occluded-form": {
+      "path": "tasks/simbench/simbench-ios-03-register-occluded-form",
+      "family": "simbench",
+      "definition_sha256": "027dc251edb18660ddd2d1bc78096439df0af2295da16b11576c5f5d8bc9f510"
+    },
+    "simbench-ios-04-goldenlab-dial-precision": {
+      "path": "tasks/simbench/simbench-ios-04-goldenlab-dial-precision",
+      "family": "simbench",
+      "definition_sha256": "3f463126b3224c8ccb675cd1e7a22d5077b96ac1755938d01ffc1117d2eaab5d"
+    },
+    "simbench-ios-05-goldenlab-reveal-code": {
+      "path": "tasks/simbench/simbench-ios-05-goldenlab-reveal-code",
+      "family": "simbench",
+      "definition_sha256": "1f4fa1de018c2660acb0223be36e804b3ce761cdac515c8d8cfcccb4827ca166"
+    },
+    "simbench-ios-06-goldenlab-vision-grid": {
+      "path": "tasks/simbench/simbench-ios-06-goldenlab-vision-grid",
+      "family": "simbench",
+      "definition_sha256": "93f884c5bb880f7be1bb83b131b6d6fc0ddc5ce17093badfd9b06d88482a65e8"
+    },
+    "simbench-ios-07-goldennotes-shift-flow": {
+      "path": "tasks/simbench/simbench-ios-07-goldennotes-shift-flow",
+      "family": "simbench",
+      "definition_sha256": "2a5cdfd5322b7ccb9626ee0cdb8f56a77be908397dc6ba72763d23bf548dbfea"
+    }
+  },
+  "engine": {
+    "mobile/templates/sdk54/app.json": "752fbac6a52a188241439a7f646a51f41eba38b61ab73b650701d5f934ef5957",
+    "mobile/templates/sdk54/fixture.png": "69bedc6b3a53b09cb3a94e4ed5319f8aa3b5cea9ebb837fc9d6667179f88c3e4",
+    "mobile/templates/sdk54/index.js": "476f6b9a344945e502da0f98d352b57a46299e592c7e86d12c8b63d2947b6965",
+    "mobile/templates/sdk54/package-lock.json": "890c4cc89538abed16079e74e17649cc9c434562944c948286cc7cc08bd42684",
+    "mobile/templates/sdk54/package.json": "d3d14123a451615b2149e6b740d29bb42863f5342cb036e11ad07d56c60761ae",
+    "mobile/templates/sdk54/tsconfig.json": "1861e53fa4efc56da0ea5c23c911e0311125b32d9ec67d805118f1a40c5478e1",
+    "mobile/templates/sdk56/app.json": "8bc05cdf4bae4db94d5884247c86dac641cdc7bd6144d7ed78be182f7dfe3dba",
+    "mobile/templates/sdk56/fixture.png": "69bedc6b3a53b09cb3a94e4ed5319f8aa3b5cea9ebb837fc9d6667179f88c3e4",
+    "mobile/templates/sdk56/index.js": "476f6b9a344945e502da0f98d352b57a46299e592c7e86d12c8b63d2947b6965",
+    "mobile/templates/sdk56/package-lock.json": "4ed72920fa588efc838c7f3ee488f0f586ef1bb1237118a121274eded9bdc927",
+    "mobile/templates/sdk56/package.json": "21c7d107f64fb4a9ca3f4dbe36ff5b3f21d9b66fb003999996ef10935b5c6992",
+    "mobile/templates/sdk56/tsconfig.json": "1861e53fa4efc56da0ea5c23c911e0311125b32d9ec67d805118f1a40c5478e1",
+    "pyproject.toml": "9082ae5fab238e55b3fd9fc716de34a00dede627e5ab94d0111ffbe9a0003467",
+    "src/expo_harbor_evals/__init__.py": "2785d405887a71a64ea76c6af267fba17ba053ecf0516ec8fe6aaf602503f534",
+    "src/expo_harbor_evals/claude_host_agent.py": "3035b5b8ca7b63e26f5c0d73cedc86a486fb85a2e98cc29c9ec1aa19ae147e79",
+    "src/expo_harbor_evals/codegen_calibrate.py": "413f90e8997560681c686878fd3a9a58447a02c0550e733e2d79f144adaae7c1",
+    "src/expo_harbor_evals/codegen_reference_check.py": "0f522d3e2e443fa51cefda77d6317972590dc6f75ed1b3b4e22efd4ae8d8492f",
+    "src/expo_harbor_evals/codegen_rewardkit_runner.py": "e9a2233ef0c5487ad1943cc6aa7a1e4cf8b9d9f8142ec33c51836001703f67aa",
+    "src/expo_harbor_evals/codegen_scaffold.py": "8a636ad17ec63fe855d772c728af508ee584d69f56b36c1e04340abb6c9c2d44",
+    "src/expo_harbor_evals/eas_runner.py": "c40271699d767c1101facbce5bc30b771aeb465765dfc29601e0b9177e7d3541",
+    "src/expo_harbor_evals/evaluation_identity.py": "b10d40aeb8a3c82c6347e649adcc16b11bb99439ae2bb1a4e99ee00257bf2e99",
+    "src/expo_harbor_evals/local_env.py": "d375941c6c3d990c1b784a3e35add4e57cc53e97b8c6957537f6342affc48d39",
+    "src/expo_harbor_evals/mac_sandbox_env.py": "bbf5bf5c1b1057f1a8b1d49da317e43f59864478c6cf4c5ac672f40de5e0cb32",
+    "src/expo_harbor_evals/metadata.py": "3806a42fc7c49b020ae05f642212d3bb55a939a838f1f6d2fe09a57ef5f29ac9",
+    "src/expo_harbor_evals/mobile_calibrate.py": "e7c816dc4609da92e1129a35831b6a6acc3ceb6b3d4fa178a07d0140ba1c449e",
+    "src/expo_harbor_evals/mobile_eval.py": "8962e0c90394358768703e331886e18ee48676c8ac6f5952a1cd5a5138281c11",
+    "src/expo_harbor_evals/mobile_scenarios.py": "8b70c308f9fd230d597b29adf4194287c45daa6863ea8e4a2423fc88bc87c6d2",
+    "src/expo_harbor_evals/muse_host_agent.py": "e2ab9df31b424b861b54dafdd09100c8d69c8f32f6d9175f63310e951a8b8067",
+    "src/expo_harbor_evals/simbench_calibrate.py": "1b53b3fb0de625838c6f7703a298761263625a93ade0810f4569f0a4983b590b",
+    "src/expo_harbor_evals/simbench_env.py": "cc636e8b2215da98ede918a09284b09e60a6ce30fcb50e88ef94e2761665710e",
+    "src/expo_harbor_evals/simbench_evidence.py": "e4608d33d91e8339d5e740129f1b39a16f173b8cda560086f87bd06e5d4a524d",
+    "uv.lock": "a73ae1ac8b447a780655584d9611d1fde587efbea14cfea3fa115420f782e511"
+  }
+}

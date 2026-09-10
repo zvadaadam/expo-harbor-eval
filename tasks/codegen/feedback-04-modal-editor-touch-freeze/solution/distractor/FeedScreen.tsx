@@ -75,9 +75,9 @@ export default function FeedScreen() {
         keyExtractor={(post) => post.id}
         contentContainerStyle={styles.feed}
         renderItem={({ item }) => (
-          <Pressable style={styles.card} onPress={() => openPost(item.id)}>
+          <Pressable testID={`post-${item.id}`} style={styles.card} onPress={() => openPost(item.id)}>
             <Text style={styles.cardTitle}>{item.title}</Text>
-            <Text style={styles.cardCopy} numberOfLines={2}>
+            <Text testID={`post-copy-${item.id}`} style={styles.cardCopy} numberOfLines={2}>
               {item.description}
             </Text>
           </Pressable>
@@ -91,12 +91,13 @@ export default function FeedScreen() {
         onRequestClose={() => setDetailVisible(false)}
       >
         <View style={styles.sheet}>
-          <Text style={styles.sheetTitle}>{selected?.title}</Text>
+          <Text testID="detail-title" style={styles.sheetTitle}>{selected?.title}</Text>
           <Text style={styles.sheetCopy}>{selected?.description}</Text>
-          <Pressable style={styles.primaryButton} onPress={openEditor}>
+          <Pressable testID="edit-description" style={styles.primaryButton} onPress={openEditor}>
             <Text style={styles.primaryLabel}>Edit description</Text>
           </Pressable>
           <Pressable
+            testID="close-detail"
             style={styles.secondaryButton}
             onPress={() => setDetailVisible(false)}
           >
@@ -113,17 +114,17 @@ export default function FeedScreen() {
       >
         <View style={styles.sheet}>
           <Text style={styles.sheetTitle}>Edit description</Text>
-          <TextInput
+          <TextInput testID="description-input"
             style={styles.input}
             value={draft}
             onChangeText={setDraft}
             multiline
             autoFocus
           />
-          <Pressable style={styles.primaryButton} onPress={saveDraft}>
+          <Pressable testID="save-description" style={styles.primaryButton} onPress={saveDraft}>
             <Text style={styles.primaryLabel}>Save</Text>
           </Pressable>
-          <Pressable style={styles.secondaryButton} onPress={cancelEdit}>
+          <Pressable testID="cancel-description" style={styles.secondaryButton} onPress={cancelEdit}>
             <Text style={styles.secondaryLabel}>Cancel</Text>
           </Pressable>
         </View>

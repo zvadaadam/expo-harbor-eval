@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "baseline-comment": {
+    "must_fail": [
+      "two-tone-title"
+    ]
+  },
+  "distractor": {
+    "must_fail": [
+      "custom-title-in-native-header"
+    ]
+  }
+}

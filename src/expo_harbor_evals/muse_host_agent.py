@@ -239,7 +239,8 @@ class MuseHostAgent(BaseAgent):
         environment: BaseEnvironment,
         context: AgentContext,
     ) -> None:
-        result = await environment.exec(command=self._build_command(self._preface + instruction))
+        execute = getattr(environment, "exec_agent", environment.exec)
+        result = await execute(command=self._build_command(self._preface + instruction))
 
         read_back = await environment.exec(command="cat /logs/agent/muse-host.jsonl")
         summary = summarize_events(read_back.stdout or "")

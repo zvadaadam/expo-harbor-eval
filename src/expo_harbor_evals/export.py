@@ -35,6 +35,9 @@ def summarize_run(run_dir: Path) -> dict | None:
                 "mean": round(stat.mean, 4) if stat.mean is not None else None,
                 "solved": stat.solved,
                 "n_tasks": stat.n_tasks,
+                "n_attempts": stat.attempts,
+                "n_errors": stat.errors,
+                "completion_rate": stat.completion_rate,
                 "mean_cost_usd": round(stat.mean_cost, 4)
                 if stat.mean_cost is not None
                 else None,

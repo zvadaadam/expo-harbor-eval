@@ -1,0 +1,12 @@
+{
+  "name": "harbor-candidate",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "expo": "54.0.36",
+    "react": "19.1.0",
+    "react-native": "0.81.5",
+    "@react-native-community/slider": "5.0.1"
+  }
+}

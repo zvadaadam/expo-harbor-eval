@@ -57,9 +57,11 @@ exist ONLY there.
 - expo-codegen / expo-feedback: writes correct Expo app code, especially
   where popular guidance misleads. The best tasks are traps (CONTRIBUTING.md,
   "Field-sourced tasks").
-- simbench: drives a real app on the simulator with programmatic state
-  verification. A codegen signal with runtime-visible symptoms can graduate
-  to a simbench behavioral variant later; note that in the verdict.
+- simbench: operates a fixed app on the simulator with programmatic state
+  verification. For a coding signal with runtime-visible symptoms, add native
+  verification to that same codegen task; do not duplicate it as a device-use
+  task. Simbench evaluates tool operation, while native coding checks evaluate
+  the submitted app.
 - Debugging Expo's own toolchain is currently no family's mission — routing
   upstream is not a loss.
 

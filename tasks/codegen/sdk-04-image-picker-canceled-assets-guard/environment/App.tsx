@@ -12,13 +12,13 @@ export default function App() {
 
       <View style={styles.preview}>
         {imageUri ? (
-          <Image source={{ uri: imageUri }} style={styles.image} />
+          <Image accessible testID="picker-preview" source={{ uri: imageUri }} style={styles.image} />
         ) : (
-          <Text style={styles.previewText}>No image selected</Text>
+          <Text testID="picker-empty" style={styles.previewText}>No image selected</Text>
         )}
       </View>
 
-      <Pressable style={styles.button} onPress={handlePickImage}>
+      <Pressable testID="choose-image" style={styles.button} onPress={handlePickImage}>
         <Text style={styles.buttonText}>Choose from Library</Text>
       </Pressable>
     </View>

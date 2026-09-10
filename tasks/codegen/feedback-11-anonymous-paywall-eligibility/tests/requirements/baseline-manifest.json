@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "files": {
+    "App.tsx": "665f939b7e0d988b611b46d7d311a71b55f5fac8b7d34adea59443a60e72db70",
+    "app.json": "ce81d907e0604d333df2f3c68a9af70f411d20e1bb3de39f0e3c87101ffdab18",
+    "fixtures.js": "73e46c5d6ade22598ab9fa20bd811a39c6590890b85f9e6c344dddbdb2807355",
+    "package.json": "a54b4b436142e3ddb26eb2ec34fb7fffa84779a626cd31ed9c5d3744a1ac0a03",
+    "paywall.js": "a197b6cc10167f8d84441c890b906803973bcbe80cf5e961308bf08fbb85b777"
+  }
+}

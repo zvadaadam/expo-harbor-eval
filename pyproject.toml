@@ -1,23 +1,26 @@
 [project]
 name = "expo-harbor-evals"
 version = "0.1.0"
-description = "Harbor tasks and utilities for Expo mobile evaluator results."
+description = "Expo coding and simulator-operation benchmarks with Harbor."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
   "harbor>=0.16.1",
+  "python-dotenv>=1.2.2",
   "pyyaml>=6.0.2",
   "tomli-w>=1.2.0",
 ]
 
 [project.scripts]
-expo-eval-score = "expo_harbor_evals.score_result:main"
 expo-eval-report = "expo_harbor_evals.report:main"
 expo-eval-viewer = "expo_harbor_evals.viewer:main"
 expo-eval-export = "expo_harbor_evals.export:main"
-expo-eas-import = "expo_harbor_evals.import_eas_eval_artifact:main"
-expo-codegen-import = "expo_harbor_evals.codegen_adapter:main"
 expo-codegen-calibrate = "expo_harbor_evals.codegen_calibrate:main"
+expo-simbench-calibrate = "expo_harbor_evals.simbench_calibrate:main"
+expo-eas-eval = "expo_harbor_evals.eas_runner:main"
+expo-mobile-eval = "expo_harbor_evals.mobile_eval:main"
+expo-mobile-calibrate = "expo_harbor_evals.mobile_calibrate:main"
+expo-eval-suite = "expo_harbor_evals.evaluation_identity:main"
 
 [dependency-groups]
 dev = [

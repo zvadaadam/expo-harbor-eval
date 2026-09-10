@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import json
 import subprocess
 import tomllib
 from pathlib import Path
@@ -13,7 +14,25 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 TASKS = REPO_ROOT / "tasks"
 
 
-def test_codegen_environment_files_are_tracked() -> None:
+def test_feedback_review_inventory_matches_tasks_and_ledger() -> None:
+    inventory = json.loads((TASKS / "feedback-reviews.json").read_text())
+    ledger = (TASKS / "TRIAGE.md").read_text()
+    ids = [item["feedback_record_id"] for item in inventory["items"]]
+    assert len(ids) == len(set(ids))
+    for item in inventory["items"]:
+        assert item["feedback_record_id"] in ledger or item["cli_feedback_id"] in ledger
+        assert len(item["reviewed_feedback_sha256"]) == 64
+        assert item["findings"]
+        for finding in item["findings"]:
+            assert finding["reason"]
+            assert finding["decision"] in {"added", "covered", "candidate", "needs_evidence", "not_suitable"}
+            if finding["decision"] in {"added", "covered"}:
+                assert finding["taskIds"]
+            for task_id in finding["taskIds"]:
+                assert (TASKS / "codegen" / task_id / "task.toml").exists()
+
+
+def test_codegen_environment_files_are_not_ignored() -> None:
     """Gitignore rules must not silently drop task environment files.
 
     The slider task vendors node_modules content that the repo-root dist/
@@ -21,9 +40,9 @@ def test_codegen_environment_files_are_tracked() -> None:
     calibration passed) while every fresh checkout shipped the task without
     the file its instruction points at.
     """
-    tracked = set(
+    visible = set(
         subprocess.run(
-            ["git", "ls-files", "tasks"],
+            ["git", "ls-files", "--cached", "--others", "--exclude-standard", "tasks"],
             cwd=REPO_ROOT,
             capture_output=True,
             text=True,
@@ -34,8 +53,8 @@ def test_codegen_environment_files_are_tracked() -> None:
         for path in (task_dir / "environment").rglob("*"):
             if path.is_file() and path.name != ".DS_Store":
                 relative = path.relative_to(REPO_ROOT).as_posix()
-                assert relative in tracked, (
-                    f"{relative} exists on disk but is not tracked by git — "
+                assert relative in visible, (
+                    f"{relative} exists on disk but is ignored by git — "
                     "check .gitignore rules"
                 )
 

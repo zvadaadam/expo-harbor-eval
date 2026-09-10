@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "baseline-comment": {
+    "must_fail": [
+      "uses-current-canceled-spelling"
+    ]
+  },
+  "distractor": {
+    "must_fail": [
+      "successful-selection-updates-preview"
+    ]
+  }
+}

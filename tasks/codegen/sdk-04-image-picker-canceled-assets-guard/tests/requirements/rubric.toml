@@ -40,5 +40,12 @@ description = "Must keep the UI in its stable empty state without crashing when 
 type = "binary"
 weight = 1
 
+[[criterion]]
+name = "successful-selection-updates-preview"
+id = "successful-selection-updates-preview"
+description = "A successful picker result must update rendered state with the selected asset URI, and the preview Image must render that URI. Validating the result and discarding it, using a constant image, or updating unused state fails."
+type = "binary"
+weight = 1
+
 [scoring]
 aggregation = "weighted_mean"

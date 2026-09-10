@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-09-10",
+  "scope": "All 14 evals and one eval-candidate record; Task: search returns the same 15",
+  "applied_to_feedback_service": false,
+  "apply_note": "Local review inventory only. The review tool is deployed via expo/cli-feedback-worker PR #26. Reread full current messages and metadata before saving each review with its current revisions. The text checksum is a comparison aid, not authorization to bypass review.",
+  "items": [
+    {
+      "feedback_record_id": "01a0865d-51f0-7e67-afe9-d805e3d18308",
+      "cli_feedback_id": "10c42ea311bb",
+      "category": "evals",
+      "reviewed_feedback_sha256": "e4767b37b117dc1f213e8f3c91b7b2c73a0fa22f42f3821cc1c479ea0aece366",
+      "findings": [
+        {
+          "key": "theme-water-ripple",
+          "decision": "needs_evidence",
+          "reason": "Missing original HTML reference, screen recordings and an agreed frame/motion oracle. A text narrative cannot grade refraction or transition fidelity.",
+          "taskIds": []
+        }
+      ]
+    },
+    {
+      "feedback_record_id": "01a0828e-55d8-7e5a-86af-dc2fd8b52bbf",
+      "cli_feedback_id": "18e81da46ddc",
+      "category": "evals",
+      "reviewed_feedback_sha256": "bd1a901ea9b16f7d3dff3374742bf5e3fcd4e13e6be5674c3208b479764cb21f",
+      "findings": [
+        {
+          "key": "large-title-initial-visibility",
+          "decision": "needs_evidence",
+          "reason": "Distinct from the existing transparent-header inset task. Needs a reproduced reported Router version and evidence that this is durable application behavior, not a transient Expo workaround.",
+          "taskIds": []
+        }
+      ]
+    },
+    {
+      "feedback_record_id": "01a0573b-f902-79d1-8603-d540efa8be82",
+      "cli_feedback_id": "bc6b379d6a4b",
+      "category": "evals",
+      "reviewed_feedback_sha256": "df8a6d235653480b1da7e438438661182f630cb57fec33bfa05fdfbdb8a0f9fd",
+      "findings": [
+        {
+          "key": "skia-card-reference-fidelity",
+          "decision": "needs_evidence",
+          "reason": "Source reference images, rectified comparisons and motion fixtures are absent. Do not turn reported dimensions alone into a visual oracle.",
+          "taskIds": []
+        }
+      ]
+    },
+    {
+      "feedback_record_id": "01a03a7f-3ebd-70df-864a-26aa9f1bf381",
+      "cli_feedback_id": "ed130e378e82",
+      "category": "evals",
+      "reviewed_feedback_sha256": "e756fa2294cdeeb9e2de95852f08f785ce31f8ed5f2c5bab431e47eb3004182d",
+      "findings": [
+        {
+          "key": "notification-extension-bundle-contract",
+          "decision": "needs_evidence",
+          "reason": "Need the exact generated extension bundle, missing plist keys and CNG plugin to define a deterministic contract. The report only describes piecemeal fixes.",
+          "taskIds": []
+        }
+      ]
+    },
+    {
+      "feedback_record_id": "01a0293f-6528-7e96-a649-39441d1b4f25",
+      "cli_feedback_id": "948661c68c62",
+      "category": "evals",
+      "reviewed_feedback_sha256": "5241b090e80af39e061223f62841bb18d1c96f2d3e44f13698eea97fdb3468da",
+      "findings": [
+        {
+          "key": "anonymous-paywall-eligibility",
+          "decision": "added",
+          "reason": "Authored a reconstructed local app-logic fixture with anonymous and identified sessions, identity synchronization, entitlement and placement guards. Two references pass 4860 offline state cases each; baseline and distractor fail targeted behaviors. Source judge calibration and native verification remain pending. No RevenueCat credentials or purchases used.",
+          "taskIds": [
+            "feedback-11-anonymous-paywall-eligibility"
+          ]
+        }
+      ]
+    },
+    {
+      "feedback_record_id": "01a00dea-4aa5-7580-97d9-4a458ef54d9b",
+      "cli_feedback_id": "bce14dcbad38",
+      "category": "evals",
+      "reviewed_feedback_sha256": "3153a33f030bd4f9ac66f45e0290ffa471b530a5c0e7d5b69918afceccebc61a",
+      "findings": [
+        {
+          "key": "physical-device-tunnel-instability",
+          "decision": "not_suitable",
+          "reason": "Previously dropped: live tunnel and physical-device infrastructure is outside the app-code and fixed simulator-operation families. Preserve as toolchain guidance, not a nondeterministic benchmark.",
+          "taskIds": []
+        }
+      ]
+    },
+    {
+      "feedback_record_id": "01a00b30-31e9-7936-b9de-e25162bfaafc",
+      "cli_feedback_id": "1f2247021c85",
+      "category": "evals",
+      "reviewed_feedback_sha256": "828b2f53bdb3d774f9dcc09952c0460b8a3b52775d79d22afc39b5f048adf88e",
+      "findings": [
+        {
+          "key": "three-scene-cargo-cult",
+          "decision": "covered",
+          "reason": "Existing source task. Backfilled the missing D1 and CLI report IDs; did not duplicate it. Judge-only blanket removal remains a known weakness and runtime consequences are still missing. No new calibration performed.",
+          "taskIds": [
+            "feedback-10-three-scene-cargo-cult"
+          ]
+        }
+      ]
+    },
+    {
+      "feedback_record_id": "019ffcd8-c77e-7520-b634-1f516a77aca7",
+      "cli_feedback_id": "73cbc2f577a2",
+      "category": "evals",
+      "reviewed_feedback_sha256": "3b9fb9cdc2707ce7a18a4a36e5e05b355868f82d93218fa06a18f822234e2db3",
+      "findings": [
+        {
+          "key": "local-build-disk-and-toolchain",
+          "decision": "not_suitable",
+          "reason": "Previously dropped: build-toolchain operations and disk exhaustion do not yield a bounded app-code capability in this harness. Backfilled the missing report ID.",
+          "taskIds": []
+        }
+      ]
+    },
+    {
+      "feedback_record_id": "019ffb8d-ffae-7e12-af66-4e033eb30d21",
+      "cli_feedback_id": "4711ed525356",
+      "category": "evals",
+      "reviewed_feedback_sha256": "bde4db17b0e7cff8685a19d2e1aebd3a5874681f5bddb18f697b7c38729b8f39",
+      "findings": [
+        {
+          "key": "invite-url-web-fallback",
+          "decision": "covered",
+          "reason": "Existing canonical invite browser-fallback task with crawler-visible HTML and native association criteria. No duplicate or new calibration; runtime verification remains future work.",
+          "taskIds": [
+            "feedback-09-invite-links-web-fallback"
+          ]
+        }
+      ]
+    },
+    {
+      "feedback_record_id": "019ff7cb-4805-7202-b9cb-fd4094a5b69a",
+      "cli_feedback_id": "aa72f3888091",
+      "category": "evals",
+      "reviewed_feedback_sha256": "54c6f8d3fe10da70429c3dcb98746d6d4bbc1785268890f38dba96bb82575e2f",
+      "findings": [
+        {
+          "key": "modal-keyboard-viewport",
+          "decision": "covered",
+          "reason": "Existing Android modal/keyboard source task. Its mechanism was source-researched; it still lacks an Android native verifier. No new calibration performed.",
+          "taskIds": [
+            "feedback-08-modal-keyboard-viewport"
+          ]
+        }
+      ]
+    },
+    {
+      "feedback_record_id": "019ff4bd-822c-73bf-b6ba-347abc419af5",
+      "cli_feedback_id": "669af03395d5",
+      "category": "evals",
+      "reviewed_feedback_sha256": "52e924259e55f0e64b81323dfb01b2789e30a9d80689627eb9ede14b98a15cdb",
+      "findings": [
+        {
+          "key": "calendar-subrequest-budget",
+          "decision": "candidate",
+          "reason": "Existing planned feedback-07. Prefer an executable fake-fetch budget contract with a parameterized budget and realistic partial failures. No task directory exists yet; the exact verifier and mock API contract need authoring.",
+          "taskIds": []
+        }
+      ]
+    },
+    {
+      "feedback_record_id": "ecf97c6c-6f97-4d53-8ed2-2d354af872cf",
+      "cli_feedback_id": "029b2a2da3d2",
+      "category": "evals",
+      "reviewed_feedback_sha256": "106c3c7b60ceae4947e14e1100a4b4f9ad84dc7247a5b3ba4af1b8c1ec1178d2",
+      "findings": [
+        {
+          "key": "modal-editor-touch-freeze",
+          "decision": "covered",
+          "reason": "Existing modal handoff source task and experimental native profile. Current native changes require calibration; historical source calibration does not validate them. No new evaluation run.",
+          "taskIds": [
+            "feedback-04-modal-editor-touch-freeze"
+          ]
+        }
+      ]
+    },
+    {
+      "feedback_record_id": "8b0009f7-ae6f-4a18-aff5-e50b93db85e0",
+      "cli_feedback_id": "3892d1c10f3c",
+      "category": "evals",
+      "reviewed_feedback_sha256": "bbf1e0f4dbb1a579db9f24c5cc29c7de2033b5f5b787336620b9723caadde90e",
+      "findings": [
+        {
+          "key": "slider-relative-recenter",
+          "decision": "covered",
+          "reason": "Existing relative slider source task and experimental native profile. Current native changes require calibration; no new source or simulator run performed.",
+          "taskIds": [
+            "feedback-05-slider-relative-recenter"
+          ]
+        }
+      ]
+    },
+    {
+      "feedback_record_id": "380eda2b-4b8c-49c9-bd7a-4b4a4a9ec022",
+      "cli_feedback_id": "1610fc625460",
+      "category": "evals",
+      "reviewed_feedback_sha256": "342d3d8bbfa83311eeeffef7523c0ac10b630bb4366a96725cb5bf327348595d",
+      "findings": [
+        {
+          "key": "sortable-grid-stable-layers",
+          "decision": "covered",
+          "reason": "Existing stable-layer sortable-grid source task. No duplicate, new calibration or native gesture validation performed.",
+          "taskIds": [
+            "feedback-06-sortable-grid-stable-layers"
+          ]
+        }
+      ]
+    },
+    {
+      "feedback_record_id": "3699c3c8-3a46-42af-bb39-7810ed4871c0",
+      "cli_feedback_id": "911b52e0e368",
+      "category": "eval-candidate",
+      "reviewed_feedback_sha256": "07f79120661b2a17ec5e84eace821dc39a242710e04c2d6a239e594daeacbe15",
+      "findings": [
+        {
+          "key": "shop-grid-sticky-header",
+          "decision": "covered",
+          "reason": "Existing grid/sticky-header source task from the legacy eval-candidate category. Preserve the existing Linear link; this review does not alter pipeline routing or link state. No new calibration performed.",
+          "taskIds": [
+            "feedback-03-shop-grid-sticky-header"
+          ]
+        }
+      ]
+    }
+  ]
+}

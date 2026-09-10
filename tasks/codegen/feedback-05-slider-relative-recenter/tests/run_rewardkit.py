@@ -4,7 +4,7 @@
 #   "tomli-w>=1.2.0",
 # ]
 # ///
-"""Run an imported Expo code-gen rubric with explicit provider overrides."""
+"""Run an Expo coding rubric with explicit provider overrides."""
 
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ def _submitted_files(workspace: Path) -> list[Path]:
     files = []
     for path in sorted(workspace.rglob("*")):
         relative_parts = path.relative_to(workspace).parts
-        if any(part in SKIP_DIRS or part.startswith(".") for part in relative_parts):
+        if any(part in SKIP_DIRS or (part.startswith(".") and part != ".well-known") for part in relative_parts):
             continue
         if path.is_file() and path.name not in SCAFFOLDING_FILES:
             files.append(path)

@@ -7,7 +7,10 @@ directory and exists only to make the Harbor task contract runnable locally.
 from __future__ import annotations
 
 import asyncio
+import contextlib
+import json
 import os
+import signal
 import shutil
 from pathlib import Path
 from typing import override
@@ -16,6 +19,8 @@ from harbor.environments.base import BaseEnvironment, ExecResult
 from harbor.environments.capabilities import EnvironmentCapabilities
 
 from expo_harbor_evals.codegen_rewardkit_runner import SCAFFOLDING_FILES
+from expo_harbor_evals.evaluation_identity import trial_identity
+from expo_harbor_evals.simbench_evidence import write_json
 
 
 class LocalHostEnvironment(BaseEnvironment):
@@ -52,6 +57,14 @@ class LocalHostEnvironment(BaseEnvironment):
             "app",
         ):
             (self._root / name).mkdir(parents=True, exist_ok=True)
+        if (self.environment_dir.parent / "task.toml").exists():
+            config_path = self.trial_paths.config_path
+            config = json.loads(config_path.read_text()) if config_path.exists() else {}
+            job_path = self.trial_paths.trial_dir.parent / "config.json"
+            job = json.loads(job_path.read_text()) if job_path.exists() else {}
+            identity = trial_identity(self.environment_dir.parent, config, job)
+            identity["backend"] = os.environ.get("SIMBENCH_BACKEND", self.type())
+            write_json(self.trial_paths.trial_dir / "evaluation.json", identity)
         # There is no image build in this environment, so environment/ must
         # always be materialized into the workdir (a Dockerfile's `COPY . /app`
         # equivalent). Harbor's base helper only does this for prebuilt
@@ -132,6 +145,7 @@ class LocalHostEnvironment(BaseEnvironment):
         if merged:
             run_env.update({key: str(value) for key, value in merged.items()})
 
+        process = None
         try:
             process = await asyncio.create_subprocess_shell(
                 mapped_command,
@@ -140,14 +154,19 @@ class LocalHostEnvironment(BaseEnvironment):
                 executable="/bin/bash",
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
+                start_new_session=True,
             )
             stdout_b, stderr_b = await asyncio.wait_for(
                 process.communicate(),
                 timeout=timeout_sec,
             )
-        except asyncio.TimeoutError:
-            process.kill()
-            await process.communicate()
+        except (asyncio.TimeoutError, asyncio.CancelledError):
+            # Shell children include the agent and its device commands. Killing
+            # only the shell leaves them mutating state during verification.
+            if process is not None:
+                with contextlib.suppress(ProcessLookupError):
+                    os.killpg(process.pid, signal.SIGKILL)
+                await process.communicate()
             raise
         stdout = stdout_b.decode(errors="replace") if stdout_b else None
         stderr = stderr_b.decode(errors="replace") if stderr_b else None

@@ -1,16 +1,19 @@
 """Calibrate every expo-codegen task's scoring brackets.
 
-Three brackets per task, all of which must hold before a model number means
+Four brackets per task, all of which must hold before a model number means
 anything (CONTRIBUTING.md, "Calibration is mandatory"):
 
 - empty workspace      -> 0.0 via the deterministic guard, no judge call;
 - unchanged baseline   -> 0.0 via the deterministic guard, no judge call;
 - reference solution   -> 1.0 from the real judge.
+- commented baseline   -> the declared missing behaviors fail the real judge.
 
 Tasks that ship a `solution/distractor/` — a plausible-but-wrong fix, ideally
-one a field report tested and found insufficient — get a fourth bracket:
+one a field report tested and found insufficient — get another bracket:
 
-- distractor solution  -> below 1.0 from the real judge.
+- distractor solution  -> its declared broken behaviors fail the real judge.
+
+Alternative valid references, when supplied, must also pass every criterion.
 
 Reference alone proves the judge rewards the right answer; the distractor
 proves it can tell the right answer from a convincing wrong one.
@@ -25,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import shutil
 import subprocess
 import sys
@@ -85,6 +89,7 @@ def _run_verifier(task_dir: Path, workspace: Path, output: Path) -> dict:
         ],
         capture_output=True,
         text=True,
+        timeout=900,
     )
     if completed.returncode != 0 or not output.exists():
         raise RuntimeError(
@@ -92,10 +97,43 @@ def _run_verifier(task_dir: Path, workspace: Path, output: Path) -> dict:
         )
     reward = json.loads(output.read_text())["reward"]
     details_path = output.parent / "reward-details.json"
-    guarded = False
+    details = {}
     if details_path.exists():
-        guarded = "guard" in json.loads(details_path.read_text()).get("reward", {})
-    return {"reward": reward, "guarded": guarded}
+        details = json.loads(details_path.read_text()).get("reward", {})
+    return {"reward": reward, "guarded": "guard" in details,
+            "criteria": details.get("criteria", [])}
+
+
+def assess_bracket(task_dir: Path, bracket: str, result: dict) -> tuple[bool, str]:
+    """A negative control must fail the behavior deliberately broken by it."""
+    reward, guarded = result["reward"], result["guarded"]
+    if isinstance(reward, bool) or not isinstance(reward, (int, float)) or not math.isfinite(reward) or not 0 <= reward <= 1:
+        return False, "invalid reward"
+    if bracket in ("empty", "baseline"):
+        return (reward == 0 and guarded), "must guard to 0 without a judge call"
+    rubric = tomllib.loads((task_dir / "tests/requirements/rubric.toml").read_text())
+    expected_ids = {c["id"] for c in rubric["criterion"]}
+    rows = result.get("criteria", [])
+    if not isinstance(rows, list) or any(not isinstance(c, dict) for c in rows):
+        return False, "judge criteria must be a list of results"
+    if any(not isinstance(c.get("id", c.get("name")), str) for c in rows):
+        return False, "judge criterion IDs must be strings"
+    values = {c.get("id", c.get("name")): c.get("value") for c in rows}
+    if guarded or set(values) != expected_ids or len(rows) != len(expected_ids):
+        return False, "judge must return each declared criterion exactly once"
+    if any(isinstance(v, bool) or v not in (0.0, 1.0) for v in values.values()):
+        return False, "binary criteria must contain numeric 0 or 1"
+    expected_reward = sum(values[c["id"]] * c["weight"] for c in rubric["criterion"]) / sum(c["weight"] for c in rubric["criterion"])
+    if not math.isclose(reward, expected_reward, abs_tol=1e-6):
+        return False, "aggregate reward disagrees with criterion results"
+    if bracket.startswith("reference"):
+        return (reward == 1 and all(values.values())), "every reference criterion must pass"
+    spec = json.loads((task_dir / "tests/requirements/calibration.json").read_text())
+    required_failures = spec[bracket]["must_fail"]
+    if not required_failures or not set(required_failures) <= expected_ids:
+        return False, "invalid negative-control criterion IDs"
+    return (reward < 1 and all(values[key] == 0 for key in required_failures)), \
+        "must fail: " + ", ".join(required_failures)
 
 
 def _bracket(
@@ -104,28 +142,27 @@ def _bracket(
     workspace = scratch / task_dir.name / bracket / "app"
     output = scratch / task_dir.name / bracket / "reward.json"
     workspace.mkdir(parents=True)
-    if bracket in ("baseline", "reference", "distractor"):
+    if bracket != "empty":
         _copy_environment(task_dir / "environment", workspace)
-    if bracket in ("reference", "distractor"):
+    if bracket.startswith("reference") or bracket == "distractor":
         shutil.copytree(
             task_dir / "solution" / bracket, workspace, dirs_exist_ok=True
         )
+    if bracket == "baseline-comment":
+        # Legal comment changes bytes, not program behavior. The real judge
+        # must now reject the missing behavior rather than relying on the guard.
+        source = next(iter(sorted(workspace.rglob("*.tsx"))), None)
+        if source is None:
+            raise ValueError(f"No TSX entry for negative control: {task_dir.name}")
+        source.write_text(source.read_text() + "\n// Calibration: unchanged behavior.\n")
     try:
         result = _run_verifier(task_dir, workspace, output)
-    except RuntimeError as error:
+        ok, note = assess_bracket(task_dir, bracket, result)
+    except (RuntimeError, ValueError, KeyError, OSError, subprocess.TimeoutExpired) as error:
         return BracketResult(task_dir.name, bracket, None, False, False, str(error))
 
     reward, guarded = result["reward"], result["guarded"]
-    if bracket == "reference":
-        ok = reward == 1.0 and not guarded
-        note = "" if ok else "reference must judge to 1.0"
-    elif bracket == "distractor":
-        ok = reward < 1.0 and not guarded
-        note = "" if ok else "distractor must judge below 1.0"
-    else:
-        ok = reward == 0.0 and guarded
-        note = "" if ok else "must guard to 0.0 without a judge call"
-    return BracketResult(task_dir.name, bracket, reward, guarded, ok, note)
+    return BracketResult(task_dir.name, bracket, reward, guarded, ok, "" if ok else note)
 
 
 def main() -> None:
@@ -143,6 +180,7 @@ def main() -> None:
         help="Calibrate only the named task directory (repeatable).",
     )
     parser.add_argument("--jobs", type=int, default=3)
+    parser.add_argument("--output", type=Path, help="Save machine-readable bracket results")
     args = parser.parse_args()
 
     task_dirs = codegen_task_dirs(args.tasks)
@@ -155,6 +193,9 @@ def main() -> None:
     if not args.guards_only:
         for task_dir in task_dirs:
             judged.append((task_dir, "reference"))
+            judged.append((task_dir, "baseline-comment"))
+            if (task_dir / "solution/reference-alternative").is_dir():
+                judged.append((task_dir, "reference-alternative"))
             if (task_dir / "solution" / "distractor").is_dir():
                 judged.append((task_dir, "distractor"))
     results: list[BracketResult] = []
@@ -182,6 +223,12 @@ def main() -> None:
                 )
 
     failures = [result for result in results if not result.ok]
+    if args.output:
+        from dataclasses import asdict
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps({"ok": not failures,
+            "scope": "guards-only" if args.guards_only else "source-judge-calibration",
+            "results": [asdict(result) for result in results]}, indent=2) + "\n")
     by_task: dict[str, list[BracketResult]] = {}
     for result in results:
         by_task.setdefault(result.task, []).append(result)

@@ -21,7 +21,7 @@ import yaml
 from expo_harbor_evals.muse_host_agent import MuseHostAgent, summarize_events
 
 REPO = Path(__file__).resolve().parents[1]
-MUSE_JOB_YAMLS = (REPO / "jobs/simbench-muse.yaml", REPO / "jobs/codegen-muse.yaml")
+MUSE_JOB_YAMLS = (REPO / "jobs/simbench/muse.yaml", REPO / "jobs/codegen/muse.yaml")
 
 
 def _agent(tmp_path: Path, model_name: str, **kwargs) -> MuseHostAgent:

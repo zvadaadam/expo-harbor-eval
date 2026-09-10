@@ -102,7 +102,8 @@ class ClaudeHostAgent(BaseAgent):
             "> /logs/agent/claude-host.json 2> /logs/agent/claude-host-stderr.txt"
         )
 
-        result = await environment.exec(command=command)
+        execute = getattr(environment, "exec_agent", environment.exec)
+        result = await execute(command=command)
 
         envelope: dict = {}
         read_back = await environment.exec(command="cat /logs/agent/claude-host.json")
