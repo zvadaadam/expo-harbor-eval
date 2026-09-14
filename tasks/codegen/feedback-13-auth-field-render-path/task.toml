@@ -27,9 +27,9 @@ motivation = "Reconstructed from a report of three edits to a reusable field tha
 distractor = "Edits the similarly named Settings field instead of the rendered auth fields, also breaking Settings' 44-point height. Calibration requires both auth failures and this collateral regression separately. Reconstructed from the reported wrong approach; exact original patch was not supplied."
 requirements = 4
 verifier = "rewardkit-weighted-binary"
-validation_status = "requires-judge-calibration"
+validation_status = "source-calibration-failed"
 authoring_checks = ["tests/contracts/run-controls.mjs", "tests/contracts/render-fixture.mjs", "tests/test_native_contracts.py"]
-reference_validation = "Offline React render-path and control checks only; Yoga checks for the layout fixture. No model, source-judge, native build or simulator run."
+reference_validation = "On 2026-09-14, both valid references passed one Sonnet 5 source-judge calibration, but a negative control failed calibration. Sonnet 5 rejected the wrong fix for height and Settings but still credited its rendered-authentication-path criterion; the declared negative-control expectations did not all hold. See results/pilots/2026-09-14-new-feedback.json for the original evaluated hashes, controls and four single-attempt candidates. Offline React/Yoga authoring checks pass; no native build or simulator validation."
 
 [agent]
 timeout_sec = 900.0

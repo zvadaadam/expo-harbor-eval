@@ -55,12 +55,12 @@
     "feedback-12-native-fixed-amount-column": {
       "path": "tasks/codegen/feedback-12-native-fixed-amount-column",
       "family": "expo-codegen",
-      "definition_sha256": "3dbfa2d8cd77a923e219761745070dbb4147e8a80c3dc60d4e701d2b671f9369"
+      "definition_sha256": "931513c650e79cedba0fb0b90ddddd31076af98a55050bdb44e7b3a086acdff3"
     },
     "feedback-13-auth-field-render-path": {
       "path": "tasks/codegen/feedback-13-auth-field-render-path",
       "family": "expo-codegen",
-      "definition_sha256": "eb9c2b6c2d9af215be64d453b18697f26afdb9f3adf44cf9fe62c34eca338e71"
+      "definition_sha256": "f20f6719041ab4b01f36cfbff82287e347644cf0d060b89266fe2ae77a7ba67f"
     },
     "router-02-stack-layout-not-native-stack-import": {
       "path": "tasks/codegen/router-02-stack-layout-not-native-stack-import",

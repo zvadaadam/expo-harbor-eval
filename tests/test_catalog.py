@@ -36,7 +36,7 @@ def test_catalog_projects_every_task_and_keeps_measurements_separate():
     assert sum(task["family"] == "expo-codegen" for task in data["tasks"]) == 21
     assert sum(bool(task["native"]) for task in data["tasks"]) == 3
     new = next(task for task in data["tasks"] if task["id"] == LAYOUT)
-    assert new["validation"] == "requires-judge-calibration"
+    assert new["validation"] == "source-calibration-failed"
     assert not new["native"]
     assert len(new["criteria"]) == 4
     assert new["reviews"][0]["findings"][0]["decision"] == "added"
@@ -91,7 +91,7 @@ assert.deepEqual(matchingTasks(data.tasks, {query:'112 amount', category:'expo-f
 assert.equal(matchingTasks(data.tasks, {family:'simbench', native:true}).length, 0);
 assert.equal(matchingTasks(data.tasks, {query:'impossible-query'}).length, 0);
 const context = reviewContext(task, 'A proposed prompt', 'Keep the mask accessible.', data.repository);
-for (const content of ['A proposed prompt', 'Keep the mask accessible.', task.instruction, task.revision, task.criteria[0].description, task.path+'/task.toml', 'solution/reference/summaryStyles.ts', '- tests/contracts/run-controls.mjs', 'requires-judge-calibration', 'do not start model evaluations']) assert.ok(context.includes(content), content);
+for (const content of ['A proposed prompt', 'Keep the mask accessible.', task.instruction, task.revision, task.criteria[0].description, task.path+'/task.toml', 'solution/reference/summaryStyles.ts', '- tests/contracts/run-controls.mjs', 'source-calibration-failed', 'do not start model evaluations']) assert.ok(context.includes(content), content);
 assert.equal(escapeHtml('<img onerror="x">'), '&lt;img onerror=&quot;x&quot;&gt;');
 """
     result = subprocess.run(["node", "-e", script], cwd=ROOT, input=json.dumps(build_catalog(ROOT)),

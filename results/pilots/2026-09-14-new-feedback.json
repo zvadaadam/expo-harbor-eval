@@ -1,0 +1,1146 @@
+{
+  "schema_version": 1,
+  "run": "new-feedback-pilot-2026-09-14",
+  "finished_at": "2026-09-14T19:30:24.148837",
+  "evaluated_commit": "eaf909fae9b07406c39fd94dddbe306986b467ed",
+  "claude_code_version": "2.1.268",
+  "measurement": "source-review diagnostic; both task calibrations failed",
+  "attempts_per_task_model": 1,
+  "retries": 0,
+  "agent_attempts": 4,
+  "calibration_judge_attempts": 8,
+  "candidate_judge_attempts": 4,
+  "no_native_execution": true,
+  "billing_note": "CLI API-equivalent usage, not evidence of an incremental Claude Max charge. No Opus or Fable observed.",
+  "api_equivalent_usd": {
+    "agents": 0.240849,
+    "candidate_judges": 0.404207,
+    "calibration": 0.777804,
+    "code_reviews": 4.672759
+  },
+  "calibration": {
+    "ok": false,
+    "scope": "source-judge-calibration",
+    "judge": {
+      "backend": "claude-code",
+      "model": "claude-sonnet-5",
+      "reasoning_effort": "medium"
+    },
+    "task_hashes": {
+      "feedback-12-native-fixed-amount-column": "3dbfa2d8cd77a923e219761745070dbb4147e8a80c3dc60d4e701d2b671f9369",
+      "feedback-13-auth-field-render-path": "eb9c2b6c2d9af215be64d453b18697f26afdb9f3adf44cf9fe62c34eca338e71"
+    },
+    "suite_sha256": "eef622a6af2bb2aa4a1b8816dc9d75ca1cab84c7d7f6977c1f73a440f8fb96bc"
+  },
+  "controls": [
+    {
+      "task": "feedback-12-native-fixed-amount-column",
+      "bracket": "empty",
+      "reward": 0.0,
+      "guarded": true,
+      "ok": true,
+      "note": "",
+      "criteria": [
+        {
+          "id": "native-fixed-column",
+          "name": "native-fixed-column",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "Trace App.tsx to the rendered SummaryRow and its flattened native styles. For 320/360/390/430dp viewports at font scale 1.0, the amount region stays 112dp wide despite shared flex styles. No positive-flex zero-basis conflict may collapse or distribute away this width. Accept width plus non-growing/non-shrinking sizing, an equivalent definite flex basis, or another correct native layout; do not mandate a particular property spelling or forbid flex shorthand everywhere.",
+          "reasoning": "Deterministic guard: Empty submission: the workspace contains no reviewable files."
+        },
+        {
+          "id": "responsive-content-fit",
+          "name": "responsive-content-fit",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "The description uses the remaining row width, can shrink/truncate on one line, and never displaces the 112dp amount column or 24dp control outside the screen insets. Preserve 16dp outer insets, 12dp gaps and the two-column layout across the declared widths. The amount label and formatted value remain untruncated on one line at the existing font sizes. Hiding content, clipping overflow, absolute positioning, reduced type size, hard-coded viewport arithmetic or web-only CSS fails.",
+          "reasoning": "Deterministic guard: Empty submission: the workspace contains no reviewable files."
+        },
+        {
+          "id": "visibility-interaction-preserved",
+          "name": "visibility-interaction-preserved",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "The actually rendered visibility control remains accessible and toggles both ways between the formatted amount and the supplied mask. Keep every description fixture and switching control. Changing only a disconnected style/helper or returning a static success screen fails. No production backend or credential is required.",
+          "reasoning": "Deterministic guard: Empty submission: the workspace contains no reviewable files."
+        },
+        {
+          "id": "native-platform-contract",
+          "name": "native-platform-contract",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "Apply the repair to React Native styles consumed by the native SummaryRow. Keep the Expo/React Native app and public SummaryRow props and render path working. Do not substitute DOM/web-view elements, change only the web branch, remove the shared component usage without a working replacement, or introduce a dependency merely to conceal the flex constraint.",
+          "reasoning": "Deterministic guard: Empty submission: the workspace contains no reviewable files."
+        }
+      ],
+      "model_usage": null,
+      "api_equivalent_usd": null
+    },
+    {
+      "task": "feedback-12-native-fixed-amount-column",
+      "bracket": "baseline",
+      "reward": 0.0,
+      "guarded": true,
+      "ok": true,
+      "note": "",
+      "criteria": [
+        {
+          "id": "native-fixed-column",
+          "name": "native-fixed-column",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "Trace App.tsx to the rendered SummaryRow and its flattened native styles. For 320/360/390/430dp viewports at font scale 1.0, the amount region stays 112dp wide despite shared flex styles. No positive-flex zero-basis conflict may collapse or distribute away this width. Accept width plus non-growing/non-shrinking sizing, an equivalent definite flex basis, or another correct native layout; do not mandate a particular property spelling or forbid flex shorthand everywhere.",
+          "reasoning": "Deterministic guard: Unchanged submission: every workspace file is byte-identical to the task's starting environment."
+        },
+        {
+          "id": "responsive-content-fit",
+          "name": "responsive-content-fit",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "The description uses the remaining row width, can shrink/truncate on one line, and never displaces the 112dp amount column or 24dp control outside the screen insets. Preserve 16dp outer insets, 12dp gaps and the two-column layout across the declared widths. The amount label and formatted value remain untruncated on one line at the existing font sizes. Hiding content, clipping overflow, absolute positioning, reduced type size, hard-coded viewport arithmetic or web-only CSS fails.",
+          "reasoning": "Deterministic guard: Unchanged submission: every workspace file is byte-identical to the task's starting environment."
+        },
+        {
+          "id": "visibility-interaction-preserved",
+          "name": "visibility-interaction-preserved",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "The actually rendered visibility control remains accessible and toggles both ways between the formatted amount and the supplied mask. Keep every description fixture and switching control. Changing only a disconnected style/helper or returning a static success screen fails. No production backend or credential is required.",
+          "reasoning": "Deterministic guard: Unchanged submission: every workspace file is byte-identical to the task's starting environment."
+        },
+        {
+          "id": "native-platform-contract",
+          "name": "native-platform-contract",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "Apply the repair to React Native styles consumed by the native SummaryRow. Keep the Expo/React Native app and public SummaryRow props and render path working. Do not substitute DOM/web-view elements, change only the web branch, remove the shared component usage without a working replacement, or introduce a dependency merely to conceal the flex constraint.",
+          "reasoning": "Deterministic guard: Unchanged submission: every workspace file is byte-identical to the task's starting environment."
+        }
+      ],
+      "model_usage": null,
+      "api_equivalent_usd": null
+    },
+    {
+      "task": "feedback-13-auth-field-render-path",
+      "bracket": "empty",
+      "reward": 0.0,
+      "guarded": true,
+      "ok": true,
+      "note": "",
+      "criteria": [
+        {
+          "id": "rendered-authentication-path",
+          "name": "rendered-authentication-path",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "Follow App.tsx through AuthScreen to the actual SwiftUI authentication fields in both sign-in and create-account modes. Changes must affect those rendered fields, not only the similarly named reusable Settings field. Both email and secure password fields use the corrected layout. Accept an equivalent refactor that preserves the routes and product behavior.",
+          "reasoning": "Deterministic guard: Empty submission: the workspace contains no reviewable files."
+        },
+        {
+          "id": "fixed-outer-field-height",
+          "name": "fixed-outer-field-height",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "At the default text size, the visible authentication fields have a 52-point outer height matching the unchanged submit button, with centered content and 14-point horizontal content inset. Account for the order of SwiftUI frame and padding wrappers; minHeight alone or vertical padding outside the fixed frame fails. An equivalent min/max fixed frame or containing frame is acceptable if the complete outer field truly stays 52 points. Do not require an exact modifier sequence.",
+          "reasoning": "Deterministic guard: Empty submission: the workspace contains no reviewable files."
+        },
+        {
+          "id": "auth-state-and-submit-preserved",
+          "name": "auth-state-and-submit-preserved",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "Preserve editable email and password state, SecureField masking, mode switching and submit confirmation reflecting current input values. The actual SwiftUI controls must remain connected to this state and the submit callback. A decorative duplicate field, disconnected callbacks or static confirmation fails.",
+          "reasoning": "Deterministic guard: Empty submission: the workspace contains no reviewable files."
+        },
+        {
+          "id": "settings-and-native-controls-preserved",
+          "name": "settings-and-native-controls-preserved",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "The Settings route still renders its compact 44-point profile-name field and remains editable. Keep all routes, labels, the 52-point submit button, native Expo UI SwiftUI TextField/SecureField controls, and Host wrapping. No DOM/web-view substitution, removed route, button-height inflation or clipping workaround.",
+          "reasoning": "Deterministic guard: Empty submission: the workspace contains no reviewable files."
+        }
+      ],
+      "model_usage": null,
+      "api_equivalent_usd": null
+    },
+    {
+      "task": "feedback-13-auth-field-render-path",
+      "bracket": "baseline",
+      "reward": 0.0,
+      "guarded": true,
+      "ok": true,
+      "note": "",
+      "criteria": [
+        {
+          "id": "rendered-authentication-path",
+          "name": "rendered-authentication-path",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "Follow App.tsx through AuthScreen to the actual SwiftUI authentication fields in both sign-in and create-account modes. Changes must affect those rendered fields, not only the similarly named reusable Settings field. Both email and secure password fields use the corrected layout. Accept an equivalent refactor that preserves the routes and product behavior.",
+          "reasoning": "Deterministic guard: Unchanged submission: every workspace file is byte-identical to the task's starting environment."
+        },
+        {
+          "id": "fixed-outer-field-height",
+          "name": "fixed-outer-field-height",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "At the default text size, the visible authentication fields have a 52-point outer height matching the unchanged submit button, with centered content and 14-point horizontal content inset. Account for the order of SwiftUI frame and padding wrappers; minHeight alone or vertical padding outside the fixed frame fails. An equivalent min/max fixed frame or containing frame is acceptable if the complete outer field truly stays 52 points. Do not require an exact modifier sequence.",
+          "reasoning": "Deterministic guard: Unchanged submission: every workspace file is byte-identical to the task's starting environment."
+        },
+        {
+          "id": "auth-state-and-submit-preserved",
+          "name": "auth-state-and-submit-preserved",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "Preserve editable email and password state, SecureField masking, mode switching and submit confirmation reflecting current input values. The actual SwiftUI controls must remain connected to this state and the submit callback. A decorative duplicate field, disconnected callbacks or static confirmation fails.",
+          "reasoning": "Deterministic guard: Unchanged submission: every workspace file is byte-identical to the task's starting environment."
+        },
+        {
+          "id": "settings-and-native-controls-preserved",
+          "name": "settings-and-native-controls-preserved",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "The Settings route still renders its compact 44-point profile-name field and remains editable. Keep all routes, labels, the 52-point submit button, native Expo UI SwiftUI TextField/SecureField controls, and Host wrapping. No DOM/web-view substitution, removed route, button-height inflation or clipping workaround.",
+          "reasoning": "Deterministic guard: Unchanged submission: every workspace file is byte-identical to the task's starting environment."
+        }
+      ],
+      "model_usage": null,
+      "api_equivalent_usd": null
+    },
+    {
+      "task": "feedback-12-native-fixed-amount-column",
+      "bracket": "reference",
+      "reward": 1.0,
+      "guarded": false,
+      "ok": true,
+      "note": "",
+      "criteria": [
+        {
+          "id": "native-fixed-column",
+          "name": "native-fixed-column",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Trace App.tsx to the rendered SummaryRow and its flattened native styles. For 320/360/390/430dp viewports at font scale 1.0, the amount region stays 112dp wide despite shared flex styles. No positive-flex zero-basis conflict may collapse or distribute away this width. Accept width plus non-growing/non-shrinking sizing, an equivalent definite flex basis, or another correct native layout; do not mandate a particular property spelling or forbid flex shorthand everywhere.",
+          "reasoning": "summaryStyles.ts:6-8: cell sets flex:1 (RN semantics: grow1/shrink1/basis 0%), but amount overrides with flex:0 plus explicit width:112, flexGrow:0, flexShrink:0. Per RN's documented flex:0 semantics (distinct from CSS), flex:0 sizes the box by width/height and makes it inflexible, so the amount column resolves to a fixed 112dp regardless of viewport/font scale, with no positive-flex/zero-basis conflict eating the width."
+        },
+        {
+          "id": "responsive-content-fit",
+          "name": "responsive-content-fit",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The description uses the remaining row width, can shrink/truncate on one line, and never displaces the 112dp amount column or 24dp control outside the screen insets. Preserve 16dp outer insets, 12dp gaps and the two-column layout across the declared widths. The amount label and formatted value remain untruncated on one line at the existing font sizes. Hiding content, clipping overflow, absolute positioning, reduced type size, hard-coded viewport arithmetic or web-only CSS fails.",
+          "reasoning": "description cell (SummaryRow.tsx:10, summaryStyles.ts:7) keeps flexGrow:1 from cell, flexShrink:1, flexBasis:0, minWidth:0, so it fills remaining row width and shrinks; the Text uses numberOfLines={1} (SummaryRow.tsx:11) for native ellipsis truncation, not clipping/hiding. row gap:12 and screen paddingHorizontal:16 (summaryStyles.ts:4-5) preserve insets/gaps. Amount (width:112) and visibility (width:24) stay fixed and unaffected; label/value font sizes (14/16, summaryStyles.ts:10-11) are unchanged and text is not artificially shrunk. No absolute positioning or hard-coded viewport math is used."
+        },
+        {
+          "id": "visibility-interaction-preserved",
+          "name": "visibility-interaction-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The actually rendered visibility control remains accessible and toggles both ways between the formatted amount and the supplied mask. Keep every description fixture and switching control. Changing only a disconnected style/helper or returning a static success screen fails. No production backend or credential is required.",
+          "reasoning": "SummaryRow.tsx:6,15,17-24: useState visible drives the rendered amount text (visible ? amount : '\u2022\u2022\u2022\u2022\u2022\u2022') and the Pressable testID=\"visibility-control\" toggles it via setVisible(!visible) with accessibilityLabel switching between 'Hide amount'/'Show amount'. The App.tsx description-switch fixture control is also preserved (App.tsx:12-14). No static/mock screen replaces this logic."
+        },
+        {
+          "id": "native-platform-contract",
+          "name": "native-platform-contract",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Apply the repair to React Native styles consumed by the native SummaryRow. Keep the Expo/React Native app and public SummaryRow props and render path working. Do not substitute DOM/web-view elements, change only the web branch, remove the shared component usage without a working replacement, or introduce a dependency merely to conceal the flex constraint.",
+          "reasoning": "SummaryRow.tsx imports and renders only react-native primitives (View, Text, Pressable) and keeps the public props {description, amount} and render path (App.tsx:11) unchanged. The fix is applied entirely in summaryStyles.ts, consumed by the same native SummaryRow; no DOM/web elements, no new dependency, and no web-only branch was introduced."
+        }
+      ],
+      "model_usage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 1735,
+          "outputTokens": 13,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.0018,
+          "contextWindow": 200000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "claude-haiku-4-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        },
+        "claude-sonnet-5": {
+          "inputTokens": 6,
+          "outputTokens": 5345,
+          "cacheReadInputTokens": 20524,
+          "cacheCreationInputTokens": 11904,
+          "webSearchRequests": 0,
+          "costUSD": 0.10518279999999999,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 3980,
+          "canonicalModel": "claude-sonnet-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "api_equivalent_usd": 0.1069828
+    },
+    {
+      "task": "feedback-12-native-fixed-amount-column",
+      "bracket": "baseline-comment",
+      "reward": 1.0,
+      "guarded": false,
+      "ok": false,
+      "note": "must fail: native-fixed-column",
+      "criteria": [
+        {
+          "id": "native-fixed-column",
+          "name": "native-fixed-column",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Trace App.tsx to the rendered SummaryRow and its flattened native styles. For 320/360/390/430dp viewports at font scale 1.0, the amount region stays 112dp wide despite shared flex styles. No positive-flex zero-basis conflict may collapse or distribute away this width. Accept width plus non-growing/non-shrinking sizing, an equivalent definite flex basis, or another correct native layout; do not mandate a particular property spelling or forbid flex shorthand everywhere.",
+          "reasoning": "SummaryRow.tsx:13 applies [styles.cell, styles.amount]; summaryStyles.ts:6 sets cell flex:1 (flexGrow/Shrink 1, basis 0) but amount (summaryStyles.ts:8) explicitly overrides with width:112, flexGrow:0, flexShrink:0, flexBasis:'auto'. Explicit flexGrow/flexShrink/flexBasis take precedence over the flex shorthand's implied values, so the amount column stays a fixed non-growing/non-shrinking 112dp box at all viewport widths, unaffected by the shared flex:1 cell style."
+        },
+        {
+          "id": "responsive-content-fit",
+          "name": "responsive-content-fit",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The description uses the remaining row width, can shrink/truncate on one line, and never displaces the 112dp amount column or 24dp control outside the screen insets. Preserve 16dp outer insets, 12dp gaps and the two-column layout across the declared widths. The amount label and formatted value remain untruncated on one line at the existing font sizes. Hiding content, clipping overflow, absolute positioning, reduced type size, hard-coded viewport arithmetic or web-only CSS fails.",
+          "reasoning": "description column (summaryStyles.ts:6-7) keeps flexGrow:1/flexShrink:1/flexBasis:'auto', so it fills remaining row width and can shrink; Text has numberOfLines={1} (SummaryRow.tsx:11) so long descriptions truncate on one line rather than displacing amount/visibility. Amount (width 112, non-shrinking) and visibility (width 24, flexShrink:0, summaryStyles.ts:9) never get squeezed. screen padding 16 (summaryStyles.ts:4) and row gap 12 (summaryStyles.ts:5) are preserved. Label/value font sizes (14/16, summaryStyles.ts:10-11) are unchanged and amount Text has no numberOfLines limit, so it renders fully. No Dimensions arithmetic, absolute positioning, or web CSS is used."
+        },
+        {
+          "id": "visibility-interaction-preserved",
+          "name": "visibility-interaction-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The actually rendered visibility control remains accessible and toggles both ways between the formatted amount and the supplied mask. Keep every description fixture and switching control. Changing only a disconnected style/helper or returning a static success screen fails. No production backend or credential is required.",
+          "reasoning": "Pressable testID=\"visibility-control\" (SummaryRow.tsx:17-24) toggles state via setVisible(!visible) (line 22), and amount-value Text (line 15) switches between the formatted amount and mask '\u2022\u2022\u2022\u2022\u2022\u2022' based on that same state; accessibilityLabel also flips between 'Hide amount'/'Show amount' (line 21). Both description fixtures remain wired through App.tsx's Switch description button (App.tsx:12-14). No backend/credentials involved."
+        },
+        {
+          "id": "native-platform-contract",
+          "name": "native-platform-contract",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Apply the repair to React Native styles consumed by the native SummaryRow. Keep the Expo/React Native app and public SummaryRow props and render path working. Do not substitute DOM/web-view elements, change only the web branch, remove the shared component usage without a working replacement, or introduce a dependency merely to conceal the flex constraint.",
+          "reasoning": "SummaryRow.tsx imports Pressable/Text/View from 'react-native' (line 2) and App.tsx renders it inside a native SafeAreaView (App.tsx:1-11); no DOM/web-view substitution occurs. The fix lives entirely in shared summaryStyles.ts consumed by the single native SummaryRow render path, preserving its public props (description, amount) and no new dependency was introduced."
+        }
+      ],
+      "model_usage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 1735,
+          "outputTokens": 16,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.001815,
+          "contextWindow": 200000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "claude-haiku-4-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        },
+        "claude-sonnet-5": {
+          "inputTokens": 6,
+          "outputTokens": 4573,
+          "cacheReadInputTokens": 20529,
+          "cacheCreationInputTokens": 11927,
+          "webSearchRequests": 0,
+          "costUSD": 0.0975558,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 3108,
+          "canonicalModel": "claude-sonnet-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "api_equivalent_usd": 0.0993708
+    },
+    {
+      "task": "feedback-12-native-fixed-amount-column",
+      "bracket": "reference-alternative",
+      "reward": 1.0,
+      "guarded": false,
+      "ok": true,
+      "note": "",
+      "criteria": [
+        {
+          "id": "native-fixed-column",
+          "name": "native-fixed-column",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Trace App.tsx to the rendered SummaryRow and its flattened native styles. For 320/360/390/430dp viewports at font scale 1.0, the amount region stays 112dp wide despite shared flex styles. No positive-flex zero-basis conflict may collapse or distribute away this width. Accept width plus non-growing/non-shrinking sizing, an equivalent definite flex basis, or another correct native layout; do not mandate a particular property spelling or forbid flex shorthand everywhere.",
+          "reasoning": "SummaryRow.tsx:13 applies [styles.cell, styles.amount]; summaryStyles.ts:8 sets amount:{width:112, flexBasis:112, flexGrow:0, flexShrink:0}, overriding cell's flexGrow:0 (line 6) with no conflicting positive-flex/zero-basis value, so the amount column is fixed at 112dp regardless of viewport width."
+        },
+        {
+          "id": "responsive-content-fit",
+          "name": "responsive-content-fit",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The description uses the remaining row width, can shrink/truncate on one line, and never displaces the 112dp amount column or 24dp control outside the screen insets. Preserve 16dp outer insets, 12dp gaps and the two-column layout across the declared widths. The amount label and formatted value remain untruncated on one line at the existing font sizes. Hiding content, clipping overflow, absolute positioning, reduced type size, hard-coded viewport arithmetic or web-only CSS fails.",
+          "reasoning": "description style (summaryStyles.ts:7) uses flexGrow:1, flexShrink:1, flexBasis:0, minWidth:0 to fill remaining row space and shrink; Text has numberOfLines={1} (SummaryRow.tsx:11) for single-line truncation. row gap:12 (line 5) and screen paddingHorizontal:16 (line 4) preserve insets/gaps. Amount (width 112, fixed) and visibility (width 24, fixed, SummaryRow.tsx:9) are unaffected by description growth. No absolute positioning, clipping, reduced font size, or web-only CSS is used; amount label/value keep fontSize 14/16 (lines 10-11) and fit the fixed 112dp column."
+        },
+        {
+          "id": "visibility-interaction-preserved",
+          "name": "visibility-interaction-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The actually rendered visibility control remains accessible and toggles both ways between the formatted amount and the supplied mask. Keep every description fixture and switching control. Changing only a disconnected style/helper or returning a static success screen fails. No production backend or credential is required.",
+          "reasoning": "Pressable testID=\"visibility-control\" (SummaryRow.tsx:17-24) toggles visible state via onPress={() => setVisible(!visible)}, and amount-value Text (line 15) renders visible ? amount : '\u2022\u2022\u2022\u2022\u2022\u2022', switching both directions. App.tsx keeps both description fixtures (line 5) and the Switch description control (lines 12-14)."
+        },
+        {
+          "id": "native-platform-contract",
+          "name": "native-platform-contract",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Apply the repair to React Native styles consumed by the native SummaryRow. Keep the Expo/React Native app and public SummaryRow props and render path working. Do not substitute DOM/web-view elements, change only the web branch, remove the shared component usage without a working replacement, or introduce a dependency merely to conceal the flex constraint.",
+          "reasoning": "SummaryRow.tsx imports from 'react-native' (View, Text, Pressable) with no DOM/web substitution, keeps the public {description, amount} props (line 5) and existing render path/testIDs, and App.tsx (App.tsx:3,11) continues to use the shared SummaryRow component with no new dependency introduced to work around the flex constraint."
+        }
+      ],
+      "model_usage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 1735,
+          "outputTokens": 13,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.0018,
+          "contextWindow": 200000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "claude-haiku-4-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        },
+        "claude-sonnet-5": {
+          "inputTokens": 8,
+          "outputTokens": 2360,
+          "cacheReadInputTokens": 40100,
+          "cacheCreationInputTokens": 4385,
+          "webSearchRequests": 0,
+          "costUSD": 0.049176,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 1013,
+          "canonicalModel": "claude-sonnet-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "api_equivalent_usd": 0.050976
+    },
+    {
+      "task": "feedback-12-native-fixed-amount-column",
+      "bracket": "distractor",
+      "reward": 0.5,
+      "guarded": false,
+      "ok": true,
+      "note": "",
+      "criteria": [
+        {
+          "id": "native-fixed-column",
+          "name": "native-fixed-column",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "Trace App.tsx to the rendered SummaryRow and its flattened native styles. For 320/360/390/430dp viewports at font scale 1.0, the amount region stays 112dp wide despite shared flex styles. No positive-flex zero-basis conflict may collapse or distribute away this width. Accept width plus non-growing/non-shrinking sizing, an equivalent definite flex basis, or another correct native layout; do not mandate a particular property spelling or forbid flex shorthand everywhere.",
+          "reasoning": "summaryStyles.ts:6 defines the shared `cell: { flex: 1 }`, and the amount column composes `[styles.cell, styles.amount]` (SummaryRow.tsx:13) where `amount` (summaryStyles.ts:8) tries to neutralize it with `flexGrow: 0, flexShrink: 0, flexBasis: 'auto', width: 112`. Yoga's flex-basis resolution special-cases `flexBasis: 'auto'`: when a positive `flex` value is also present on the same flattened style, Yoga falls through past the explicit 'auto' and uses the flex-implied basis (0%) instead of honoring 'auto', so main-axis sizing is driven by flexBasis 0% rather than the `width: 112` property. This is exactly the positive-flex/zero-basis conflict the criterion prohibits \u2014 the fix does not reliably keep the amount region at a fixed 112dp because the shared `flex: 1` from `cell` is never actually removed or neutralized for main-axis sizing purposes."
+        },
+        {
+          "id": "responsive-content-fit",
+          "name": "responsive-content-fit",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "The description uses the remaining row width, can shrink/truncate on one line, and never displaces the 112dp amount column or 24dp control outside the screen insets. Preserve 16dp outer insets, 12dp gaps and the two-column layout across the declared widths. The amount label and formatted value remain untruncated on one line at the existing font sizes. Hiding content, clipping overflow, absolute positioning, reduced type size, hard-coded viewport arithmetic or web-only CSS fails.",
+          "reasoning": "The two-column layout's stability depends on the amount column holding a fixed 112dp width, which is not reliably guaranteed (see native-fixed-column). Since `cell`'s `flex: 1` (summaryStyles.ts:6) combined with `amount`'s `flexBasis: 'auto'` override (summaryStyles.ts:8) resolves to a flex-basis of 0% under Yoga rather than the intended fixed width, the description's remaining-width calculation and the two-column structure are not dependably preserved across viewports, even though the description text itself uses `numberOfLines={1}` (SummaryRow.tsx:11) for truncation without hard-coded arithmetic."
+        },
+        {
+          "id": "visibility-interaction-preserved",
+          "name": "visibility-interaction-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The actually rendered visibility control remains accessible and toggles both ways between the formatted amount and the supplied mask. Keep every description fixture and switching control. Changing only a disconnected style/helper or returning a static success screen fails. No production backend or credential is required.",
+          "reasoning": "SummaryRow.tsx:6 keeps `useState` for `visible`, the Pressable at SummaryRow.tsx:17-24 toggles it via `onPress={() => setVisible(!visible)}` with `testID=\"visibility-control\"` and an accessibilityLabel that flips between 'Hide amount' and 'Show amount'. SummaryRow.tsx:15 renders `visible ? amount : '\u2022\u2022\u2022\u2022\u2022\u2022'` on `amount-value`, so the control switches both ways between the formatted amount and the mask. App.tsx:5,8,12 also preserves the description-switching fixture control. No backend/credentials are involved."
+        },
+        {
+          "id": "native-platform-contract",
+          "name": "native-platform-contract",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Apply the repair to React Native styles consumed by the native SummaryRow. Keep the Expo/React Native app and public SummaryRow props and render path working. Do not substitute DOM/web-view elements, change only the web branch, remove the shared component usage without a working replacement, or introduce a dependency merely to conceal the flex constraint.",
+          "reasoning": "SummaryRow.tsx:2 imports native primitives (`Pressable, Text, View`) from 'react-native', with no DOM/web-view substitution. App.tsx:11 still renders `<SummaryRow description={...} amount={...} />` preserving the public props and render path, and App.tsx:2 uses `SafeAreaView` from 'react-native', confirming the native Expo/RN app structure is intact and not diverted to a web-only branch."
+        }
+      ],
+      "model_usage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 1735,
+          "outputTokens": 16,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.001815,
+          "contextWindow": 200000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "claude-haiku-4-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        },
+        "claude-sonnet-5": {
+          "inputTokens": 16,
+          "outputTokens": 12342,
+          "cacheReadInputTokens": 103062,
+          "cacheCreationInputTokens": 12116,
+          "webSearchRequests": 0,
+          "costUSD": 0.19252840000000002,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 10401,
+          "canonicalModel": "claude-sonnet-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "api_equivalent_usd": 0.19434340000000003
+    },
+    {
+      "task": "feedback-13-auth-field-render-path",
+      "bracket": "reference",
+      "reward": 1.0,
+      "guarded": false,
+      "ok": true,
+      "note": "",
+      "criteria": [
+        {
+          "id": "rendered-authentication-path",
+          "name": "rendered-authentication-path",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Follow App.tsx through AuthScreen to the actual SwiftUI authentication fields in both sign-in and create-account modes. Changes must affect those rendered fields, not only the similarly named reusable Settings field. Both email and secure password fields use the corrected layout. Accept an equivalent refactor that preserves the routes and product behavior.",
+          "reasoning": "App.tsx:17 routes sign-in/create-account to AuthScreen, which (screens/AuthScreen.tsx:5) renders AuthNativeForm with the given mode. AuthNativeForm.tsx:18-23 renders the actual TextField/SecureField that receive the fix, distinct from the separate NativeTextField.tsx component used only by SettingsScreen. Both email (line 18-20) and password (line 21-23) fields share the corrected fieldModifiers array."
+        },
+        {
+          "id": "fixed-outer-field-height",
+          "name": "fixed-outer-field-height",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "At the default text size, the visible authentication fields have a 52-point outer height matching the unchanged submit button, with centered content and 14-point horizontal content inset. Account for the order of SwiftUI frame and padding wrappers; minHeight alone or vertical padding outside the fixed frame fails. An equivalent min/max fixed frame or containing frame is acceptable if the complete outer field truly stays 52 points. Do not require an exact modifier sequence.",
+          "reasoning": "AuthNativeForm.tsx:6-10 defines fieldModifiers = [textFieldStyle('plain'), padding({horizontal:14}), frame({height:52})]. Padding is applied before frame, so the 14pt horizontal inset is applied to the field's content first, and the outer frame(height:52) then fixes the outer height to 52pt (matching the submit Button's frame({height:52}) at line 25), with default SwiftUI frame centering. This satisfies the required frame-after-padding ordering."
+        },
+        {
+          "id": "auth-state-and-submit-preserved",
+          "name": "auth-state-and-submit-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Preserve editable email and password state, SecureField masking, mode switching and submit confirmation reflecting current input values. The actual SwiftUI controls must remain connected to this state and the submit callback. A decorative duplicate field, disconnected callbacks or static confirmation fails.",
+          "reasoning": "AuthNativeForm.tsx:13-15 declares email/password/confirmation state; TextField onTextChange={setEmail} (line 18) and SecureField onTextChange={setPassword} (line 21) remain wired to that state, SecureField still masks input by using the SecureField component. The submit Button onPress (line 24) sets confirmation from live email and password.length, and mode switching is preserved via the mode prop threading through App.tsx -> AuthScreen -> AuthNativeForm with key={mode} remount (AuthScreen.tsx:5)."
+        },
+        {
+          "id": "settings-and-native-controls-preserved",
+          "name": "settings-and-native-controls-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The Settings route still renders its compact 44-point profile-name field and remains editable. Keep all routes, labels, the 52-point submit button, native Expo UI SwiftUI TextField/SecureField controls, and Host wrapping. No DOM/web-view substitution, removed route, button-height inflation or clipping workaround.",
+          "reasoning": "App.tsx:17 still routes to SettingsScreen for the 'settings' item, and all three route buttons remain (App.tsx:11-15). SettingsScreen.tsx:9 still uses NativeTextField, which (NativeTextField.tsx:8) fixes frame(height:44), an unchanged compact profile field wired to onTextChange={setName} (SettingsScreen.tsx:9) making it editable. Both screens use native @expo/ui/swift-ui TextField/SecureField/Button controls wrapped in Host (AuthNativeForm.tsx:16,28; SettingsScreen.tsx:8,11), with no DOM/web-view substitution, and the submit button remains frame({height:52}) (AuthNativeForm.tsx:25)."
+        }
+      ],
+      "model_usage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 1704,
+          "outputTokens": 13,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.001769,
+          "contextWindow": 200000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "claude-haiku-4-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        },
+        "claude-sonnet-5": {
+          "inputTokens": 14,
+          "outputTokens": 3189,
+          "cacheReadInputTokens": 69685,
+          "cacheCreationInputTokens": 14785,
+          "webSearchRequests": 0,
+          "costUSD": 0.104995,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 1084,
+          "canonicalModel": "claude-sonnet-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "api_equivalent_usd": 0.106764
+    },
+    {
+      "task": "feedback-13-auth-field-render-path",
+      "bracket": "baseline-comment",
+      "reward": 0.75,
+      "guarded": false,
+      "ok": true,
+      "note": "",
+      "criteria": [
+        {
+          "id": "rendered-authentication-path",
+          "name": "rendered-authentication-path",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Follow App.tsx through AuthScreen to the actual SwiftUI authentication fields in both sign-in and create-account modes. Changes must affect those rendered fields, not only the similarly named reusable Settings field. Both email and secure password fields use the corrected layout. Accept an equivalent refactor that preserves the routes and product behavior.",
+          "reasoning": "App.tsx:17 routes sign-in/create-account to AuthScreen -> AuthScreen.tsx:5 renders AuthNativeForm with mode -> AuthNativeForm.tsx:18-23 renders the TextField/SecureField using their own `fieldModifiers` array (AuthNativeForm.tsx:6-10), distinct from NativeTextField.tsx used only by SettingsScreen. Both sign-in and create-account modes use the same email/password fields via AuthNativeForm, so any styling applies to the actual rendered auth path, not just the Settings field."
+        },
+        {
+          "id": "fixed-outer-field-height",
+          "name": "fixed-outer-field-height",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "At the default text size, the visible authentication fields have a 52-point outer height matching the unchanged submit button, with centered content and 14-point horizontal content inset. Account for the order of SwiftUI frame and padding wrappers; minHeight alone or vertical padding outside the fixed frame fails. An equivalent min/max fixed frame or containing frame is acceptable if the complete outer field truly stays 52 points. Do not require an exact modifier sequence.",
+          "reasoning": "AuthNativeForm.tsx:6-10 defines fieldModifiers as [textFieldStyle('plain'), frame({ minHeight: 52 }), padding({ horizontal: 14, vertical: 8 })]. This uses minHeight (not a fixed/min+max height) and applies padding after (outside) the frame modifier, adding vertical padding outside the fixed frame \u2014 both explicitly called-out failure patterns. The outer height is not pinned to 52pt; vertical padding of 8 on each side pushes the actual outer height beyond 52pt and away from matching the unchanged 52pt submit button (Button frame at AuthNativeForm.tsx:25)."
+        },
+        {
+          "id": "auth-state-and-submit-preserved",
+          "name": "auth-state-and-submit-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Preserve editable email and password state, SecureField masking, mode switching and submit confirmation reflecting current input values. The actual SwiftUI controls must remain connected to this state and the submit callback. A decorative duplicate field, disconnected callbacks or static confirmation fails.",
+          "reasoning": "email/password/confirmation state (AuthNativeForm.tsx:13-15) remain editable via TextField/SecureField onTextChange bound to setEmail/setPassword (AuthNativeForm.tsx:18-23), SecureField still used for password masking (line 21), and Button onPress (line 24) computes confirmation text from live email and password.length reflecting current mode and input, displayed at line 27."
+        },
+        {
+          "id": "settings-and-native-controls-preserved",
+          "name": "settings-and-native-controls-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The Settings route still renders its compact 44-point profile-name field and remains editable. Keep all routes, labels, the 52-point submit button, native Expo UI SwiftUI TextField/SecureField controls, and Host wrapping. No DOM/web-view substitution, removed route, button-height inflation or clipping workaround.",
+          "reasoning": "SettingsScreen.tsx:8-11 keeps Host/VStack wrapping and renders NativeTextField, which still applies frame({height:44}) and padding({horizontal:14}) (NativeTextField.tsx:8-9) and remains editable via onTextChange->setName. AuthNativeForm.tsx:25 keeps the submit Button at frame height 52. All routes remain in App.tsx:11,17, and all fields use native @expo/ui/swift-ui TextField/SecureField/Button controls under Host \u2014 no DOM/web-view substitution or route removal."
+        }
+      ],
+      "model_usage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 1704,
+          "outputTokens": 13,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.001769,
+          "contextWindow": 200000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "claude-haiku-4-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        },
+        "claude-sonnet-5": {
+          "inputTokens": 6,
+          "outputTokens": 3056,
+          "cacheReadInputTokens": 28480,
+          "cacheCreationInputTokens": 4917,
+          "webSearchRequests": 0,
+          "costUSD": 0.055936,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 1366,
+          "canonicalModel": "claude-sonnet-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "api_equivalent_usd": 0.057705000000000006
+    },
+    {
+      "task": "feedback-13-auth-field-render-path",
+      "bracket": "reference-alternative",
+      "reward": 1.0,
+      "guarded": false,
+      "ok": true,
+      "note": "",
+      "criteria": [
+        {
+          "id": "rendered-authentication-path",
+          "name": "rendered-authentication-path",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Follow App.tsx through AuthScreen to the actual SwiftUI authentication fields in both sign-in and create-account modes. Changes must affect those rendered fields, not only the similarly named reusable Settings field. Both email and secure password fields use the corrected layout. Accept an equivalent refactor that preserves the routes and product behavior.",
+          "reasoning": "App.tsx:17 routes 'sign-in'/'create-account' to AuthScreen, which (AuthScreen.tsx:5) renders AuthNativeForm with mode. AuthNativeForm.tsx:18-23 renders the actual TextField (email) and SecureField (password) used for both modes, and reuses a separate fieldModifiers array (lines 6-10) rather than the Settings-only NativeTextField component (components/NativeTextField.tsx), so the fix targets the real authentication fields."
+        },
+        {
+          "id": "fixed-outer-field-height",
+          "name": "fixed-outer-field-height",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "At the default text size, the visible authentication fields have a 52-point outer height matching the unchanged submit button, with centered content and 14-point horizontal content inset. Account for the order of SwiftUI frame and padding wrappers; minHeight alone or vertical padding outside the fixed frame fails. An equivalent min/max fixed frame or containing frame is acceptable if the complete outer field truly stays 52 points. Do not require an exact modifier sequence.",
+          "reasoning": "AuthNativeForm.tsx:6-10 defines fieldModifiers = [textFieldStyle('plain'), padding({horizontal:14, vertical:8}), frame({minHeight:52, maxHeight:52})]. Padding is applied before frame in the modifier chain, so frame is the outer wrapper fixing the outer bounds to exactly 52 (min=max=52) while padding provides the 14pt horizontal inset inside that fixed frame, matching the 52pt submit button (line 25) height. This avoids the failure pattern of padding applied outside the frame or minHeight alone."
+        },
+        {
+          "id": "auth-state-and-submit-preserved",
+          "name": "auth-state-and-submit-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Preserve editable email and password state, SecureField masking, mode switching and submit confirmation reflecting current input values. The actual SwiftUI controls must remain connected to this state and the submit callback. A decorative duplicate field, disconnected callbacks or static confirmation fails.",
+          "reasoning": "AuthNativeForm.tsx:13-15 declares email/password/confirmation state; TextField onTextChange={setEmail} (line 18) and SecureField onTextChange={setPassword} (line 21) keep it editable and masked via SecureField. The Button onPress (line 24) builds confirmation from live email/password state and mode, and key={mode} in AuthScreen.tsx:5 ensures mode switching resets state per screen. Controls are directly wired, not decorative."
+        },
+        {
+          "id": "settings-and-native-controls-preserved",
+          "name": "settings-and-native-controls-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The Settings route still renders its compact 44-point profile-name field and remains editable. Keep all routes, labels, the 52-point submit button, native Expo UI SwiftUI TextField/SecureField controls, and Host wrapping. No DOM/web-view substitution, removed route, button-height inflation or clipping workaround.",
+          "reasoning": "SettingsScreen.tsx:8-11 still wraps its VStack in Host and renders NativeTextField, which (components/NativeTextField.tsx:6-11) keeps the unchanged 44pt frame({height:44}) profile-name field bound to setName. App.tsx:11-17 preserves all three routes (sign-in, create-account, settings) with native Pressable/Text nav, and AuthNativeForm.tsx:24-26 keeps the 52pt submit Button unchanged. All controls remain native @expo/ui/swift-ui TextField/SecureField/Button inside Host, with no DOM/web-view substitution."
+        }
+      ],
+      "model_usage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 1704,
+          "outputTokens": 13,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.001769,
+          "contextWindow": 200000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "claude-haiku-4-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        },
+        "claude-sonnet-5": {
+          "inputTokens": 14,
+          "outputTokens": 4958,
+          "cacheReadInputTokens": 85445,
+          "cacheCreationInputTokens": 7821,
+          "webSearchRequests": 0,
+          "costUSD": 0.097981,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 2412,
+          "canonicalModel": "claude-sonnet-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "api_equivalent_usd": 0.09974999999999999
+    },
+    {
+      "task": "feedback-13-auth-field-render-path",
+      "bracket": "distractor",
+      "reward": 0.5,
+      "guarded": false,
+      "ok": false,
+      "note": "must fail: rendered-authentication-path, fixed-outer-field-height, settings-and-native-controls-preserved",
+      "criteria": [
+        {
+          "id": "rendered-authentication-path",
+          "name": "rendered-authentication-path",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Follow App.tsx through AuthScreen to the actual SwiftUI authentication fields in both sign-in and create-account modes. Changes must affect those rendered fields, not only the similarly named reusable Settings field. Both email and secure password fields use the corrected layout. Accept an equivalent refactor that preserves the routes and product behavior.",
+          "reasoning": "App.tsx:17 routes to AuthScreen.tsx:5 which renders AuthNativeForm.tsx, a component distinct from the Settings-only NativeTextField.tsx. AuthNativeForm.tsx:18-23 renders real SwiftUI TextField (email) and SecureField (password) with a shared fieldModifiers array, so both sign-in and create-account modes render the same corrected/consistent layout through the actual auth path, not the Settings field."
+        },
+        {
+          "id": "fixed-outer-field-height",
+          "name": "fixed-outer-field-height",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "At the default text size, the visible authentication fields have a 52-point outer height matching the unchanged submit button, with centered content and 14-point horizontal content inset. Account for the order of SwiftUI frame and padding wrappers; minHeight alone or vertical padding outside the fixed frame fails. An equivalent min/max fixed frame or containing frame is acceptable if the complete outer field truly stays 52 points. Do not require an exact modifier sequence.",
+          "reasoning": "AuthNativeForm.tsx:6-10 defines fieldModifiers as frame({minHeight:52}) followed by padding({horizontal:14, vertical:8}). This uses minHeight (not a fixed/min-max frame) and applies vertical padding outside/after the frame, both of which the criteria explicitly call out as failing \u2014 the outer height is not a true fixed 52pt (it grows with content) and vertical padding adds extra height beyond the frame, so it does not match the 52pt submit button height."
+        },
+        {
+          "id": "auth-state-and-submit-preserved",
+          "name": "auth-state-and-submit-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Preserve editable email and password state, SecureField masking, mode switching and submit confirmation reflecting current input values. The actual SwiftUI controls must remain connected to this state and the submit callback. A decorative duplicate field, disconnected callbacks or static confirmation fails.",
+          "reasoning": "AuthNativeForm.tsx:13-15 declares email/password/confirmation state; TextField/SecureField at lines 18-23 are wired via onTextChange to setEmail/setPassword; SecureField provides masking; the Button onPress at line 24 sets confirmation using current email and password.length, reflecting live input. mode as a key prop in AuthScreen.tsx:5 resets state on mode switch."
+        },
+        {
+          "id": "settings-and-native-controls-preserved",
+          "name": "settings-and-native-controls-preserved",
+          "value": 0.0,
+          "raw": "no",
+          "weight": 1.0,
+          "description": "The Settings route still renders its compact 44-point profile-name field and remains editable. Keep all routes, labels, the 52-point submit button, native Expo UI SwiftUI TextField/SecureField controls, and Host wrapping. No DOM/web-view substitution, removed route, button-height inflation or clipping workaround.",
+          "reasoning": "SettingsScreen.tsx:9 still renders NativeTextField wrapped in Host/VStack with routes intact, but NativeTextField.tsx:8 sets frame({height: 52}) instead of the required compact 44-point profile-name field \u2014 the height was inflated to match the submit button height rather than preserved at 44pt, which the criteria explicitly disallow."
+        }
+      ],
+      "model_usage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 1704,
+          "outputTokens": 13,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.001769,
+          "contextWindow": 200000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "claude-haiku-4-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        },
+        "claude-sonnet-5": {
+          "inputTokens": 6,
+          "outputTokens": 3492,
+          "cacheReadInputTokens": 28474,
+          "cacheCreationInputTokens": 4879,
+          "webSearchRequests": 0,
+          "costUSD": 0.06014280000000001,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 64000,
+          "thinkingTokens": 1978,
+          "canonicalModel": "claude-sonnet-5",
+          "provider": "firstParty",
+          "costBasis": "list"
+        }
+      },
+      "api_equivalent_usd": 0.0619118
+    }
+  ],
+  "trials": [
+    {
+      "trial": "feedback-12-native-fixed-amount__RduhqHZ",
+      "task": "expo-harbor/feedback-12-native-fixed-amount-column",
+      "model": "claude-haiku-4-5-20251001",
+      "task_sha256": "3dbfa2d8cd77a923e219761745070dbb4147e8a80c3dc60d4e701d2b671f9369",
+      "raw_grade": 1.0,
+      "calibration_valid": false,
+      "exception": null,
+      "agent_seconds": 107.704,
+      "agent_api_equivalent_usd": 0.08538010000000001,
+      "judge_api_equivalent_usd": 0.06148239999999999,
+      "agent_usage": {
+        "input_tokens": 49,
+        "cache_creation_input_tokens": 12694,
+        "cache_read_input_tokens": 52561,
+        "output_tokens": 10670
+      },
+      "served_models": [
+        "claude-haiku-4-5-20251001"
+      ],
+      "judge_served_models": [
+        "claude-haiku-4-5-20251001",
+        "claude-sonnet-5"
+      ],
+      "criteria": [
+        {
+          "id": "native-fixed-column",
+          "name": "native-fixed-column",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Trace App.tsx to the rendered SummaryRow and its flattened native styles. For 320/360/390/430dp viewports at font scale 1.0, the amount region stays 112dp wide despite shared flex styles. No positive-flex zero-basis conflict may collapse or distribute away this width. Accept width plus non-growing/non-shrinking sizing, an equivalent definite flex basis, or another correct native layout; do not mandate a particular property spelling or forbid flex shorthand everywhere.",
+          "reasoning": "summaryStyles.ts:6-8: styles.amount (width:112, flexGrow:0, flexShrink:0, flexBasis:'auto') is merged after styles.cell (flex:1) in SummaryRow.tsx:13. Since flexGrow/flexShrink/flexBasis are explicit keys applied after the 'flex' shorthand in the flattened style, they override the shorthand's expansion, yielding a fixed 112dp, non-growing/non-shrinking column regardless of viewport width."
+        },
+        {
+          "id": "responsive-content-fit",
+          "name": "responsive-content-fit",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The description uses the remaining row width, can shrink/truncate on one line, and never displaces the 112dp amount column or 24dp control outside the screen insets. Preserve 16dp outer insets, 12dp gaps and the two-column layout across the declared widths. The amount label and formatted value remain untruncated on one line at the existing font sizes. Hiding content, clipping overflow, absolute positioning, reduced type size, hard-coded viewport arithmetic or web-only CSS fails.",
+          "reasoning": "description cell (SummaryRow.tsx:10) uses [styles.cell, styles.description] = flexGrow:1, flexShrink:1, flexBasis:'auto' (summaryStyles.ts:6-7), so it consumes only the remaining row width. Text has numberOfLines={1} (SummaryRow.tsx:11) for single-line truncation, not hiding/clipping. Screen keeps 16dp padding (summaryStyles.ts:4) and row keeps 12dp gap (summaryStyles.ts:5); amount stays fixed 112dp and visibility 24dp (summaryStyles.ts:8-9), so they can't be displaced. No absolute positioning, hard-coded viewport math, or web-only CSS is used."
+        },
+        {
+          "id": "visibility-interaction-preserved",
+          "name": "visibility-interaction-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The actually rendered visibility control remains accessible and toggles both ways between the formatted amount and the supplied mask. Keep every description fixture and switching control. Changing only a disconnected style/helper or returning a static success screen fails. No production backend or credential is required.",
+          "reasoning": "Pressable testID='visibility-control' (SummaryRow.tsx:17-24) toggles visible state (line 22), and the amount Text at line 15 switches between the formatted amount and the '\u2022\u2022\u2022\u2022\u2022\u2022' mask based on that state, with accessibilityLabel flipping between 'Hide amount'/'Show amount'. App.tsx:12 also preserves the description-fixture switching control."
+        },
+        {
+          "id": "native-platform-contract",
+          "name": "native-platform-contract",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Apply the repair to React Native styles consumed by the native SummaryRow. Keep the Expo/React Native app and public SummaryRow props and render path working. Do not substitute DOM/web-view elements, change only the web branch, remove the shared component usage without a working replacement, or introduce a dependency merely to conceal the flex constraint.",
+          "reasoning": "App.tsx and SummaryRow.tsx import exclusively from 'react-native' (View, Text, Pressable, SafeAreaView) with no DOM/web substitution; SummaryRow.tsx:5 keeps the original description/amount prop contract and render path, and the fix lives entirely in native StyleSheet properties (summaryStyles.ts) rather than introducing a new dependency or web-only branch."
+        }
+      ],
+      "inspection": {
+        "note": "The raw 1.0 grade is a false positive. The patch only adds numberOfLines={1} to the amount texts. summaryStyles.ts is byte-identical to the broken baseline, retaining positive flex with an auto basis on the amount cell. The authored Yoga control demonstrates that these unchanged sizing constraints collapse the column to 0dp; single-line text cannot restore its required 112dp width. No candidate code or native app was executed for this follow-up inspection.",
+        "patch": "--- a/SummaryRow.tsx\n+++ b/SummaryRow.tsx\n@@ -11,8 +11,8 @@\n           <Text numberOfLines={1} style={styles.label}>{description}</Text>\n         </View>\n         <View style={[styles.cell, styles.amount]} testID=\"amount-column\">\n-          <Text style={styles.label}>Available</Text>\n-          <Text style={styles.value} testID=\"amount-value\">{visible ? amount : '\u2022\u2022\u2022\u2022\u2022\u2022'}</Text>\n+          <Text numberOfLines={1} style={styles.label}>Available</Text>\n+          <Text numberOfLines={1} style={styles.value} testID=\"amount-value\">{visible ? amount : '\u2022\u2022\u2022\u2022\u2022\u2022'}</Text>\n         </View>\n         <Pressable\n           testID=\"visibility-control\"\n"
+      }
+    },
+    {
+      "trial": "feedback-12-native-fixed-amount__bGoxVRv",
+      "task": "expo-harbor/feedback-12-native-fixed-amount-column",
+      "model": "claude-sonnet-5@medium",
+      "task_sha256": "3dbfa2d8cd77a923e219761745070dbb4147e8a80c3dc60d4e701d2b671f9369",
+      "raw_grade": 1.0,
+      "calibration_valid": false,
+      "exception": null,
+      "agent_seconds": 42.903,
+      "agent_api_equivalent_usd": 0.0745286,
+      "judge_api_equivalent_usd": 0.0522038,
+      "agent_usage": {
+        "input_tokens": 10,
+        "cache_creation_input_tokens": 6252,
+        "cache_read_input_tokens": 48568,
+        "output_tokens": 3844
+      },
+      "served_models": [
+        "claude-haiku-4-5-20251001",
+        "claude-sonnet-5"
+      ],
+      "judge_served_models": [
+        "claude-haiku-4-5-20251001",
+        "claude-sonnet-5"
+      ],
+      "criteria": [
+        {
+          "id": "native-fixed-column",
+          "name": "native-fixed-column",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Trace App.tsx to the rendered SummaryRow and its flattened native styles. For 320/360/390/430dp viewports at font scale 1.0, the amount region stays 112dp wide despite shared flex styles. No positive-flex zero-basis conflict may collapse or distribute away this width. Accept width plus non-growing/non-shrinking sizing, an equivalent definite flex basis, or another correct native layout; do not mandate a particular property spelling or forbid flex shorthand everywhere.",
+          "reasoning": "summaryStyles.ts:8 sets amount: { flex: 0, width: 112 } which in RN Yoga means flexGrow:0/flexShrink:0/basis:auto sized by width, immune to the flex:1 description column (line 7) and gap-based row layout (line 5); SummaryRow.tsx:13 applies [styles.cell, styles.description] wait amount to the amount-column View, so the 112dp fixed width is preserved regardless of viewport."
+        },
+        {
+          "id": "responsive-content-fit",
+          "name": "responsive-content-fit",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The description uses the remaining row width, can shrink/truncate on one line, and never displaces the 112dp amount column or 24dp control outside the screen insets. Preserve 16dp outer insets, 12dp gaps and the two-column layout across the declared widths. The amount label and formatted value remain untruncated on one line at the existing font sizes. Hiding content, clipping overflow, absolute positioning, reduced type size, hard-coded viewport arithmetic or web-only CSS fails.",
+          "reasoning": "description: { flex: 1, minWidth: 0 } (summaryStyles.ts:7) lets the description cell consume remaining row width and shrink; SummaryRow.tsx:11 sets numberOfLines={1} on the description Text so it truncates on one line instead of wrapping/clipping. screen padding 16 (line 4) and row gap 12 (line 5) are preserved, amount stays fixed 112 and visibility fixed 24/flexShrink:0 (line 9), so neither is displaced. No absolute positioning, viewport math, or web CSS is used."
+        },
+        {
+          "id": "visibility-interaction-preserved",
+          "name": "visibility-interaction-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The actually rendered visibility control remains accessible and toggles both ways between the formatted amount and the supplied mask. Keep every description fixture and switching control. Changing only a disconnected style/helper or returning a static success screen fails. No production backend or credential is required.",
+          "reasoning": "SummaryRow.tsx:6 keeps useState(true) for visible, the Pressable (lines 17-24) toggles setVisible(!visible) with accessibilityLabel flipping between 'Hide amount'/'Show amount', and amount-value Text (line 15) renders amount or the mask '\u2022\u2022\u2022\u2022\u2022\u2022' based on that same state \u2014 both directions work. App.tsx keeps both description fixtures and the Switch description button (lines 5,8,12)."
+        },
+        {
+          "id": "native-platform-contract",
+          "name": "native-platform-contract",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Apply the repair to React Native styles consumed by the native SummaryRow. Keep the Expo/React Native app and public SummaryRow props and render path working. Do not substitute DOM/web-view elements, change only the web branch, remove the shared component usage without a working replacement, or introduce a dependency merely to conceal the flex constraint.",
+          "reasoning": "All elements (View, Text, Pressable, SafeAreaView) come from 'react-native' (App.tsx:2, SummaryRow.tsx:2); SummaryRow keeps its public props {description, amount} (SummaryRow.tsx:5) and full render path/testIDs; no DOM/web-only elements or new dependencies were introduced, and the fix lives in shared native styles (summaryStyles.ts) applied identically regardless of platform."
+        }
+      ],
+      "inspection": {
+        "note": "The patch removes the shared positive flex, gives the description flexible remaining space, and fixes the amount to flex:0 with width:112. This directly removes the sizing conflict and preserves the visibility interaction. Source inspection supports the repair, but the source judge failed a negative control; this is not runtime proof or a validated benchmark pass.",
+        "patch": "--- a/summaryStyles.ts\n+++ b/summaryStyles.ts\n@@ -3,9 +3,9 @@\n export const styles = StyleSheet.create({\n   screen: { paddingHorizontal: 16 },\n   row: { flexDirection: 'row', alignItems: 'center', gap: 12 },\n-  cell: { flex: 1 },\n-  description: { flexBasis: 'auto' },\n-  amount: { width: 112, flexGrow: 0, flexShrink: 0, flexBasis: 'auto' },\n+  cell: {},\n+  description: { flex: 1, minWidth: 0 },\n+  amount: { flex: 0, width: 112 },\n   visibility: { width: 24, height: 24, flexShrink: 0, alignItems: 'center', justifyContent: 'center' },\n   label: { fontSize: 14, lineHeight: 20 },\n   value: { fontSize: 16, lineHeight: 22 },\n"
+      }
+    },
+    {
+      "trial": "feedback-13-auth-field-render-pa__BFLGVJb",
+      "task": "expo-harbor/feedback-13-auth-field-render-path",
+      "model": "claude-sonnet-5@medium",
+      "task_sha256": "eb9c2b6c2d9af215be64d453b18697f26afdb9f3adf44cf9fe62c34eca338e71",
+      "raw_grade": 1.0,
+      "calibration_valid": false,
+      "exception": null,
+      "agent_seconds": 15.598,
+      "agent_api_equivalent_usd": 0.046540399999999996,
+      "judge_api_equivalent_usd": 0.166365,
+      "agent_usage": {
+        "input_tokens": 8,
+        "cache_creation_input_tokens": 5374,
+        "cache_read_input_tokens": 38072,
+        "output_tokens": 1610
+      },
+      "served_models": [
+        "claude-haiku-4-5-20251001",
+        "claude-sonnet-5"
+      ],
+      "judge_served_models": [
+        "claude-haiku-4-5-20251001",
+        "claude-sonnet-5"
+      ],
+      "criteria": [
+        {
+          "id": "rendered-authentication-path",
+          "name": "rendered-authentication-path",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Follow App.tsx through AuthScreen to the actual SwiftUI authentication fields in both sign-in and create-account modes. Changes must affect those rendered fields, not only the similarly named reusable Settings field. Both email and secure password fields use the corrected layout. Accept an equivalent refactor that preserves the routes and product behavior.",
+          "reasoning": "App.tsx:17 routes to AuthScreen, which renders AuthNativeForm (screens/AuthScreen.tsx:5) \u2014 a component distinct from the Settings field. Both the email TextField (components/AuthNativeForm.tsx:18-20) and password SecureField (components/AuthNativeForm.tsx:21-23) use the shared fieldModifiers (frame height 52 + horizontal padding 14, lines 6-10) in both sign-in and create-account modes, since mode only changes labels/copy, not the field modifiers."
+        },
+        {
+          "id": "fixed-outer-field-height",
+          "name": "fixed-outer-field-height",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "At the default text size, the visible authentication fields have a 52-point outer height matching the unchanged submit button, with centered content and 14-point horizontal content inset. Account for the order of SwiftUI frame and padding wrappers; minHeight alone or vertical padding outside the fixed frame fails. An equivalent min/max fixed frame or containing frame is acceptable if the complete outer field truly stays 52 points. Do not require an exact modifier sequence.",
+          "reasoning": "fieldModifiers (components/AuthNativeForm.tsx:6-10) applies frame({height: 52}) as a fixed frame (not minHeight) matching the submit button's frame({height: 52}) at line 25, plus padding({horizontal: 14}). Because the padding is horizontal-only, its placement relative to frame in the array does not add extra vertical space, so the outer field height stays exactly 52 regardless of wrapper order; both auth fields (lines 18-23) share this identical modifier set."
+        },
+        {
+          "id": "auth-state-and-submit-preserved",
+          "name": "auth-state-and-submit-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Preserve editable email and password state, SecureField masking, mode switching and submit confirmation reflecting current input values. The actual SwiftUI controls must remain connected to this state and the submit callback. A decorative duplicate field, disconnected callbacks or static confirmation fails.",
+          "reasoning": "email/password/confirmation state is declared at components/AuthNativeForm.tsx:13-15, TextField is wired to setEmail (line 18) and SecureField to setPassword (line 21, native masked input), mode switching is passed through props and AuthScreen remounts on mode change via key={mode} (screens/AuthScreen.tsx:5). The submit Button's onPress (line 24) builds the confirmation string from the live email/password state and is rendered via Text (line 27), so confirmation reflects current input rather than being static or disconnected."
+        },
+        {
+          "id": "settings-and-native-controls-preserved",
+          "name": "settings-and-native-controls-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The Settings route still renders its compact 44-point profile-name field and remains editable. Keep all routes, labels, the 52-point submit button, native Expo UI SwiftUI TextField/SecureField controls, and Host wrapping. No DOM/web-view substitution, removed route, button-height inflation or clipping workaround.",
+          "reasoning": "SettingsScreen.tsx still renders the compact NativeTextField (components/NativeTextField.tsx:6-11) with frame({height:44}) at line 8, wired to setName (SettingsScreen.tsx:7,9) for continued editability. All three routes remain in App.tsx:11-17, the submit button keeps frame({height:52}) unchanged (components/AuthNativeForm.tsx:25), and both screens use native @expo/ui swift-ui TextField/SecureField/Button wrapped in Host (SettingsScreen.tsx:8, AuthNativeForm.tsx:16) \u2014 no DOM/web-view substitution or clipping workaround is present."
+        }
+      ],
+      "inspection": {
+        "note": "Replaces minHeight:52 with height:52 in the actually rendered AuthNativeForm and removes vertical padding outside that frame. Horizontal padding stays 14, and Settings, editable state and submit behavior are unchanged. Haiku produced the same patch. Source inspection supports the repair; calibration exposed an ambiguous render-path criterion, and native field geometry was not tested.",
+        "patch": "--- a/components/AuthNativeForm.tsx\n+++ b/components/AuthNativeForm.tsx\n@@ -5,8 +5,8 @@\n \n const fieldModifiers = [\n   textFieldStyle('plain'),\n-  frame({ minHeight: 52 }),\n-  padding({ horizontal: 14, vertical: 8 }),\n+  frame({ height: 52 }),\n+  padding({ horizontal: 14 }),\n ];\n \n export function AuthNativeForm({ mode }: { mode: 'sign-in' | 'create-account' }) {\n"
+      }
+    },
+    {
+      "trial": "feedback-13-auth-field-render-pa__WtPRANx",
+      "task": "expo-harbor/feedback-13-auth-field-render-path",
+      "model": "claude-haiku-4-5-20251001",
+      "task_sha256": "eb9c2b6c2d9af215be64d453b18697f26afdb9f3adf44cf9fe62c34eca338e71",
+      "raw_grade": 1.0,
+      "calibration_valid": false,
+      "exception": null,
+      "agent_seconds": 26.83,
+      "agent_api_equivalent_usd": 0.0344001,
+      "judge_api_equivalent_usd": 0.12415579999999998,
+      "agent_usage": {
+        "input_tokens": 33,
+        "cache_creation_input_tokens": 6657,
+        "cache_read_input_tokens": 29801,
+        "output_tokens": 3350
+      },
+      "served_models": [
+        "claude-haiku-4-5-20251001"
+      ],
+      "judge_served_models": [
+        "claude-haiku-4-5-20251001",
+        "claude-sonnet-5"
+      ],
+      "criteria": [
+        {
+          "id": "rendered-authentication-path",
+          "name": "rendered-authentication-path",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Follow App.tsx through AuthScreen to the actual SwiftUI authentication fields in both sign-in and create-account modes. Changes must affect those rendered fields, not only the similarly named reusable Settings field. Both email and secure password fields use the corrected layout. Accept an equivalent refactor that preserves the routes and product behavior.",
+          "reasoning": "App.tsx (17) routes sign-in/create-account to AuthScreen -> AuthNativeForm.tsx, whose TextField (email, line18-20) and SecureField (password, line21-23) both spread the shared fieldModifiers (frame height:52, padding horizontal:14), i.e. the corrected layout is applied to the actual rendered auth fields, not only to the separate NativeTextField.tsx used by Settings."
+        },
+        {
+          "id": "fixed-outer-field-height",
+          "name": "fixed-outer-field-height",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "At the default text size, the visible authentication fields have a 52-point outer height matching the unchanged submit button, with centered content and 14-point horizontal content inset. Account for the order of SwiftUI frame and padding wrappers; minHeight alone or vertical padding outside the fixed frame fails. An equivalent min/max fixed frame or containing frame is acceptable if the complete outer field truly stays 52 points. Do not require an exact modifier sequence.",
+          "reasoning": "AuthNativeForm.tsx lines 6-10 define fieldModifiers=[textFieldStyle('plain'), frame({height:52}), padding({horizontal:14})] applied to both TextField and SecureField. frame(height:52) is applied first, fixing the outer height to 52 (matching the button's frame({height:52}) on line 25) with default center alignment of content; the subsequent padding is horizontal-only so it cannot inflate the already-fixed height, and it produces the 14pt horizontal inset. No vertical padding sits outside the fixed frame, and no minHeight-only approach is used."
+        },
+        {
+          "id": "auth-state-and-submit-preserved",
+          "name": "auth-state-and-submit-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "Preserve editable email and password state, SecureField masking, mode switching and submit confirmation reflecting current input values. The actual SwiftUI controls must remain connected to this state and the submit callback. A decorative duplicate field, disconnected callbacks or static confirmation fails.",
+          "reasoning": "email/password state (lines 13-14) are wired via onTextChange={setEmail}/{setPassword} to the live TextField/SecureField (lines 18-23), SecureField preserves masking, mode switching remounts via key={mode} in AuthScreen.tsx, and the Button onPress (line24) computes confirmation dynamically from current mode/email/password.length, displayed live in the Text on line 27 \u2014 not a static string."
+        },
+        {
+          "id": "settings-and-native-controls-preserved",
+          "name": "settings-and-native-controls-preserved",
+          "value": 1.0,
+          "raw": "yes",
+          "weight": 1.0,
+          "description": "The Settings route still renders its compact 44-point profile-name field and remains editable. Keep all routes, labels, the 52-point submit button, native Expo UI SwiftUI TextField/SecureField controls, and Host wrapping. No DOM/web-view substitution, removed route, button-height inflation or clipping workaround.",
+          "reasoning": "SettingsScreen.tsx is untouched: it still renders inside Host/VStack (lines 8-11), uses NativeTextField with frame({height:44}) (NativeTextField.tsx line 8) for the compact profile field, connected to setName (line 9). App.tsx still has the 'settings' route (lines 7,17) alongside sign-in/create-account with labels rendered (line 13). AuthNativeForm's submit Button retains frame({height:52}) (line25) with no inflation, and all controls remain native @expo/ui/swift-ui TextField/SecureField/Button wrapped in Host \u2014 no DOM/web-view substitution."
+        }
+      ],
+      "inspection": {
+        "note": "Replaces minHeight:52 with height:52 in the actually rendered AuthNativeForm and removes vertical padding outside that frame. Horizontal padding stays 14, and Settings, editable state and submit behavior are unchanged. Sonnet produced the same patch. Source inspection supports the repair; calibration exposed an ambiguous render-path criterion, and native field geometry was not tested.",
+        "patch": "--- a/components/AuthNativeForm.tsx\n+++ b/components/AuthNativeForm.tsx\n@@ -5,8 +5,8 @@\n \n const fieldModifiers = [\n   textFieldStyle('plain'),\n-  frame({ minHeight: 52 }),\n-  padding({ horizontal: 14, vertical: 8 }),\n+  frame({ height: 52 }),\n+  padding({ horizontal: 14 }),\n ];\n \n export function AuthNativeForm({ mode }: { mode: 'sign-in' | 'create-account' }) {\n"
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "lens": "correctness",
+      "model": "claude-sonnet-5",
+      "served_models": [
+        "claude-haiku-4-5-20251001",
+        "claude-sonnet-5"
+      ],
+      "api_equivalent_usd": 1.3837572
+    },
+    {
+      "lens": "design",
+      "model": "claude-sonnet-5",
+      "served_models": [
+        "claude-haiku-4-5-20251001",
+        "claude-sonnet-5"
+      ],
+      "api_equivalent_usd": 1.5588446
+    },
+    {
+      "lens": "security",
+      "model": "claude-sonnet-5",
+      "served_models": [
+        "claude-haiku-4-5-20251001",
+        "claude-sonnet-5"
+      ],
+      "api_equivalent_usd": 1.7301572
+    }
+  ]
+}

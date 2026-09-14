@@ -91,10 +91,11 @@ wrong fix for both tasks. The JS runner only accepts these repository-owned
 controls; it is not a sandbox for untrusted model submissions. Package versions
 are pinned in `tests/contracts/package-lock.json`.
 
-Both tasks remain `requires-judge-calibration`, have no native runtime profile,
-and are excluded from the frozen 18-task comparison jobs. Later calibration
-must establish that the scoring judge accepts both valid designs and rejects
-the intended failures. Native geometry needs a separate authorized runtime run.
+The subsequent [single-attempt source pilot](new-feedback-pilot.md) found a
+calibration failure in each task. Both now declare `source-calibration-failed`,
+have no native runtime profile, and remain outside the frozen 18-task comparison
+jobs. The pilot retains raw grades and source-inspection notes separately.
+Native geometry still needs a separate authorized runtime run.
 
 ## Paywall task added September 10
 
@@ -186,5 +187,6 @@ will make reviews stale. A checksum aids comparison; it does not replace reading
 new evidence. Do not infer review state from the classifier's `non_actionable`
 status. No Feedback Worker code or deployment was needed for this review.
 
-No model evaluation, native build, simulator, EAS job, semantic embedding,
-feedback reprocessing or Linear mutation was run for this review.
+The feedback inventory review itself ran no model evaluation, native build,
+simulator, EAS job, semantic embedding, feedback reprocessing or Linear mutation.
+The separately authorized PR pilot is documented in the guide linked above.

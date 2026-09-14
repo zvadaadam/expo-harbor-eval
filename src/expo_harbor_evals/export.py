@@ -56,6 +56,8 @@ def summarize_run(run_dir: Path) -> dict | None:
         "exported_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "n_trials": len(trials),
         "n_tasks": len(tasks),
+        "calibration_warnings": sorted({t.provenance["calibration_warning"] for t in trials
+                                        if t.provenance.get("calibration_warning")}),
         # Agent-side claude CLI spend for the whole run; judge spend is not
         # reported by harbor-rewardkit and is not included.
         "total_cost_usd": round(sum(costs), 4) if costs else None,

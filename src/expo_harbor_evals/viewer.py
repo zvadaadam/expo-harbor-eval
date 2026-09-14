@@ -130,6 +130,8 @@ def summarize_run(run_dir: Path) -> RunSummary:
         for entry in series
     ]
     headline = " · ".join(parts[:5]) + (" · …" if len(parts) > 5 else "")
+    if any(t.measurement == "source-unvalidated" for t in trials):
+        headline = "Unvalidated raw grades · " + headline
     return RunSummary(
         name=run_dir.name,
         path=run_dir,
@@ -208,6 +210,8 @@ def render_history_section(history_path: Path = Path("results/history.jsonl")) -
             for s in entry.get("series", [])
             if s.get("mean") is not None
         )
+        if entry.get("calibration_warnings"):
+            headline = "Unvalidated raw grades · " + headline
         finished = str(entry.get("finished_at", ""))[:16].replace("T", " ")
         total_cost = entry.get("total_cost_usd")
         rows.append(

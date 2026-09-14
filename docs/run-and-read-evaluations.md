@@ -1,9 +1,11 @@
 # Run a small pilot, then read the evidence
 
-Nothing in this guide has been executed as an evaluation during the report
-improvements. The HTML preview uses fabricated data. Formatting an existing
-report, inspecting a configuration and preparing a source payload make no model
-calls and start no simulator.
+The native commands in this guide remain unexecuted. The separate
+[new-feedback source pilot](new-feedback-pilot.md) was run once on September 14,
+2026 and exposed grading failures. Its real evidence is separate from the
+illustrative HTML preview, which uses fabricated data. Formatting a report,
+inspecting a configuration and preparing a source payload make no model calls
+and start no simulator.
 
 ## What each command costs
 

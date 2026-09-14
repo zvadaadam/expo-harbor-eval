@@ -4,6 +4,61 @@ This is a small source-review diagnostic, not a mobile runtime benchmark or a
 statistical model ranking. It selects only `feedback-12` (native amount-column
 layout) and `feedback-13` (authentication render path and field sizing).
 
+## Observed September 14, 2026
+
+**Do not merge as validated evals yet.** The four requested agent attempts
+finished in 4m 41s with no retries or execution errors. The judge gave every
+candidate 1.0, but one of those grades is a demonstrated false positive.
+
+| New task | Haiku 4.5 patch inspection | Sonnet 5 patch inspection |
+|---|---|---|
+| Fixed amount column | Missed the fix: only added single-line text; the broken amount styles are unchanged | Removed shared positive flex and fixed the amount width; source supports the repair |
+| Auth field render path | Fixed the actual auth form's frame and removed outer vertical padding | Produced the same patch as Haiku |
+
+These are source-inspection findings, not replacement benchmark scores or native
+runtime results. Candidate patches and all criterion reasoning are retained in
+[the pilot evidence](../results/pilots/2026-09-14-new-feedback.json), which pins
+the evaluated commit, task hashes, models and usage. Task metadata was updated
+afterward to record the failures; the evaluated prompts, rubrics and app fixtures
+were not changed or re-run after observing results.
+
+The original, single-pass calibration is retained:
+
+| Control | Amount column | Auth fields |
+|---|---|---|
+| Empty / unchanged guards | Both 0, expected | Both 0, expected |
+| Reference / valid alternative | Both 1.0, expected | Both 1.0, expected |
+| Commented baseline | **1.0, failed calibration** | 0.75, expected height failure |
+| Wrong fix | 0.5, expected layout failure | **0.5, failed calibration**: height and Settings failed, but the required render-path failure was credited |
+
+The layout judge applied web-style shorthand reasoning to the broken baseline
+and Haiku candidate, while correctly identifying the same Yoga conflict in the
+distractor. A stronger model alone is not an adequate grading strategy for this
+task: make the critical geometry check deterministic against actual submitted
+native layout. The auth rubric overlaps render-path correctness and corrected
+layout, allowing credit for merely finding the existing auth fields. Combine
+those overlapping criteria into a requirement that the *rendered* fields have
+the corrected layout, then calibrate that revised definition separately. Neither
+original failure was retried or discarded.
+
+Both task cards now show **Calibration failed**. Reports and history keep these
+grades under `source-unvalidated`, with the original calibration bound to task,
+suite and judge identity. Per-attempt source-inspection notes and candidate
+patches appear above the original judge reasoning. This prevents the recorded
+four full-credit grades from being presented as validated benchmark passes.
+
+CLI API-equivalent usage was **$0.240849 for agents**, **$0.404207 for candidate
+judges**, and **$0.777804 for calibration**: **$1.422860 for the pilot and controls**.
+The three independent Sonnet code reviews used another **$4.672759**. These are
+Claude Code's usage estimates on the existing Max login, not evidence of an
+additional bill. The logs contain only Haiku 4.5 and Sonnet 5 model usage; Claude
+Code also used Haiku for auxiliary requests during Sonnet sessions.
+
+## Reproducing the configuration
+
+The commands below start a new evaluation and spend tokens. The dated run has
+already completed; inspecting its existing report or evidence does not repeat it.
+
 The checked-in `jobs/codegen/new-feedback-pilot.yaml` uses the host's logged-in
 Claude Code subscription: Haiku 4.5 (`claude-haiku-4-5-20251001`, no effort flag)
 and Sonnet 5 (`claude-sonnet-5`, medium effort). Sonnet 5 at medium effort is the
@@ -44,7 +99,9 @@ uv run expo-codegen-calibrate \
 
 If a control fails, inspect its named criteria and evidence before interpreting
 model scores. Do not automatically repeat calibration or model attempts to get
-a passing result. Once the controls pass, this starts the four agent attempts:
+a passing result. The dated pilot deliberately completed the four requested
+diagnostic samples despite failed calibration; it remains unvalidated. For a
+validated pilot, establish working controls first. This starts four attempts:
 
 ```sh
 uv run harbor run -c jobs/codegen/new-feedback-pilot.yaml \
