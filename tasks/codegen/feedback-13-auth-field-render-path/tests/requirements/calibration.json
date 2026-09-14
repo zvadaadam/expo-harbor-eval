@@ -7,7 +7,8 @@
   "distractor": {
     "must_fail": [
       "rendered-authentication-path",
-      "fixed-outer-field-height"
+      "fixed-outer-field-height",
+      "settings-and-native-controls-preserved"
     ]
   }
 }

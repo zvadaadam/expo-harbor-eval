@@ -57,8 +57,8 @@ def trial_identity(task: Path, config: dict, job: dict | None = None) -> dict:
     agent = config.get("agent", {})
     verifier = config.get("verifier", {}).get("env", {})
     condition = {"agent": {k: agent.get(k) for k in ("name", "import_path", "model_name", "skills")},
-                 "kwargs": {k: agent.get("kwargs", {}).get(k) for k in ("preface", "allowed_tools", "allow_shell", "reasoning_effort")},
-                 "verifier": resolve_env_vars({k: verifier[k] for k in ("EXPO_EVAL_VERIFIER_MODE", "REWARDKIT_JUDGE", "REWARDKIT_MODEL") if k in verifier})}
+                 "kwargs": {k: agent.get("kwargs", {}).get(k) for k in ("preface", "allowed_tools", "allow_shell", "reasoning_effort", "clean_config")},
+                 "verifier": resolve_env_vars({k: verifier[k] for k in ("EXPO_EVAL_VERIFIER_MODE", "REWARDKIT_JUDGE", "REWARDKIT_MODEL", "REWARDKIT_REASONING_EFFORT") if k in verifier})}
     condition["runtime_requested"] = os.environ.get("SIMBENCH_RUNTIME")
     condition["cohort"] = [{"dataset": Path(d.get("path", "")).name,
                             "tasks": sorted(d.get("task_names") or [])}

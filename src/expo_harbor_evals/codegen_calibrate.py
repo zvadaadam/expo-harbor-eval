@@ -29,12 +29,14 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 import shutil
 import subprocess
 import sys
 import tempfile
 import tomllib
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import nullcontext
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -91,6 +93,8 @@ def _run_verifier(task_dir: Path, workspace: Path, output: Path) -> dict:
         text=True,
         timeout=900,
     )
+    (output.parent / "verifier-stdout.txt").write_text(completed.stdout)
+    (output.parent / "verifier-stderr.txt").write_text(completed.stderr)
     if completed.returncode != 0 or not output.exists():
         raise RuntimeError(
             f"verifier failed for {task_dir.name}: {completed.stderr[-500:]}"
@@ -116,6 +120,8 @@ def assess_bracket(task_dir: Path, bracket: str, result: dict) -> tuple[bool, st
     rows = result.get("criteria", [])
     if not isinstance(rows, list) or any(not isinstance(c, dict) for c in rows):
         return False, "judge criteria must be a list of results"
+    if any(c.get("error") for c in rows):
+        return False, "judge execution errors cannot establish calibration"
     if any(not isinstance(c.get("id", c.get("name")), str) for c in rows):
         return False, "judge criterion IDs must be strings"
     values = {c.get("id", c.get("name")): c.get("value") for c in rows}
@@ -181,6 +187,8 @@ def main() -> None:
     )
     parser.add_argument("--jobs", type=int, default=3)
     parser.add_argument("--output", type=Path, help="Save machine-readable bracket results")
+    parser.add_argument("--artifacts", type=Path,
+                        help="Retain control apps, criteria, judge usage and logs in a new directory")
     args = parser.parse_args()
 
     task_dirs = codegen_task_dirs(args.tasks)
@@ -199,7 +207,11 @@ def main() -> None:
             if (task_dir / "solution" / "distractor").is_dir():
                 judged.append((task_dir, "distractor"))
     results: list[BracketResult] = []
-    with tempfile.TemporaryDirectory(prefix="codegen-calibrate-") as scratch_str:
+    if args.artifacts:
+        args.artifacts = args.artifacts.resolve()
+        args.artifacts.mkdir(parents=True, exist_ok=False)
+    storage = nullcontext(args.artifacts) if args.artifacts else tempfile.TemporaryDirectory(prefix="codegen-calibrate-")
+    with storage as scratch_str:
         scratch = Path(scratch_str)
         # Guard brackets are cheap and deterministic; run them serially first
         # and skip the judged brackets entirely if any guard fails, so a
@@ -228,6 +240,9 @@ def main() -> None:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps({"ok": not failures,
             "scope": "guards-only" if args.guards_only else "source-judge-calibration",
+            "judge": {"backend": os.getenv("REWARDKIT_JUDGE"), "model": os.getenv("REWARDKIT_MODEL"),
+                      "reasoning_effort": os.getenv("REWARDKIT_REASONING_EFFORT")},
+            "artifacts": str(args.artifacts) if args.artifacts else None,
             "results": [asdict(result) for result in results]}, indent=2) + "\n")
     by_task: dict[str, list[BracketResult]] = {}
     for result in results:

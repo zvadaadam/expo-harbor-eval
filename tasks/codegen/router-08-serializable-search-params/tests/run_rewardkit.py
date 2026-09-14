@@ -152,7 +152,14 @@ def main() -> None:
         print(write_guard_result(args.rubric, args.output, reason))
         return
 
+    from rewardkit import judges
     from rewardkit.runner import run
+
+    # Rewardkit 0.1.7 has no public retry option. A malformed judge response
+    # must remain an error, not silently spend tokens on another evaluation.
+    judges._MAX_JUDGE_RETRIES = 1
+    if os.getenv("REWARDKIT_JUDGE") == "claude-code":
+        configure_claude_judge(args.output)
 
     with tempfile.TemporaryDirectory(prefix="expo-harbor-rubric-") as temporary:
         prepared = prepare_rubric(
@@ -163,7 +170,35 @@ def main() -> None:
             os.getenv("REWARDKIT_MODEL") or None,
         )
         scores = run(prepared, workspace=args.workspace, output=args.output)
+    details = json.loads(args.output.with_name("reward-details.json").read_text())
+    if any(c.get("error") for c in details.get("reward", {}).get("criteria", [])):
+        raise RuntimeError("Judge execution failed; see reward-details.json. No retry was attempted.")
     print(scores)
+
+
+def configure_claude_judge(output: Path) -> None:
+    """Constrain the CLI judge and retain its actual model/usage evidence."""
+    from rewardkit.agents import ClaudeCodeCLI, register_agent
+
+    class ReadOnlyClaudeJudge(ClaudeCodeCLI):
+        def build_command(self, prompt, schema, allowed_tools=()):
+            command = super().build_command(prompt, schema, allowed_tools=())
+            command += [
+                "--safe-mode", "--restricted", "--no-session-persistence",
+                "--no-chrome", "--strict-mcp-config", "--mcp-config", '{"mcpServers":{}}',
+                "--tools", "Read,Glob,Grep", "--allowedTools", "Read,Glob,Grep",
+                "--permission-mode", "dontAsk",
+            ]
+            if effort := os.getenv("REWARDKIT_REASONING_EFFORT"):
+                command += ["--effort", effort]
+            return command
+
+        def parse_output(self, raw):
+            output.parent.mkdir(parents=True, exist_ok=True)
+            (output.parent / "judge-cli.json").write_text(raw)
+            return super().parse_output(raw)
+
+    register_agent(ReadOnlyClaudeJudge)
 
 
 if __name__ == "__main__":

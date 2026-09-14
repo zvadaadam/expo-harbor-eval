@@ -5,107 +5,107 @@
     "feedback-01-transparent-header-content-inset": {
       "path": "tasks/codegen/feedback-01-transparent-header-content-inset",
       "family": "expo-codegen",
-      "definition_sha256": "b53c42ce146cb6f131c52d5339900dba83737ffe21f74854c9f8204558a41bf7"
+      "definition_sha256": "bba9a536a2abcc2fdf2f905199fafdcda59b4e2caf975150b2d333ce48968390"
     },
     "feedback-02-styled-title-keeps-native-stack": {
       "path": "tasks/codegen/feedback-02-styled-title-keeps-native-stack",
       "family": "expo-codegen",
-      "definition_sha256": "6a0f454fec87638d56995bdc3dade42f434af56952ed8aed06937318d6449640"
+      "definition_sha256": "c956565d7c004b1ccdc9f0e2341c15f7cd6485e6b120611ae20664e42ab2796d"
     },
     "feedback-03-shop-grid-sticky-header": {
       "path": "tasks/codegen/feedback-03-shop-grid-sticky-header",
       "family": "expo-codegen",
-      "definition_sha256": "dfffd06d01646343dcf1508a5142fea30a78b8eff809775d871b3f7d05356817"
+      "definition_sha256": "81b3828162f925f3047e733288892f1485803ab62cbcaef70eaebf55d5b4a952"
     },
     "feedback-04-modal-editor-touch-freeze": {
       "path": "tasks/codegen/feedback-04-modal-editor-touch-freeze",
       "family": "expo-codegen",
-      "definition_sha256": "7cc0fc358b38492153c27e40ed24516d9f82244a78cb51392c3fcfa3cf38014e"
+      "definition_sha256": "681581673e4bfba430dbbad3048191fb051bf4d590dcfddb3fc9f7306b560d8a"
     },
     "feedback-05-slider-relative-recenter": {
       "path": "tasks/codegen/feedback-05-slider-relative-recenter",
       "family": "expo-codegen",
-      "definition_sha256": "11ee1762f1c0fe33d9d684b5cfcc6999bd943c67c1ce0225d67d2ee4e5c5c321"
+      "definition_sha256": "1043a3636ee399e65855a914591a899204501e995f9a8c4423ce9c27bc05d03f"
     },
     "feedback-06-sortable-grid-stable-layers": {
       "path": "tasks/codegen/feedback-06-sortable-grid-stable-layers",
       "family": "expo-codegen",
-      "definition_sha256": "7492a5b9bd767dbb19d6c508a74435bd434780bd7fe5e03a798ffecac6b05de7"
+      "definition_sha256": "d131b5b261d71409c2f70d50047454450686aa29be569d13b613ded624aa8330"
     },
     "feedback-08-modal-keyboard-viewport": {
       "path": "tasks/codegen/feedback-08-modal-keyboard-viewport",
       "family": "expo-codegen",
-      "definition_sha256": "3cbfe058db83cd8319cbbd57c1f71c92383f5264d577abb1c2947df4df07af27"
+      "definition_sha256": "f176e9646eafeb290fcb2c57f28eb501900e8d84b7b92bd772a750746a93793e"
     },
     "feedback-09-invite-links-web-fallback": {
       "path": "tasks/codegen/feedback-09-invite-links-web-fallback",
       "family": "expo-codegen",
-      "definition_sha256": "9ff007de85064e36313104d0bd8be35769e3321ae715817d7b2ef121c9c58a44"
+      "definition_sha256": "3eaecc1e18b9aa9684a95c93615ecbecf97382c1ef2a1f0686c9d2c043e9e2fc"
     },
     "feedback-10-three-scene-cargo-cult": {
       "path": "tasks/codegen/feedback-10-three-scene-cargo-cult",
       "family": "expo-codegen",
-      "definition_sha256": "c2b3ea1b52a325508ea7825aa9e7e9b82207239d4f4cedf90cfefbd0419ce9d0"
+      "definition_sha256": "f449e727f5f812ce22226b594035d62154e700c97f4df2ad487346f83d0e6c07"
     },
     "feedback-11-anonymous-paywall-eligibility": {
       "path": "tasks/codegen/feedback-11-anonymous-paywall-eligibility",
       "family": "expo-codegen",
-      "definition_sha256": "e0d46e649d4162fc143bd441d032b82211bdd09e94ee9b82d55ad695cbf1d4af"
+      "definition_sha256": "2b2d82a23ffbb8b41a6e210d6fa98233de5325189a621d40aaa5d07586e1502b"
     },
     "feedback-12-native-fixed-amount-column": {
       "path": "tasks/codegen/feedback-12-native-fixed-amount-column",
       "family": "expo-codegen",
-      "definition_sha256": "84a09c9032a77d84be64a756b00864555ede3451328a713dfec4212482b547ec"
+      "definition_sha256": "3dbfa2d8cd77a923e219761745070dbb4147e8a80c3dc60d4e701d2b671f9369"
     },
     "feedback-13-auth-field-render-path": {
       "path": "tasks/codegen/feedback-13-auth-field-render-path",
       "family": "expo-codegen",
-      "definition_sha256": "00880119af3be526a78856e2cc4eb54bb27fa554b71fa56cdb10bd6badc96eaf"
+      "definition_sha256": "eb9c2b6c2d9af215be64d453b18697f26afdb9f3adf44cf9fe62c34eca338e71"
     },
     "router-02-stack-layout-not-native-stack-import": {
       "path": "tasks/codegen/router-02-stack-layout-not-native-stack-import",
       "family": "expo-codegen",
-      "definition_sha256": "e81246af16cb0afa4cbb56e1bfe08ba6b854ca24a56ac8160434f11e290094ca"
+      "definition_sha256": "5247080e3d0ae62a79c1b8d60440f54270183b3a7435e92995b7928fb782da70"
     },
     "router-07-protected-routes-auth": {
       "path": "tasks/codegen/router-07-protected-routes-auth",
       "family": "expo-codegen",
-      "definition_sha256": "c054e4edd54f21c189be4ab812c84ca66b9c80b46c4ad50e4ddda4caba9e5bd8"
+      "definition_sha256": "110127bfabfbe696173ab0acc8952668f144030c1cd17054775023a4e41e1c54"
     },
     "router-08-serializable-search-params": {
       "path": "tasks/codegen/router-08-serializable-search-params",
       "family": "expo-codegen",
-      "definition_sha256": "786a634f0ab68861b7f50fa805e7e821a28bf5008bf5de38c964ac8ad77b4cf3"
+      "definition_sha256": "9f1d7907a058bb6b9e5a81673b54384392752e74dcb1a845fed8fd3960e32361"
     },
     "sdk-04-image-picker-canceled-assets-guard": {
       "path": "tasks/codegen/sdk-04-image-picker-canceled-assets-guard",
       "family": "expo-codegen",
-      "definition_sha256": "fc2946a151371f069c0b881e24cb8506829d36168f379cbdb04e3129bd4e21c4"
+      "definition_sha256": "1876d8fc8f953b9984a71f29d2171822b49222924b6ad41ea68c9b47f5ea8582"
     },
     "sdk-10-notifications-listener-cleanup": {
       "path": "tasks/codegen/sdk-10-notifications-listener-cleanup",
       "family": "expo-codegen",
-      "definition_sha256": "16db918af03238379258952cf8eea6f55214f84cebebf0de78a7b9af3d766d2b"
+      "definition_sha256": "9176fb4cdd31c51b8c1af1472f729ed84f309da4f366ab90a6aa626765c65ef2"
     },
     "sdk-12-filesystem-object-api-read-write": {
       "path": "tasks/codegen/sdk-12-filesystem-object-api-read-write",
       "family": "expo-codegen",
-      "definition_sha256": "5cffce1dd399133082c9073226c298281ccc313d9e53e6884fb690fa4694f7e0"
+      "definition_sha256": "98efe39ac1bb1fc53959de0989350d73f48b00665e1d23cab95dbefa1b3c2561"
     },
     "ui-01-universal-layout-controls": {
       "path": "tasks/codegen/ui-01-universal-layout-controls",
       "family": "expo-codegen",
-      "definition_sha256": "2b013692abc2d000958e199686a01265f5bcd46bf4615f450e74c0e59e9f03e2"
+      "definition_sha256": "31efe6c65469915abb4edd91c71f7ccc22eaec764005200d64d1a1ef46127885"
     },
     "ui-02-bottom-sheet-controlled": {
       "path": "tasks/codegen/ui-02-bottom-sheet-controlled",
       "family": "expo-codegen",
-      "definition_sha256": "1f9cb158990093502c55c8ac06d1ec4bfd74a5be6e97522b278e7fbed5b2a96f"
+      "definition_sha256": "3a3752554b461634368689f5b32da9afa1c32e322c7e5ac2255c9140be556d4d"
     },
     "ui-06-native-state-text-input": {
       "path": "tasks/codegen/ui-06-native-state-text-input",
       "family": "expo-codegen",
-      "definition_sha256": "0dfde3b20e2a1010b248e3a7d8f19808e29ddf640c111d844b6e9eee3757ab8f"
+      "definition_sha256": "9904d1aaa493d9c8d4a429e86d05b9a9624b77007bed40c42a1b958975e48297"
     },
     "simbench-ios-01-goldennotes-create-note": {
       "path": "tasks/simbench/simbench-ios-01-goldennotes-create-note",
@@ -158,13 +158,13 @@
     "mobile/templates/sdk56/tsconfig.json": "1861e53fa4efc56da0ea5c23c911e0311125b32d9ec67d805118f1a40c5478e1",
     "pyproject.toml": "3c9ef2105bc35f390ff6ba3003b09d2498e8f6a67e3305aeeab871e26e588997",
     "src/expo_harbor_evals/__init__.py": "2785d405887a71a64ea76c6af267fba17ba053ecf0516ec8fe6aaf602503f534",
-    "src/expo_harbor_evals/claude_host_agent.py": "3035b5b8ca7b63e26f5c0d73cedc86a486fb85a2e98cc29c9ec1aa19ae147e79",
-    "src/expo_harbor_evals/codegen_calibrate.py": "413f90e8997560681c686878fd3a9a58447a02c0550e733e2d79f144adaae7c1",
+    "src/expo_harbor_evals/claude_host_agent.py": "8f3dd45694575d722ed6a1e2f599403974c73f8819bd3718c95c86e9175dee94",
+    "src/expo_harbor_evals/codegen_calibrate.py": "b786db493d3dc1c343c855fac4b757c97d87b8f6452af80e347301cc8a41ab50",
     "src/expo_harbor_evals/codegen_reference_check.py": "0f522d3e2e443fa51cefda77d6317972590dc6f75ed1b3b4e22efd4ae8d8492f",
-    "src/expo_harbor_evals/codegen_rewardkit_runner.py": "e9a2233ef0c5487ad1943cc6aa7a1e4cf8b9d9f8142ec33c51836001703f67aa",
+    "src/expo_harbor_evals/codegen_rewardkit_runner.py": "1fd736fe2ed9f062e4e0fa50e113dfaa92318ebcb5f3531b3e46b60c4e7eaf68",
     "src/expo_harbor_evals/codegen_scaffold.py": "8a636ad17ec63fe855d772c728af508ee584d69f56b36c1e04340abb6c9c2d44",
     "src/expo_harbor_evals/eas_runner.py": "c40271699d767c1101facbce5bc30b771aeb465765dfc29601e0b9177e7d3541",
-    "src/expo_harbor_evals/evaluation_identity.py": "9a91cd35aa65375e812cfec96b43c1cac506eee850406b70b6e0ae198c02a737",
+    "src/expo_harbor_evals/evaluation_identity.py": "fbb70bcbeefd852d1c5d2112c8221511e1b5a2cf0bbede1791b89591d2a8faab",
     "src/expo_harbor_evals/local_env.py": "d375941c6c3d990c1b784a3e35add4e57cc53e97b8c6957537f6342affc48d39",
     "src/expo_harbor_evals/mac_sandbox_env.py": "bbf5bf5c1b1057f1a8b1d49da317e43f59864478c6cf4c5ac672f40de5e0cb32",
     "src/expo_harbor_evals/metadata.py": "3806a42fc7c49b020ae05f642212d3bb55a939a838f1f6d2fe09a57ef5f29ac9",

@@ -104,3 +104,35 @@ def test_viewer_works_without_a_first_run_and_links_to_tasks(tmp_path):
     assert 'href="/tasks"' in page
     assert "0 runs" in page
     assert "--expo-theme-text-default" in page
+
+
+def test_detail_render_escapes_malformed_metadata():
+    # Exercise the browser rendering entry point, not only escapeHtml itself.
+    script = r"""
+const assert = require('node:assert/strict');
+const fs = require('node:fs'), vm = require('node:vm');
+const data = JSON.parse(fs.readFileSync(0, 'utf8'));
+const task = data.tasks[0];
+const attack = '\"><img src=x onerror=alert(1)>';
+task.metadata.difficulty = attack;
+task.criteria[0].weight = attack;
+task.category = attack;
+const elements = new Map();
+const get = id => {
+  if (!elements.has(id)) elements.set(id, {textContent:'', innerHTML:'', dataset:{}});
+  return elements.get(id);
+};
+get('catalog-data').textContent = JSON.stringify(data);
+vm.runInNewContext(fs.readFileSync('./src/expo_harbor_evals/web/catalog.js', 'utf8'), {
+  document: {getElementById:get, querySelector:()=>({}), querySelectorAll:()=>[], documentElement:{dataset:{}}},
+  location: {hash:'#task='+encodeURIComponent(task.id)},
+  localStorage: {getItem:()=>null}, URLSearchParams,
+  window: {addEventListener:()=>{}, scrollTo:()=>{}},
+});
+assert.ok(!get('main').innerHTML.includes('<img'));
+assert.ok(get('main').innerHTML.includes('&lt;img'));
+assert.ok(get('main').innerHTML.includes('#set='+encodeURIComponent(attack)));
+"""
+    result = subprocess.run(["node", "-e", script], cwd=ROOT, input=json.dumps(build_catalog(ROOT)),
+                            capture_output=True, text=True, timeout=15)
+    assert result.returncode == 0, result.stderr
