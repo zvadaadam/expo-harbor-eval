@@ -52,6 +52,16 @@
       "family": "expo-codegen",
       "definition_sha256": "e0d46e649d4162fc143bd441d032b82211bdd09e94ee9b82d55ad695cbf1d4af"
     },
+    "feedback-12-native-fixed-amount-column": {
+      "path": "tasks/codegen/feedback-12-native-fixed-amount-column",
+      "family": "expo-codegen",
+      "definition_sha256": "84a09c9032a77d84be64a756b00864555ede3451328a713dfec4212482b547ec"
+    },
+    "feedback-13-auth-field-render-path": {
+      "path": "tasks/codegen/feedback-13-auth-field-render-path",
+      "family": "expo-codegen",
+      "definition_sha256": "00880119af3be526a78856e2cc4eb54bb27fa554b71fa56cdb10bd6badc96eaf"
+    },
     "router-02-stack-layout-not-native-stack-import": {
       "path": "tasks/codegen/router-02-stack-layout-not-native-stack-import",
       "family": "expo-codegen",
@@ -146,7 +156,7 @@
     "mobile/templates/sdk56/package-lock.json": "4ed72920fa588efc838c7f3ee488f0f586ef1bb1237118a121274eded9bdc927",
     "mobile/templates/sdk56/package.json": "21c7d107f64fb4a9ca3f4dbe36ff5b3f21d9b66fb003999996ef10935b5c6992",
     "mobile/templates/sdk56/tsconfig.json": "1861e53fa4efc56da0ea5c23c911e0311125b32d9ec67d805118f1a40c5478e1",
-    "pyproject.toml": "9082ae5fab238e55b3fd9fc716de34a00dede627e5ab94d0111ffbe9a0003467",
+    "pyproject.toml": "3c9ef2105bc35f390ff6ba3003b09d2498e8f6a67e3305aeeab871e26e588997",
     "src/expo_harbor_evals/__init__.py": "2785d405887a71a64ea76c6af267fba17ba053ecf0516ec8fe6aaf602503f534",
     "src/expo_harbor_evals/claude_host_agent.py": "3035b5b8ca7b63e26f5c0d73cedc86a486fb85a2e98cc29c9ec1aa19ae147e79",
     "src/expo_harbor_evals/codegen_calibrate.py": "413f90e8997560681c686878fd3a9a58447a02c0550e733e2d79f144adaae7c1",
@@ -154,7 +164,7 @@
     "src/expo_harbor_evals/codegen_rewardkit_runner.py": "e9a2233ef0c5487ad1943cc6aa7a1e4cf8b9d9f8142ec33c51836001703f67aa",
     "src/expo_harbor_evals/codegen_scaffold.py": "8a636ad17ec63fe855d772c728af508ee584d69f56b36c1e04340abb6c9c2d44",
     "src/expo_harbor_evals/eas_runner.py": "c40271699d767c1101facbce5bc30b771aeb465765dfc29601e0b9177e7d3541",
-    "src/expo_harbor_evals/evaluation_identity.py": "b10d40aeb8a3c82c6347e649adcc16b11bb99439ae2bb1a4e99ee00257bf2e99",
+    "src/expo_harbor_evals/evaluation_identity.py": "9a91cd35aa65375e812cfec96b43c1cac506eee850406b70b6e0ae198c02a737",
     "src/expo_harbor_evals/local_env.py": "d375941c6c3d990c1b784a3e35add4e57cc53e97b8c6957537f6342affc48d39",
     "src/expo_harbor_evals/mac_sandbox_env.py": "bbf5bf5c1b1057f1a8b1d49da317e43f59864478c6cf4c5ac672f40de5e0cb32",
     "src/expo_harbor_evals/metadata.py": "3806a42fc7c49b020ae05f642212d3bb55a939a838f1f6d2fe09a57ef5f29ac9",

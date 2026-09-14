@@ -33,7 +33,7 @@ def make_suite(repo: Path) -> dict:
         meta = tomllib.loads(config.read_text())["metadata"]
         tasks[config.parent.name] = {"path": str(config.parent.relative_to(repo)),
             "family": meta["family"], "definition_sha256": task_digest(config.parent)}
-    presentation = {"report.py", "report_view.py", "viewer.py", "export.py"}
+    presentation = {"report.py", "report_view.py", "viewer.py", "export.py", "catalog.py"}
     engine_paths = [p for p in (repo / "src/expo_harbor_evals").glob("*.py") if p.name not in presentation]
     engine_paths += [p for p in (repo / "mobile/templates").rglob("*") if p.is_file()]
     engine_paths += [repo / name for name in ("pyproject.toml", "uv.lock") if (repo / name).exists()]

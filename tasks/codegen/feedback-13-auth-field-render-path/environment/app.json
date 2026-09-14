@@ -1,0 +1,9 @@
+{
+  "expo": {
+    "name": "Trace the rendered authentication form and align its SwiftUI fields with the 52-point submit button.",
+    "slug": "feedback-13-auth-field-render-path",
+    "platforms": [
+      "ios"
+    ]
+  }
+}

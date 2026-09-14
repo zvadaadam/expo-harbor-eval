@@ -9,6 +9,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+from expo_harbor_evals.catalog import theme_css
 from expo_harbor_evals.report import Trial, _series_for, build_series, fmt, fmt_tokens, group_tasks, series_stats
 
 LANES = {
@@ -200,14 +201,11 @@ def render_trial(trial: Trial) -> str:
     </details>'''
 
 
-CSS = """
-:root{color-scheme:light dark;--page:#f5f5f1;--surface:#fff;--ink:#18241f;--muted:#607066;--line:#dde3dc;--accent:#28754f;--pass:#166344;--pass-bg:#e7f3eb;--partial:#825e19;--partial-bg:#fff3d8;--fail:#a03d39;--fail-bg:#fcebea;--error:#6545a0;--error-bg:#efeafa;--pending:#69726d;--pending-bg:#edf0ed}
-
-@media(prefers-color-scheme:dark){:root{--page:#131916;--surface:#1b241f;--ink:#e7ede7;--muted:#a3b0a7;--line:#35433a;--accent:#9bdbb0;--pass:#a2dbb6;--pass-bg:#223b2d;--partial:#eed28a;--partial-bg:#3d3421;--fail:#f0b0a8;--fail-bg:#402a29;--error:#c7b3f5;--error-bg:#302941;--pending:#bbc5bc;--pending-bg:#2c352f}
-}
+CSS = theme_css() + """
+:root{color-scheme:light dark;--page:var(--expo-theme-background-screen);--surface:var(--expo-theme-background-default);--ink:var(--expo-theme-text-default);--muted:var(--expo-theme-text-secondary);--line:var(--expo-theme-border-secondary);--accent:var(--expo-theme-text-link);--pass:var(--expo-theme-text-success);--pass-bg:var(--expo-theme-background-success);--partial:var(--expo-theme-text-warning);--partial-bg:var(--expo-theme-background-warning);--fail:var(--expo-theme-text-danger);--fail-bg:var(--expo-theme-background-danger);--error:var(--expo-theme-text-info);--error-bg:var(--expo-theme-background-info);--pending:var(--expo-theme-text-secondary);--pending-bg:var(--expo-theme-background-element);}
 
 *{box-sizing:border-box}
-body{margin:0;background:var(--page);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--page);color:var(--ink);font:14px/1.5 Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
 main{max-width:1280px;margin:auto;padding:32px 40px 64px}
 a{color:var(--accent)}
 button,input{font:inherit}

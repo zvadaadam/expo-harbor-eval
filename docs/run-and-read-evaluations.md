@@ -161,7 +161,7 @@ do not establish a precise ranking or a general probability of success.
 
 ## Do the tasks and static judging make sense?
 
-Yes, as a focused regression suite. There are **26 task definitions**, not 26
+Yes, as a focused regression suite. There are **28 task definitions**, not 28
 fully runnable Expo apps: 19 coding tasks and 7 fixed-app simulator tasks.
 The external result-import task has been removed. The three native repair profiles are a subset of the 19
 source tasks, not three additional task definitions.

@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "files": {
+    "App.tsx": "daa73ecd643bfd0f0c7860d0af150ee048fb04ed449b4f66d6102dba806c9919",
+    "app.json": "ba47eaa6678e271a22413152cce125d8c7c9678d2e857ffac0b18a6a43fa23cd",
+    "components/AuthNativeForm.tsx": "ee1f29fc772e1dd0be66b90e5735e9d60419fa7a5f166f7bc67753be9f288ade",
+    "components/NativeTextField.tsx": "87a0595331cf09945b8675c5fd4d649608f0fb040e4b83ef33f3f1a0d4868a9e",
+    "package.json": "435eb4d41c88b1829d31a21bf246d879e5c40f611c12b9f4db89e1fe11a97b0e",
+    "screens/AuthScreen.tsx": "8a2da11831d02783ab06812ab1d0659d7d175b8d9bc9ac3dd48aeab155884d70",
+    "screens/SettingsScreen.tsx": "170c9f62579a37f963ea49883773c1a106652e23a046be71c2a115f0d714a403"
+  }
+}

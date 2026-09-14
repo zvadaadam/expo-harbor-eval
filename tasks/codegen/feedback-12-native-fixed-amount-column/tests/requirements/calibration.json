@@ -1,0 +1,12 @@
+{
+  "baseline-comment": {
+    "must_fail": [
+      "native-fixed-column"
+    ]
+  },
+  "distractor": {
+    "must_fail": [
+      "native-fixed-column"
+    ]
+  }
+}

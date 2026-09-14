@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Review Expo Harbor evaluation tasks, acceptance criteria, control fixtures, and validation gaps."
+    />
+    <title>Task library · Expo Evals</title>
+    <style>
+      /* CATALOG_CSS */
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to tasks</a>
+    <header class="topbar">
+      <a class="brand" href="#"
+        ><svg aria-hidden="true" width="27" height="27" viewBox="0 0 32 32">
+          <path
+            fill="currentColor"
+            d="M14.1 5.2c.8-1.4 3-1.4 3.8 0l12 20.2c.5.8.2 1.9-.6 2.4-.9.5-2 .2-2.5-.6L16 9 5.2 27.2c-.5.8-1.6 1.1-2.5.6-.8-.5-1.1-1.6-.6-2.4L14.1 5.2Z"
+          /></svg
+        ><strong>Expo</strong><span class="brand-divider">/</span
+        ><span>Evals</span></a
+      >
+      <div class="top-actions">
+        <span class="quiet-label">Task review</span
+        ><a
+          id="repository-link"
+          class="text-link"
+          href="https://github.com/zvadaadam/expo-harbor-eval"
+          target="_blank"
+          rel="noreferrer"
+          >Repository ↗</a
+        ><button
+          id="theme-toggle"
+          class="icon-button"
+          aria-label="Switch color theme"
+          title="Switch color theme"
+        >
+          ◐
+        </button>
+      </div>
+    </header>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Task navigation">
+        <div class="workspace-label">
+          <span class="workspace-icon">E</span>
+          <div>
+            <strong>Expo Harbor</strong><small>Evaluation workspace</small>
+          </div>
+        </div>
+        <div class="nav-heading">Workspace</div>
+        <nav id="primary-nav"></nav>
+        <div class="nav-heading">Task sets</div>
+        <nav id="category-nav"></nav>
+        <div class="sidebar-foot">
+          <span class="status-dot"></span> From repository files<br /><small
+            >Prompts, criteria, and controls stay together.</small
+          >
+        </div>
+      </aside>
+      <main id="main" tabindex="-1"></main>
+    </div>
+    <dialog id="review-dialog" aria-labelledby="review-title">
+      <div class="dialog-header">
+        <div>
+          <span class="eyebrow">REVIEW HANDOFF</span>
+          <h2 id="review-title">Improve this task</h2>
+        </div>
+        <button class="icon-button" id="close-review" aria-label="Close review">
+          ×
+        </button>
+      </div>
+      <p class="secondary" id="review-description">
+        Edit the proposed request and add your notes. Copy the context into a
+        coding session with this repository.
+      </p>
+      <label class="field-label" for="draft-prompt"
+        >Proposed task prompt <span>Draft only</span></label
+      >
+      <textarea id="draft-prompt" spellcheck="false" rows="9"></textarea>
+      <label class="field-label" for="review-notes">What should improve?</label>
+      <textarea
+        id="review-notes"
+        rows="4"
+        placeholder="For example: the wrong-fix control passes without preserving the visibility toggle. Add a check for…"
+      ></textarea>
+      <details class="context-preview">
+        <summary>Preview copied context</summary>
+        <pre id="context-preview"></pre>
+      </details>
+      <p id="draft-status" class="secondary small" role="status">
+        Drafts stay in this browser. Repository files are changed in your coding
+        session.
+      </p>
+      <div class="dialog-footer">
+        <button class="button secondary-button" id="reset-draft">
+          Reset draft</button
+        ><button class="button primary-button" id="copy-context">
+          Copy review context
+        </button>
+      </div>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <noscript
+      ><p>
+        This task browser needs JavaScript. Read the task files in the
+        repository linked above.
+      </p></noscript
+    >
+    <script id="catalog-data" type="application/json">
+      /* CATALOG_DATA */
+    </script>
+    <script>
+      /* CATALOG_JS */
+    </script>
+  </body>
+</html>

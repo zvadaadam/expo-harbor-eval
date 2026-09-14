@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "files": {
+    "App.tsx": "f8bd94dbc87b9aaea386995050fc92d6130eb507f5cac9d3725a12babd665757",
+    "SummaryRow.tsx": "f15d91a6e2592f7e69dea55ff66c97aee653ec6a2d4bb7be465db8fa51a4958e",
+    "app.json": "2520cbd1b5cac6632b02a7accc5828ce0add9f4943a72fc78eab8c271a4ccf95",
+    "package.json": "4b2f50420dbd571d5fb8fd8ec1b7c97ece07a5545b1e5ac183a5e6716e48c314",
+    "summaryStyles.ts": "faec4ed0e7fdd32419f773a5f0569f152ef394cec2bc93302a2a675467159a54"
+  }
+}

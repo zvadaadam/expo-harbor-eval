@@ -1,0 +1,13 @@
+{
+  "baseline-comment": {
+    "must_fail": [
+      "fixed-outer-field-height"
+    ]
+  },
+  "distractor": {
+    "must_fail": [
+      "rendered-authentication-path",
+      "fixed-outer-field-height"
+    ]
+  }
+}

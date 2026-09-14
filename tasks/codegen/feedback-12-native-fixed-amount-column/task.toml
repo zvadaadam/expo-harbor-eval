@@ -1,0 +1,46 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/feedback-12-native-fixed-amount-column"
+description = "Keep a fixed amount column readable under native flex layout without losing the visibility toggle."
+authors = [
+    { name = "Expo Harbor Evals" },
+]
+keywords = [
+    "react-native",
+    "expo",
+    "harbor",
+    "codegen",
+    "llm-judge",
+    "expo-feedback",
+]
+
+[metadata]
+family = "expo-codegen"
+category = "expo-feedback"
+tier = "code-gen"
+difficulty = "medium"
+source = "expo-cli-feedback"
+feedback_id = "69447628ec32"
+feedback_record_id = "01a08c5b-a9e5-7bae-b6f4-5035e89568dd"
+motivation = "Reconstructed from an Android 360dp report where web validation missed a width/flex conflict. The original source and exact patch were not supplied. This fixture reproduces collapse of the amount column under native Yoga defaults while the same styles preserve its width under useWebDefaults. RN 0.86.3 Node.cpp and Yoga 3.2.1 confirm positive flex and flex-basis/default-shrink semantics. It measures resolving rendered native layout constraints, not memorizing a ban on flex shorthand. The headless Yoga check uses stipulated text metrics, not an Android screenshot or the exact RN-bundled Yoga build."
+distractor = "Making only the description shrink looks plausible but leaves the amount's positive-flex zero-basis conflict intact. Reconstructed wrong approach; exact original patch was not supplied."
+requirements = 4
+verifier = "rewardkit-weighted-binary"
+validation_status = "requires-judge-calibration"
+authoring_checks = ["tests/contracts/run-controls.mjs", "tests/contracts/render-fixture.mjs", "tests/test_native_contracts.py"]
+reference_validation = "Offline React render-path and control checks only; Yoga checks for the layout fixture. No model, source-judge, native build or simulator run."
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 900.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+workdir = "/app"
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240

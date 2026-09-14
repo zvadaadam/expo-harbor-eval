@@ -14,6 +14,7 @@ dependencies = [
 [project.scripts]
 expo-eval-report = "expo_harbor_evals.report:main"
 expo-eval-viewer = "expo_harbor_evals.viewer:main"
+expo-eval-catalog = "expo_harbor_evals.catalog:main"
 expo-eval-export = "expo_harbor_evals.export:main"
 expo-codegen-calibrate = "expo_harbor_evals.codegen_calibrate:main"
 expo-simbench-calibrate = "expo_harbor_evals.simbench_calibrate:main"

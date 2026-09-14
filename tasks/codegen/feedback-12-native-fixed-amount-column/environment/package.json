@@ -1,0 +1,14 @@
+{
+  "name": "feedback-12-native-fixed-amount-column",
+  "version": "1.0.0",
+  "private": true,
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start"
+  },
+  "dependencies": {
+    "expo": "57.0.21",
+    "react": "19.2.3",
+    "react-native": "0.86.3"
+  }
+}

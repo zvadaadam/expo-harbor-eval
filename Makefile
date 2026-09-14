@@ -9,11 +9,16 @@ HARBOR_WITH ?=
 help:
 	@echo "Read README.md and docs/repository-map.md for the layout."
 	@echo "Safe checks: make test; make check"
-	@echo "Results: make viewer; make report; make export"
+	@echo "Review tasks: make catalog; Results: make viewer; make report; make export"
 	@echo "Evaluation targets use model tokens and/or simulator compute. See docs/run-and-read-evaluations.md."
 
 test:
 	uv run pytest -q
+
+# One portable HTML file; reads task files without running an evaluation.
+.PHONY: catalog
+catalog:
+	uv run expo-eval-catalog
 
 check:
 	uv run expo-eval-suite check

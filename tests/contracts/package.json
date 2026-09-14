@@ -1,0 +1,12 @@
+{
+  "name": "expo-eval-authoring-checks",
+  "private": true,
+  "type": "module",
+  "description": "Offline checks of authored control fixtures; not a native runtime or scoring judge.",
+  "dependencies": {
+    "esbuild": "0.28.2",
+    "react": "19.2.3",
+    "react-test-renderer": "19.2.3",
+    "yoga-layout": "3.2.1"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Keep a fixed amount column readable under native flex layout without losing the visibility toggle.",
+    "slug": "feedback-12-native-fixed-amount-column",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ]
+  }
+}
