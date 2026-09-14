@@ -2,6 +2,8 @@
 
 The task library is a website generated from the actual repository files. It
 lets a reviewer inspect a task before spending anything on an evaluation.
+Keep this website local. Do not deploy it or upload this repository to a hosting
+service unless the user explicitly requests that in a later instruction.
 
 ```sh
 uv sync --dev
@@ -78,19 +80,17 @@ handoff. Color values come from `@expo/styleguide-base` 3.3.0. Asset licenses ar
 included in every generated HTML file. The layout adapts to smaller screens and
 supports keyboard focus, a modal dialog, reduced motion and empty search states.
 
-Build the static hosting artifact with:
+The local viewer binds to `127.0.0.1`. In Conductor, use the workspace's allocated
+port to keep concurrent workspaces separate:
 
 ```sh
-uv run expo-eval-catalog -o dist/index.html
+uv run expo-eval-viewer --port "$CONDUCTOR_PORT"
+# Open http://127.0.0.1:<the printed port>/tasks
 ```
 
-`.openai/hosting.json` identifies the private Sites project and declares `dist/`
-as static output. Hosting is independent of EAS evaluation workers. Source is
-committed and the matching generated artifact is deployed; no task prompts or
-feedback credentials are fetched at request time. Changing the site's audience
-is a separate sharing decision. Anyone receiving the standalone HTML can read
-its embedded prompts and hidden reference solutions, so keep it with reviewers
-rather than including it in a benchmark agent's workspace.
+No hosting configuration is needed. The standalone HTML includes prompts and
+hidden reference solutions; keep it with reviewers rather than including it in
+a benchmark agent's workspace.
 
 `tests/test_catalog.py` checks coverage, source escaping, portable assets,
 definition revisions, filtering and copied context. React/Yoga control tests

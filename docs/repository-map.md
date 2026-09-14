@@ -21,8 +21,7 @@ Local versus EAS is where a check runs, not a separate task family.
 | `results/` | Committed history | Small finished-run summaries in `history.jsonl`; no raw simulator bundles |
 | `runs/` | Generated raw evidence | One directory per job, containing attempts, submitted code, logs, results and evidence; gitignored |
 | `outputs/` | Generated presentations | Offline result reports and the task catalog; gitignored |
-| `dist/` | Website build | Generated portable catalog for static hosting; gitignored |
-| `.openai/` | Website hosting | Sites project identity and static output location; no credentials |
+| `dist/` | Optional build output | Generated package/build artifacts; gitignored |
 | `.context/` | Local working notes | Research downloads, prepared payloads and illustrative previews; gitignored by the workspace |
 | `.claude/skills/` | Contributor workflow | The signal-triage instructions for deciding which feedback should become an eval; not supplied as a benchmark task |
 | `.venv/` | Python dependencies | The local environment installed by `uv`; generated and gitignored |
