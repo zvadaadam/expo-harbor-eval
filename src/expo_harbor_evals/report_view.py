@@ -9,9 +9,11 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+from expo_harbor_evals.catalog import theme_css
 from expo_harbor_evals.report import Trial, _series_for, build_series, fmt, fmt_tokens, group_tasks, series_stats
 
 LANES = {
+    "source-unvalidated": ("Unvalidated source grades", "Diagnostic pilot · calibration did not pass", "The judge did not reliably recognize every control. These are raw grades, not validated passes or a model ranking. Inspect each task's calibration failure before interpreting results."),
     "native-ui": ("Native app behavior", "Built candidate apps · native UI checks", "Experimental. Calibrate the reference and broken apps on the target runtime before interpreting model results."),
     "source-review": ("Source review", "Submitted code · criterion-based judging", "A source score measures the declared code criteria. It does not establish that the app builds or works on a device."),
     "device-use": ("Simulator operation", "Fixed apps · model and driver behavior", "These trials measure operating a known app. They do not measure the quality of generated Expo code."),
@@ -28,6 +30,12 @@ def esc(value) -> str:
 
 def lane_for(trial: Trial) -> str:
     return trial.measurement if trial.measurement in LANES else "unversioned"
+
+
+def outcome_label(outcome: str, measurement: str = "") -> str:
+    if measurement == "source-unvalidated" and outcome in ("pass", "partial", "fail"):
+        return {"pass": "Raw full credit", "partial": "Raw partial", "fail": "Raw zero"}[outcome]
+    return LABELS[outcome]
 
 
 def coverage(trials: list[Trial]) -> tuple[set[str], int | None]:
@@ -53,7 +61,7 @@ def short_task(name: str) -> str:
 
 def dots(trials: list[Trial]) -> str:
     return "".join(f'<a class="attempt {t.outcome}" href="#{trial_id(t)}" '
-                   f'aria-label="{esc(t.name)}: {LABELS[t.outcome]}" title="{esc(t.name)}: {LABELS[t.outcome]}">'
+                   f'aria-label="{esc(t.name)}: {outcome_label(t.outcome, t.measurement)}" title="{esc(t.name)}: {outcome_label(t.outcome, t.measurement)}">'
                    f'{SYMBOLS[t.outcome]}</a>' for t in trials)
 
 
@@ -72,6 +80,7 @@ def stack(trials: list[Trial], expected: int | None) -> str:
 def render_configurations(trials: list[Trial]) -> str:
     rows = []
     tasks = group_tasks(trials)
+    unvalidated = any(t.measurement == "source-unvalidated" for t in trials)
     for entry in build_series(trials):
         records = [t for t in trials if t.series_key == entry.key]
         first = records[0]
@@ -88,12 +97,13 @@ def render_configurations(trials: list[Trial]) -> str:
             <small>{esc(' · '.join(details))}</small>{stack(records, expected)}
             <small>{counts['pass']} pass · {counts['partial'] + counts['fail']} incomplete · {counts['error']} errors
             · {counts['pending']} pending · {missing} missing</small></td>
-          <td class="number"><strong>{counts['pass']} / {stat.attempts}</strong><small>complete attempts</small></td>
-          <td class="number"><strong>{fmt(stat.mean)}</strong><small>valid scores only</small></td>
+          <td class="number"><strong>{counts['pass']} / {stat.attempts}</strong><small>{'raw full-credit grades' if unvalidated else 'complete attempts'}</small></td>
+          <td class="number"><strong>{fmt(stat.mean)}</strong><small>{'unvalidated grades' if unvalidated else 'valid scores only'}</small></td>
           <td class="number"><strong>{len({t.task for t in records})} / {len(names)}</strong><small>tasks observed</small><small>{plan}</small></td>
           <td class="number"><strong>{cost}</strong><small>{cost_known}/{len(records)} costs recorded</small></td>
         </tr>''')
-    return '<div class="table-scroll"><table class="config-table"><thead><tr><th>Configuration</th><th>Completion</th><th>Mean score</th><th>Coverage</th><th>Agent spend</th></tr></thead><tbody>' + "".join(rows) + '</tbody></table></div>'
+    completion = "Raw full credit" if unvalidated else "Completion"
+    return f'<div class="table-scroll"><table class="config-table"><thead><tr><th>Configuration</th><th>{completion}</th><th>Mean score</th><th>Coverage</th><th>Agent spend</th></tr></thead><tbody>' + "".join(rows) + '</tbody></table></div>'
 
 
 def render_matrix(trials: list[Trial]) -> str:
@@ -125,7 +135,8 @@ def render_matrix(trials: list[Trial]) -> str:
             scores = [t.reward for t in records if t.outcome not in ("pending", "error")]
             score = fmt(sum(scores) / len(scores)) if scores else "—"
             missing_label = f'<small>{missing} missing result{"s" if missing != 1 else ""}</small>' if missing else ''
-            cells.append(f'<td><div class="result-cell {tone}"><div class="cell-head"><strong>{counts["pass"]}/{n} pass</strong><span>score {score}</span></div>{dots(records)}{missing_label}</div></td>')
+            pass_label = "raw full credit" if records[0].measurement == "source-unvalidated" else "pass"
+            cells.append(f'<td><div class="result-cell {tone}"><div class="cell-head"><strong>{counts["pass"]}/{n} {pass_label}</strong><span>score {score}</span></div>{dots(records)}{missing_label}</div></td>')
         rows.append(f'<tr data-task-row data-search="{esc(name.replace("-", " "))}"><th scope="row" class="task-name">{esc(short_task(name))}<small>{esc(name)}</small></th>{"".join(cells)}</tr>')
     return f'<div class="table-scroll"><table class="matrix"><thead><tr><th>Task / configuration</th>{"".join(heads)}</tr></thead><tbody>{"".join(rows)}</tbody></table></div>'
 
@@ -184,30 +195,35 @@ def render_trial(trial: Trial) -> str:
         "Source judge": " · ".join(str(trial.judge[k]) for k in ("agent", "model") if trial.judge.get(k)) or "Not recorded / programmatic",
         "Agent cost": f"${trial.cost_usd:.2f}" if trial.cost_usd is not None else "Not recorded",
         "Input / cache / output tokens": " / ".join(fmt_tokens(n) for n in (trial.input_tokens, trial.cache_tokens, trial.output_tokens)),
-        "Calibration": "Not established by this report",
+        "Calibration": trial.provenance.get("calibration_warning") or "Not established by this report",
     }
     metadata = "".join(f'<dt>{esc(k)}</dt><dd>{esc(v)}</dd>' for k, v in provenance.items())
     score = "Pending" if trial.pending else f"Score {fmt(trial.reward)}"
     error = f'<p class="error-message">{esc(trial.error)}</p>' if trial.error else ""
+    if warning := trial.provenance.get("calibration_warning"):
+        error += f'<p class="error-message">{esc(warning)}</p>'
+    inspection = ""
+    if trial.inspection.get("note"):
+        inspection = f'<h4>Follow-up source inspection · not a re-score</h4><p>{esc(trial.inspection["note"])}</p>'
+        if patch := trial.inspection.get("patch"):
+            inspection += f'<details class="log"><summary>Candidate changes</summary><pre>{esc(patch)}</pre></details>'
     transcript = f'<details class="log"><summary>Verifier log excerpt</summary><pre>{esc(log)}</pre></details>' if log else ""
     return f'''<details class="trial-detail" id="{trial_id(trial)}" data-detail data-search="{esc(trial.task.replace('-', ' '))}">
-      <summary><span class="status {outcome}">{SYMBOLS[outcome]} {LABELS[outcome]}</span>
+      <summary><span class="status {outcome}">{SYMBOLS[outcome]} {outcome_label(outcome, trial.measurement)}</span>
         <span class="trial-title"><strong>{esc(short_task(trial.task))}</strong><small>{esc(_series_for(trial.agent, trial.model).label)} · {esc(trial.name)}</small></span>
         <span class="trial-score">{score}</span><span class="expand" aria-hidden="true">+</span></summary>
-      <div class="trial-body">{error}<div class="evidence-columns"><div><h4>{'Native / state checks' if trial.checks else 'Source criteria'}</h4>
+      <div class="trial-body">{error}{inspection}<div class="evidence-columns"><div><h4>{'Native / state checks' if trial.checks else 'Source criteria'}</h4>
       <ol class="checks">{''.join(steps)}</ol>{'<p class="subtle">No check details recorded.</p>' if not steps else ''}</div><div><h4>Recorded evidence</h4>{evidence}</div></div>
       {transcript}<details class="provenance"><summary>Reproduction details</summary><dl>{metadata}</dl></details></div>
     </details>'''
 
 
-CSS = """
-:root{color-scheme:light dark;--page:#f5f5f1;--surface:#fff;--ink:#18241f;--muted:#607066;--line:#dde3dc;--accent:#28754f;--pass:#166344;--pass-bg:#e7f3eb;--partial:#825e19;--partial-bg:#fff3d8;--fail:#a03d39;--fail-bg:#fcebea;--error:#6545a0;--error-bg:#efeafa;--pending:#69726d;--pending-bg:#edf0ed}
+CSS = theme_css() + """
+:root{color-scheme:light dark;--page:var(--expo-theme-background-screen);--surface:var(--expo-theme-background-default);--ink:var(--expo-theme-text-default);--muted:var(--expo-theme-text-secondary);--line:var(--expo-theme-border-secondary);--accent:var(--expo-theme-text-link);--pass:var(--expo-theme-text-success);--pass-bg:var(--expo-theme-background-success);--partial:var(--expo-theme-text-warning);--partial-bg:var(--expo-theme-background-warning);--fail:var(--expo-theme-text-danger);--fail-bg:var(--expo-theme-background-danger);--error:var(--expo-theme-text-info);--error-bg:var(--expo-theme-background-info);--pending:var(--expo-theme-text-secondary);--pending-bg:var(--expo-theme-background-element);}
 
-@media(prefers-color-scheme:dark){:root{--page:#131916;--surface:#1b241f;--ink:#e7ede7;--muted:#a3b0a7;--line:#35433a;--accent:#9bdbb0;--pass:#a2dbb6;--pass-bg:#223b2d;--partial:#eed28a;--partial-bg:#3d3421;--fail:#f0b0a8;--fail-bg:#402a29;--error:#c7b3f5;--error-bg:#302941;--pending:#bbc5bc;--pending-bg:#2c352f}
-}
-
+[data-panel="source-unvalidated"]{--pass:var(--pending);--pass-bg:var(--pending-bg)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--page);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--page);color:var(--ink);font:14px/1.5 Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
 main{max-width:1280px;margin:auto;padding:32px 40px 64px}
 a{color:var(--accent)}
 button,input{font:inherit}
@@ -381,11 +397,11 @@ def render_report(trials, title, run_names, nav_html="", extra_html="", refresh=
         lanes[lane_for(t)].append(t)
     panels = []
     tabs = []
-    legend = '<div class="legend">' + "".join(f'<span><b class="check-symbol {s}">{SYMBOLS[s]}</b>{LABELS[s]}</span>' for s in LABELS) + '</div>'
     for lane, (label, subtitle, note) in LANES.items():
         records = lanes.get(lane, [])
         if not records:
             continue
+        legend = '<div class="legend">' + "".join(f'<span><b class="check-symbol {s}">{SYMBOLS[s]}</b>{outcome_label(s, lane)}</span>' for s in LABELS) + '</div>'
         if any(t.agent == "calibration-control" for t in records):
             note += " Calibration controls show application outcomes: a broken baseline or distractor should fail. Check calibration.json for the complete control verdict."
         tabs.append(f'<button type="button" class="lane-tab" data-lane="{lane}" aria-pressed="false" aria-controls="lane-{lane}">{label}<span>{len(records)}</span></button>')
@@ -397,7 +413,7 @@ def render_report(trials, title, run_names, nav_html="", extra_html="", refresh=
         usage = f"{fmt_tokens(sum(output_tokens))} output tokens" if output_tokens else "Tokens not recorded"
         cards = [
             ("Recorded outcomes", str(finished), f"{counts['pending']} pending · {len({t.task for t in records})} observed tasks"),
-            ("Complete attempts", f"{counts['pass']} <span>/ {finished}</span>", "Includes execution errors in the denominator"),
+            ("Raw full-credit grades" if lane == "source-unvalidated" else "Complete attempts", f"{counts['pass']} <span>/ {finished}</span>", "Calibration did not pass" if lane == "source-unvalidated" else "Includes execution errors in the denominator"),
             ("Execution errors", str(counts['error']), "Separate from valid failing scores"),
             ("Recorded agent spend", spend, f"{len(known_costs)}/{len(records)} records · {usage}"),
         ]

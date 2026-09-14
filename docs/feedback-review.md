@@ -1,18 +1,18 @@
-# Feedback review — 10 September 2026
+# Feedback review — 14 September 2026
 
-The live Expo CLI Feedback MCP contained 350 conversations and 357 messages.
-We read all **14 `evals` conversations and the one legacy `eval-candidate`** in
-full. A text search for `Task:` returned the same 15. This is an exhaustive
-review of those two categories at that time, not a review of all 350 reports;
-other categories may contain additional uncategorized candidates.
+The live Expo CLI Feedback MCP contained **368 conversations and 376 messages**.
+We read all **16 `evals` conversations and the one legacy `eval-candidate`** in
+full, including metadata. A text search for `Task:` returned the same 17. Two
+reports arrived after the September 10 review; the other 15 texts are unchanged.
+This covers the two eval categories, not every report in the service.
 
 | Category | Conversations |
 |---|---:|
-| skills | 152 |
-| unknown | 107 |
-| docs | 38 |
-| eas-cli | 16 |
-| evals | 14 |
+| skills | 164 |
+| unknown | 109 |
+| docs | 39 |
+| eas-cli | 17 |
+| evals | 16 |
 | expo-cli | 10 |
 | mcp | 6 |
 | simulator | 5 |
@@ -24,24 +24,80 @@ other categories may contain additional uncategorized candidates.
 | Outcome | Count | Findings |
 |---|---:|---|
 | Already covered | 7 | Sticky shop grid, modal handoff, relative slider, sortable layers, Android modal keyboard, invite web fallback, Three scene cleanup |
-| Added locally | 1 | Anonymous paywall eligibility (`feedback-11`) |
+| Task authored | 3 | Anonymous paywall eligibility (`feedback-11`), native fixed amount column (`feedback-12`), authentication field render path (`feedback-13`) |
 | Suitable, still planned | 1 | Calendar subrequest budgeting (`feedback-07`) |
 | Needs evidence | 4 | Water-ripple transition, initial large-title visibility, Skia card fidelity, notification service extension bundle metadata |
 | Outside the current task families | 2 | Physical-device tunnel instability and local-build disk/toolchain failures |
 
-Five newer reports were absent from the old triage ledger. One became a task;
-four need more evidence. The previously missing record IDs for the Three,
-tunnel and local-build reports are now backfilled. No existing task was
-duplicated. Existing calibration notes are historical evidence, not fresh runs.
+The human reasoning is in [TRIAGE.md](../tasks/TRIAGE.md). The
+[structured inventory](../tasks/feedback-reviews.json) records D1 UUIDs, CLI IDs,
+text checksums, task IDs and accepted service review revisions. All 17 decisions
+were saved through `feedback_review_eval` and returned by the service's current
+review filter. The legacy Linear link was preserved. No classifier or issue
+routing was changed. “Added” means authored, not calibrated.
 
-The human reasoning is in [TRIAGE.md](../tasks/TRIAGE.md). The corresponding
-[structured review inventory](../tasks/feedback-reviews.json) holds the stable
-D1 record UUID, CLI feedback ID, a text checksum and decisions with task IDs.
-It explicitly records that the decisions have **not been applied to the live
-feedback service**. No extra top-level folder or vendored feedback checkout is
-needed.
+## New since September 10
 
-## The new task
+### Native amount column (`feedback-12`)
+
+[Task prompt](../tasks/codegen/feedback-12-native-fixed-amount-column/instruction.md).
+The report describes a fixed column displaced on Android at 360dp while web
+validation passed. The original app was not supplied. Our reconstructed fixture
+uses shared positive `flex`, an explicit width, and longhand overrides. With
+native Yoga defaults the amount region collapses to zero; with Yoga's
+`useWebDefaults` the amount region remains 112dp. This is a related reproducible
+constraint failure, not a claim to recreate the exact reported off-screen image.
+
+Two valid repairs pass four widths (320/360/390/430dp), two descriptions, and
+actual React visibility-toggle callbacks. A plausible repair that only makes
+the description shrink leaves the amount conflict broken. The check runs Yoga
+3.2.1 with stipulated text metrics. It is neither a browser rendering test nor
+an Android font/layout screenshot. RN 0.86.3's bundled Yoga `Node.cpp` was also
+read to confirm its flex-basis and shrink resolution. See the
+[Yoga styling defaults](https://www.yogalayout.dev/docs/styling/) and
+[React Native flex documentation](https://reactnative.dev/docs/flexbox/).
+
+### Authentication render path (`feedback-13`)
+
+[Task prompt](../tasks/codegen/feedback-13-auth-field-render-path/instruction.md).
+The report describes three edits to a reusable field that never affected the
+separate SwiftUI authentication form. The reconstructed app has sign-in,
+create-account and Settings routes. Auth fields must match a 52-point button;
+Settings intentionally keeps its 44-point field.
+
+The tests render the actual React component tree, record the native control
+boundary, follow input/submit callbacks, and inspect ordered frame/padding
+modifiers. Both correct designs pass. A wrong fix to the similarly named Settings
+component leaves authentication broken and changes unrelated behavior.
+`@expo/ui` 57.0.18 declarations confirm the supplied Host, input and modifier APIs.
+See [Expo UI TextField](https://docs.expo.dev/versions/latest/sdk/ui/swift-ui/textfield/)
+and [SwiftUI modifier composition](https://developer.apple.com/documentation/swiftui/configuring-views).
+The modifier probe is a bounded authoring contract, not SwiftUI geometry, Dynamic
+Type, keyboard or native interaction validation.
+
+### Running the inexpensive checks
+
+```sh
+uv sync --dev
+npm ci --prefix tests/contracts
+uv run pytest tests/test_native_contracts.py -q
+# Inspect one authored control as JSON:
+node tests/contracts/run-controls.mjs layout reference
+node tests/contracts/run-controls.mjs auth distractor
+```
+
+The eight new control tests exercise the baseline, reference, alternative and
+wrong fix for both tasks. The JS runner only accepts these repository-owned
+controls; it is not a sandbox for untrusted model submissions. Package versions
+are pinned in `tests/contracts/package-lock.json`.
+
+The subsequent [single-attempt source pilot](new-feedback-pilot.md) found a
+calibration failure in each task. Both now declare `source-calibration-failed`,
+have no native runtime profile, and remain outside the frozen 18-task comparison
+jobs. The pilot retains raw grades and source-inspection notes separately.
+Native geometry still needs a separate authorized runtime run.
+
+## Paywall task added September 10
 
 [`feedback-11-anonymous-paywall-eligibility`](../tasks/codegen/feedback-11-anonymous-paywall-eligibility/instruction.md)
 tests application state reasoning. The original report describes a pre-render
@@ -70,7 +126,7 @@ The task remains `requires-judge-calibration`. Its four source criteria also
 check that the helper remains connected to the screen.
 
 Existing comparison jobs deliberately retain their frozen 18-task source
-cohort. The repository now has 19 coding definitions and seven simulator tasks.
+cohort. The repository now has 21 coding definitions and seven simulator tasks.
 The new task can be inspected without executing it:
 
 ```sh
@@ -124,13 +180,13 @@ latest 200 loaded conversations, while MCP search paginates the whole database.
 
 Those worker changes were merged in
 [Feedback Worker PR #26](https://github.com/expo/cli-feedback-worker/pull/26)
-and deployed on 10 September 2026. Migration `0017`, production health, tool
-registration and review-state search were verified. The 15 decisions in this
-repository have not yet been saved to the service. Before saving, reread each
-conversation including messages and metadata, compare the intended decision
-with the current evidence, then use freshly read revisions. A checksum is an
-aid to comparison, not permission to skip reviewing new evidence. Do not infer
-review state from the classifier or mark every `non_actionable` report reviewed.
+and deployed on 10 September 2026. All 17 review decisions were saved on
+September 14 after rereading complete evidence and using current revisions.
+The current service search returns all 17 as reviewed. Future new/edited messages
+will make reviews stale. A checksum aids comparison; it does not replace reading
+new evidence. Do not infer review state from the classifier's `non_actionable`
+status. No Feedback Worker code or deployment was needed for this review.
 
-No model evaluation, native build, simulator, EAS job, semantic embedding,
-feedback reprocessing or Linear mutation was run for this review.
+The feedback inventory review itself ran no model evaluation, native build,
+simulator, EAS job, semantic embedding, feedback reprocessing or Linear mutation.
+The separately authorized PR pilot is documented in the guide linked above.

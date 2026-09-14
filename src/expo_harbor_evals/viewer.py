@@ -29,26 +29,23 @@ from expo_harbor_evals.report import (
     series_stats,
 )
 
+from expo_harbor_evals.catalog import build_html as build_catalog_html, theme_css
+
 ACTIVE_WINDOW_SEC = 120
 
-BASE_CSS = """
+BASE_CSS = theme_css() + """
 :root {
-  --surface-1: #fcfcfb; --page: #f9f9f7;
-  --text-primary: #0b0b0b; --text-secondary: #52514e; --muted: #898781;
-  --grid: #e1e0d9; --border: rgba(11,11,11,0.10);
-  --good: #0ca30c; --critical: #d03b3b; --warning: #b96f00; --accent: #2a78d6;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --surface-1: #1a1a19; --page: #0d0d0d;
-    --text-primary: #ffffff; --text-secondary: #c3c2b7; --muted: #898781;
-    --grid: #2c2c2a; --border: rgba(255,255,255,0.10);
-    --warning: #fab219; --accent: #3987e5;
-  }
+  color-scheme: light dark;
+  --surface-1: var(--expo-theme-background-default); --page: var(--expo-theme-background-screen);
+  --text-primary: var(--expo-theme-text-default); --text-secondary: var(--expo-theme-text-secondary);
+  --muted: var(--expo-theme-text-secondary); --grid: var(--expo-theme-border-secondary);
+  --border: var(--expo-theme-border-secondary); --good: var(--expo-theme-text-success);
+  --critical: var(--expo-theme-text-danger); --warning: var(--expo-theme-text-warning);
+  --accent: var(--expo-theme-text-link);
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--page); color: var(--text-primary);
-  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  font: 15px/1.5 Inter, system-ui, -apple-system, "Segoe UI", sans-serif; }
 main { max-width: 1020px; margin: 0 auto; padding: 28px 24px 64px; }
 h1 { font-size: 20px; margin: 0 0 16px; }
 h2 { font-size: 15px; margin: 28px 0 10px; }
@@ -133,6 +130,8 @@ def summarize_run(run_dir: Path) -> RunSummary:
         for entry in series
     ]
     headline = " · ".join(parts[:5]) + (" · …" if len(parts) > 5 else "")
+    if any(t.measurement == "source-unvalidated" for t in trials):
+        headline = "Unvalidated raw grades · " + headline
     return RunSummary(
         name=run_dir.name,
         path=run_dir,
@@ -145,7 +144,7 @@ def summarize_run(run_dir: Path) -> RunSummary:
 
 def render_index(runs_dir: Path) -> str:
     run_dirs = sorted(
-        (d for d in runs_dir.iterdir() if d.is_dir()),
+        (d for d in runs_dir.iterdir() if d.is_dir()) if runs_dir.is_dir() else [],
         key=latest_mtime,
         reverse=True,
     )
@@ -172,6 +171,7 @@ def render_index(runs_dir: Path) -> str:
             "</tr>"
         )
     body = (
+        '<div class="nav"><a href="/tasks">← Task library</a></div>'
         "<h1>Expo Harbor evals</h1>"
         f'<div class="nav">{len(run_dirs)} runs in {html.escape(str(runs_dir))}'
         " · refreshes automatically</div>"
@@ -210,6 +210,8 @@ def render_history_section(history_path: Path = Path("results/history.jsonl")) -
             for s in entry.get("series", [])
             if s.get("mean") is not None
         )
+        if entry.get("calibration_warnings"):
+            headline = "Unvalidated raw grades · " + headline
         finished = str(entry.get("finished_at", ""))[:16].replace("T", " ")
         total_cost = entry.get("total_cost_usd")
         rows.append(
@@ -409,6 +411,7 @@ def render_trial(runs_dir: Path, run_name: str, trial_name: str) -> str | None:
 
 class ViewerHandler(BaseHTTPRequestHandler):
     runs_dir: Path = Path("runs")
+    repo_dir: Path = Path.cwd()
 
     def do_GET(self) -> None:  # noqa: N802 (http.server API)
         parts = [unquote(p) for p in self.path.strip("/").split("/") if p]
@@ -419,6 +422,8 @@ class ViewerHandler(BaseHTTPRequestHandler):
         try:
             if not parts:
                 document = render_index(self.runs_dir)
+            elif parts == ["tasks"]:
+                document = build_catalog_html(self.repo_dir, local_viewer=True)
             elif parts[0] == "run" and len(parts) == 2:
                 document = render_run(self.runs_dir, parts[1])
             elif parts[0] == "run" and len(parts) == 4 and parts[2] == "trial":
@@ -451,18 +456,19 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("runs_dir", type=Path, nargs="?", default=Path("runs"))
     parser.add_argument("--port", type=int, default=4477)
+    parser.add_argument("--repo", type=Path, default=Path.cwd(), help="Repository containing task definitions")
     args = parser.parse_args()
 
-    if not args.runs_dir.is_dir():
-        raise SystemExit(f"runs directory not found: {args.runs_dir}")
-
     ViewerHandler.runs_dir = args.runs_dir.resolve()
+    ViewerHandler.repo_dir = args.repo.resolve()
     server = ThreadingHTTPServer(("127.0.0.1", args.port), ViewerHandler)
     print(f"Serving {ViewerHandler.runs_dir} on http://127.0.0.1:{args.port}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
         pass
+    finally:
+        server.server_close()
 
 
 if __name__ == "__main__":

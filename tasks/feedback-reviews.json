@@ -1,10 +1,56 @@
 {
   "schema_version": 1,
-  "reviewed_at": "2026-09-10",
-  "scope": "All 14 evals and one eval-candidate record; Task: search returns the same 15",
-  "applied_to_feedback_service": false,
-  "apply_note": "Local review inventory only. The review tool is deployed via expo/cli-feedback-worker PR #26. Reread full current messages and metadata before saving each review with its current revisions. The text checksum is a comparison aid, not authorization to bypass review.",
+  "reviewed_at": "2026-09-14",
+  "scope": "All 16 evals and one legacy eval-candidate record; Task: search returns the same 17",
+  "applied_to_feedback_service": true,
+  "apply_note": "All 17 conversations were reread in full on 2026-09-14 and saved with current source/review revisions. The service accepted every save. Added means authored, not calibrated. Future message changes make service reviews stale; reread the conversation before updating.",
   "items": [
+    {
+      "feedback_record_id": "01a08c5b-a9e5-7bae-b6f4-5035e89568dd",
+      "cli_feedback_id": "69447628ec32",
+      "category": "evals",
+      "findings": [
+        {
+          "key": "native-fixed-amount-column",
+          "decision": "added",
+          "reason": "Authored a reconstructed Expo SDK 57 layout fixture. Two references preserve the 112dp amount column across four widths and two descriptions; baseline and a shrink-only distractor fail native Yoga geometry while web defaults preserve the amount width. Actual React callbacks preserve masking and fixture switching. Uses Yoga 3.2.1 with stipulated text metrics, not the RN-bundled engine or an Android screenshot. Source-judge and native calibration remain pending.",
+          "taskIds": [
+            "feedback-12-native-fixed-amount-column"
+          ]
+        }
+      ],
+      "reviewed_feedback_sha256": "6bf8e3d2ade1f47165ed7472e8a70dc9165dd1ebd48f3e4f7c47e6e891edc29d",
+      "service_review": {
+        "sourceRevision": 1,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 1,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:38.073Z"
+      }
+    },
+    {
+      "feedback_record_id": "01a08c74-bdb3-7366-964e-aca18e913ae1",
+      "cli_feedback_id": "bf5d9d3cfaa3",
+      "category": "evals",
+      "findings": [
+        {
+          "key": "auth-field-render-path",
+          "decision": "added",
+          "reason": "Authored reconstructed sign-in/create-account routes and a separate settings field, with @expo/ui 57.0.18 APIs verified from source. Two reference fixes pass React render-path, frame/padding declaration, input and submit controls; editing only the unused-for-auth reusable field fails. Offline controls model modifier declarations, not SwiftUI geometry or keyboard behavior. Source-judge and iOS calibration remain pending.",
+          "taskIds": [
+            "feedback-13-auth-field-render-path"
+          ]
+        }
+      ],
+      "reviewed_feedback_sha256": "427baff5fa254a8bb092ba62eb781620ff6747d0cd5188d493ac244d15956473",
+      "service_review": {
+        "sourceRevision": 1,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 1,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:38.169Z"
+      }
+    },
     {
       "feedback_record_id": "01a0865d-51f0-7e67-afe9-d805e3d18308",
       "cli_feedback_id": "10c42ea311bb",
@@ -17,7 +63,14 @@
           "reason": "Missing original HTML reference, screen recordings and an agreed frame/motion oracle. A text narrative cannot grade refraction or transition fidelity.",
           "taskIds": []
         }
-      ]
+      ],
+      "service_review": {
+        "sourceRevision": 0,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 0,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:38.268Z"
+      }
     },
     {
       "feedback_record_id": "01a0828e-55d8-7e5a-86af-dc2fd8b52bbf",
@@ -31,7 +84,14 @@
           "reason": "Distinct from the existing transparent-header inset task. Needs a reproduced reported Router version and evidence that this is durable application behavior, not a transient Expo workaround.",
           "taskIds": []
         }
-      ]
+      ],
+      "service_review": {
+        "sourceRevision": 0,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 0,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:38.364Z"
+      }
     },
     {
       "feedback_record_id": "01a0573b-f902-79d1-8603-d540efa8be82",
@@ -45,7 +105,14 @@
           "reason": "Source reference images, rectified comparisons and motion fixtures are absent. Do not turn reported dimensions alone into a visual oracle.",
           "taskIds": []
         }
-      ]
+      ],
+      "service_review": {
+        "sourceRevision": 0,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 0,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:38.457Z"
+      }
     },
     {
       "feedback_record_id": "01a03a7f-3ebd-70df-864a-26aa9f1bf381",
@@ -59,7 +126,14 @@
           "reason": "Need the exact generated extension bundle, missing plist keys and CNG plugin to define a deterministic contract. The report only describes piecemeal fixes.",
           "taskIds": []
         }
-      ]
+      ],
+      "service_review": {
+        "sourceRevision": 0,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 0,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:38.553Z"
+      }
     },
     {
       "feedback_record_id": "01a0293f-6528-7e96-a649-39441d1b4f25",
@@ -75,7 +149,14 @@
             "feedback-11-anonymous-paywall-eligibility"
           ]
         }
-      ]
+      ],
+      "service_review": {
+        "sourceRevision": 0,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 0,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:38.645Z"
+      }
     },
     {
       "feedback_record_id": "01a00dea-4aa5-7580-97d9-4a458ef54d9b",
@@ -89,7 +170,14 @@
           "reason": "Previously dropped: live tunnel and physical-device infrastructure is outside the app-code and fixed simulator-operation families. Preserve as toolchain guidance, not a nondeterministic benchmark.",
           "taskIds": []
         }
-      ]
+      ],
+      "service_review": {
+        "sourceRevision": 0,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 0,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:38.737Z"
+      }
     },
     {
       "feedback_record_id": "01a00b30-31e9-7936-b9de-e25162bfaafc",
@@ -105,7 +193,14 @@
             "feedback-10-three-scene-cargo-cult"
           ]
         }
-      ]
+      ],
+      "service_review": {
+        "sourceRevision": 0,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 0,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:38.850Z"
+      }
     },
     {
       "feedback_record_id": "019ffcd8-c77e-7520-b634-1f516a77aca7",
@@ -119,7 +214,14 @@
           "reason": "Previously dropped: build-toolchain operations and disk exhaustion do not yield a bounded app-code capability in this harness. Backfilled the missing report ID.",
           "taskIds": []
         }
-      ]
+      ],
+      "service_review": {
+        "sourceRevision": 0,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 0,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:38.942Z"
+      }
     },
     {
       "feedback_record_id": "019ffb8d-ffae-7e12-af66-4e033eb30d21",
@@ -135,7 +237,14 @@
             "feedback-09-invite-links-web-fallback"
           ]
         }
-      ]
+      ],
+      "service_review": {
+        "sourceRevision": 0,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 0,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:39.045Z"
+      }
     },
     {
       "feedback_record_id": "019ff7cb-4805-7202-b9cb-fd4094a5b69a",
@@ -151,7 +260,14 @@
             "feedback-08-modal-keyboard-viewport"
           ]
         }
-      ]
+      ],
+      "service_review": {
+        "sourceRevision": 0,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 0,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:39.140Z"
+      }
     },
     {
       "feedback_record_id": "019ff4bd-822c-73bf-b6ba-347abc419af5",
@@ -165,7 +281,14 @@
           "reason": "Existing planned feedback-07. Prefer an executable fake-fetch budget contract with a parameterized budget and realistic partial failures. No task directory exists yet; the exact verifier and mock API contract need authoring.",
           "taskIds": []
         }
-      ]
+      ],
+      "service_review": {
+        "sourceRevision": 0,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 0,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:39.227Z"
+      }
     },
     {
       "feedback_record_id": "ecf97c6c-6f97-4d53-8ed2-2d354af872cf",
@@ -181,7 +304,14 @@
             "feedback-04-modal-editor-touch-freeze"
           ]
         }
-      ]
+      ],
+      "service_review": {
+        "sourceRevision": 0,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 0,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:39.324Z"
+      }
     },
     {
       "feedback_record_id": "8b0009f7-ae6f-4a18-aff5-e50b93db85e0",
@@ -197,7 +327,14 @@
             "feedback-05-slider-relative-recenter"
           ]
         }
-      ]
+      ],
+      "service_review": {
+        "sourceRevision": 0,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 0,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:39.421Z"
+      }
     },
     {
       "feedback_record_id": "380eda2b-4b8c-49c9-bd7a-4b4a4a9ec022",
@@ -213,7 +350,14 @@
             "feedback-06-sortable-grid-stable-layers"
           ]
         }
-      ]
+      ],
+      "service_review": {
+        "sourceRevision": 0,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 0,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:39.513Z"
+      }
     },
     {
       "feedback_record_id": "3699c3c8-3a46-42af-bb39-7810ed4871c0",
@@ -229,7 +373,14 @@
             "feedback-03-shop-grid-sticky-header"
           ]
         }
-      ]
+      ],
+      "service_review": {
+        "sourceRevision": 0,
+        "reviewRevision": 1,
+        "reviewedSourceRevision": 0,
+        "state": "reviewed",
+        "reviewedAt": "2026-09-14T02:35:39.617Z"
+      }
     }
   ]
 }

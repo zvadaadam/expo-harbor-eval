@@ -7,7 +7,7 @@ The repository now distinguishes three questions. Keep their scores separate:
 
 | Measurement | What varies | Evidence | Current scope |
 |---|---|---|---|
-| Source review | Agent-written Expo source | Pinned judge, explicit binary criteria | 19 tasks: 9 adapted API exercises, 10 field bug reports; paywall judge calibration pending |
+| Source review | Agent-written Expo source | Pinned judge, explicit binary criteria | 21 tasks: 9 adapted API exercises, 12 field bug reports; three new tasks await judge calibration |
 | Native UI, experimental | The submitted Expo app | Release build, native interactions, accessibility snapshots, screenshots | 3 iOS repair tasks |
 | Device use | Model and device driver | Fixed SwiftUI app state and ordered UI-event journal | 7 simulator tasks |
 
@@ -200,10 +200,10 @@ stay in their own repositories, but a future importer must bind an immutable
 commit, license, build command, dependency locks, seed/reset procedure and
 expected artifact hash. That arbitrary-repository importer is not implemented.
 
-`suites/mobile-v2.json` freezes all 26 task definitions and the evaluator/toolchain
+`suites/mobile-v2.json` freezes all 28 task definitions and the evaluator/toolchain
 files. Codegen jobs now list their 18 members explicitly; adding a directory
 does not silently change an existing comparison.
-The new paywall definition is outside those cohorts pending judge calibration;
+The paywall, amount-column and authentication-field definitions are outside those cohorts pending judge calibration;
 its offline Node contract checks validate the authored controls, not candidate
 models or native UI. See [the feedback review](feedback-review.md). Inspect or
 refresh the lock with:

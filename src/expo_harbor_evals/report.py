@@ -60,6 +60,7 @@ class Trial:
     planned_attempts: int | None = None
     pending: bool = False
     provenance: dict = field(default_factory=dict)
+    inspection: dict = field(default_factory=dict)
 
     @property
     def outcome(self) -> str:
@@ -151,6 +152,7 @@ def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
         if not job:
             job = current_job
         config = read_json(run_dir / "config.json") or {}
+        source_calibration = read_json(run_dir / "source-calibration.json") or {}
         datasets = config.get("datasets", [])
         planned = tuple(sorted({name for d in datasets for name in d.get("task_names") or []}))
         # Sampling, exclusions and wildcard selectors do not enumerate a full
@@ -219,6 +221,22 @@ def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
             model_info = agent_info.get("model_info") or {}
             agent_result = raw.get("agent_result") or {}
             task_name = raw.get("task_name") or raw.get("trial_name") or "unknown"
+            measurement = identity.get("measurement", "")
+            controls = [r for r in source_calibration.get("results", [])
+                        if r.get("task") == task_name.split("/")[-1]]
+            if measurement == "source-review" and controls:
+                expected_hash = source_calibration.get("task_hashes", {}).get(task_name.split("/")[-1])
+                matching = (expected_hash and expected_hash == identity.get("task_sha256")
+                            and source_calibration.get("scope") == "source-judge-calibration"
+                            and source_calibration.get("suite_sha256") == identity.get("suite_sha256")
+                            and source_calibration.get("judge", {}).get("model") == judge.get("model")
+                            and source_calibration.get("judge", {}).get("reasoning_effort") == identity.get("condition", {}).get("verifier", {}).get("REWARDKIT_REASONING_EFFORT"))
+                failed = [r["bracket"] for r in controls if r.get("ok") is not True]
+                warning = ("Calibration evidence does not match this task/judge." if not matching else
+                           f"Source calibration failed: {', '.join(failed)}." if failed else "")
+                if warning:
+                    measurement = "source-unvalidated"
+                    identity["calibration_warning"] = warning + " Raw grades are diagnostic only."
             trials.append(
                 Trial(
                     name=trial_result.parent.name,
@@ -234,7 +252,7 @@ def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
                     cache_tokens=agent_result.get("n_cache_tokens"),
                     output_tokens=agent_result.get("n_output_tokens"),
                     backend=backend,
-                    measurement=identity.get("measurement", ""),
+                    measurement=measurement,
                     experiment=identity.get("experiment_sha256", ""),
                     checks=sim_details.get("checks") or [],
                     source_dir=trial_result.parent,
@@ -243,6 +261,7 @@ def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
                     planned_attempts=attempts,
                     pending=pending,
                     provenance=identity,
+                    inspection=read_json(trial_result.parent / "inspection.json") or {},
                 )
             )
         # Standalone native verification and downloaded EAS candidate evidence

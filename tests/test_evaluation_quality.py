@@ -61,6 +61,13 @@ def test_all_negative_controls_name_real_failures():
         assert ("distractor" in spec) == (task / "solution/distractor").is_dir()
 
 
+def test_judge_error_does_not_establish_negative_control():
+    task = REPO / "tasks/codegen" / PICKER
+    result = judged(task, {"successful-selection-updates-preview"})
+    next(c for c in result["criteria"] if c["id"] == "successful-selection-updates-preview")["error"] = "judge timed out"
+    assert not assess_bracket(task, "distractor", result)[0]
+
+
 def test_native_prepare_uses_candidate_and_keeps_secrets_out(tmp_path):
     candidate = tmp_path / "candidate"
     shutil.copytree(REPO / "tasks/codegen" / MODAL / "environment", candidate)

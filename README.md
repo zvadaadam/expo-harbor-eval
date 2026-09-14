@@ -6,23 +6,24 @@ and reports. Local execution uses a Mac. Cloud verification uses EAS Workflows.
 
 Start with the [folder-by-folder guide](docs/repository-map.md), then
 [run a small pilot and read the evidence](docs/run-and-read-evaluations.md).
-The [feedback review](docs/feedback-review.md) explains the 15 reviewed reports,
-the new paywall task and review tracking in the feedback MCP.
+The [feedback review](docs/feedback-review.md) explains the 17 reviewed reports,
+three newly authored regression tasks and decisions saved in the feedback MCP.
+Use the [task review website](docs/task-review-site.md) to browse and discuss the definitions.
 
 ## What is evaluated
 
 | Task family | Measurement | Current coverage |
 |---|---|---|
-| `tasks/codegen/` | Source review of submitted Expo code | 19 tasks: 9 API exercises and 10 field-report regressions |
+| `tasks/codegen/` | Source review of submitted Expo code | 21 tasks: 9 API exercises and 12 field-report regressions |
 | The same `tasks/codegen/` tasks | Build and native UI behavior | 3 experimental iOS repair profiles |
 | `tasks/simbench/` | Agent and device-tool operation of a fixed app | 7 SwiftUI simulator tasks |
 
-There are **26 task definitions**. Native verification reuses three coding tasks;
+There are **28 task definitions**. Native verification reuses three coding tasks;
 it does not add another task family. Keep source, native and device-use scores
 separate. Native profiles still require simulator calibration before their
 model results can be interpreted.
-The paywall task also awaits source-judge calibration; existing coding comparison
-jobs keep their frozen 18-task cohort until it is ready.
+The paywall, native amount-column and authentication-field tasks await source-judge
+calibration. Existing coding comparison jobs keep their frozen 18-task cohort.
 
 Exact-reference comparison is available as a harness smoke check. It is not
 coding-quality scoring. The external mobile-result import bridge has been removed.
@@ -57,9 +58,11 @@ for their purpose and the structure inside each task.
 
 ```sh
 uv sync --dev
-# Node.js is needed for the offline paywall fixture checks.
+# Node.js 22+ is needed for offline React/Yoga and paywall controls.
+npm ci --prefix tests/contracts
 make check
 make test
+make catalog  # outputs/catalog/index.html; opens without an eval run
 
 # Inspect one coding attempt and its native verifier; do not execute them.
 uv run harbor run -c jobs/native/repairs.yaml \

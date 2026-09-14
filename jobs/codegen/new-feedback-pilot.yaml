@@ -1,0 +1,30 @@
+# One diagnostic sample per task/model. Not a statistical model comparison.
+# Source review only: no EAS, native builds, simulators, or Sandbox MCP.
+jobs_dir: runs
+n_attempts: 1
+n_concurrent_trials: 2
+retry:
+  max_retries: 0
+environment:
+  import_path: expo_harbor_evals.mac_sandbox_env:MacSandboxEnvironment
+  delete: false # Retain the submitted app for review.
+verifier:
+  env:
+    EXPO_EVAL_VERIFIER_MODE: judge
+    REWARDKIT_JUDGE: claude-code
+    REWARDKIT_MODEL: claude-sonnet-5
+    REWARDKIT_REASONING_EFFORT: medium
+agents:
+  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
+    model_name: claude-haiku-4-5-20251001
+    kwargs:
+      clean_config: true
+  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
+    model_name: claude-sonnet-5@medium
+    kwargs:
+      clean_config: true
+datasets:
+  - path: tasks/codegen
+    task_names:
+      - feedback-12-native-fixed-amount-column
+      - feedback-13-auth-field-render-path

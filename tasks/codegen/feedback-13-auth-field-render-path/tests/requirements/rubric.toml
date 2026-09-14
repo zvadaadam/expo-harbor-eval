@@ -1,0 +1,39 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = [
+    "/app",
+]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "rendered-authentication-path"
+id = "rendered-authentication-path"
+description = "Follow App.tsx through AuthScreen to the actual SwiftUI authentication fields in both sign-in and create-account modes. Changes must affect those rendered fields, not only the similarly named reusable Settings field. Both email and secure password fields use the corrected layout. Accept an equivalent refactor that preserves the routes and product behavior."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "fixed-outer-field-height"
+id = "fixed-outer-field-height"
+description = "At the default text size, the visible authentication fields have a 52-point outer height matching the unchanged submit button, with centered content and 14-point horizontal content inset. Account for the order of SwiftUI frame and padding wrappers; minHeight alone or vertical padding outside the fixed frame fails. An equivalent min/max fixed frame or containing frame is acceptable if the complete outer field truly stays 52 points. Do not require an exact modifier sequence."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "auth-state-and-submit-preserved"
+id = "auth-state-and-submit-preserved"
+description = "Preserve editable email and password state, SecureField masking, mode switching and submit confirmation reflecting current input values. The actual SwiftUI controls must remain connected to this state and the submit callback. A decorative duplicate field, disconnected callbacks or static confirmation fails."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "settings-and-native-controls-preserved"
+id = "settings-and-native-controls-preserved"
+description = "The Settings route still renders its compact 44-point profile-name field and remains editable. Keep all routes, labels, the 52-point submit button, native Expo UI SwiftUI TextField/SecureField controls, and Host wrapping. No DOM/web-view substitution, removed route, button-height inflation or clipping workaround."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

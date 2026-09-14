@@ -20,3 +20,4 @@ outputs/
 .env.*
 !.env.example
 /eval-output/
+/tests/contracts/node_modules/

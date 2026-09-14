@@ -9,18 +9,19 @@ Local versus EAS is where a check runs, not a separate task family.
 
 | Directory | Purpose | What belongs here |
 |---|---|---|
-| `tasks/` | Benchmark definitions | Prompts, baseline apps, hidden reference fixes and verifiers; currently 26 tasks |
+| `tasks/` | Benchmark definitions | Prompts, baseline apps, hidden reference fixes and verifiers; currently 28 tasks |
 | `jobs/` | Experiment plans | Which tasks, agents, models, attempts and verifier mode to run |
 | `src/expo_harbor_evals/` | Implementation | Shared runners, calibration, environment adapters, scoring and reporting code |
 | `mobile/templates/` | Native app scaffolding | Pinned SDK 54 and SDK 56 Expo project shells, fixture image and npm locks; candidate code is copied into these for native verification |
 | `suites/` | Reproducibility | `mobile-v2.json` records task and execution/scoring fingerprints; it is not an evaluation result |
-| `tests/` | Repository checks | Python unit tests and consistency checks; these do not run model evaluations or native apps |
+| `tests/` | Repository checks | Python checks and pinned React/Yoga authoring contracts in `tests/contracts/`; no models or native apps |
 | `.eas/workflows/` | Cloud orchestration | The macOS worker definition; its `simbench.yml` currently supports both fixed-app calibration and candidate verification |
 | `scripts/` | Worker entry point | `eas_simbench.py` validates the prepared source manifest and invokes the appropriate evaluator on the EAS worker |
 | `docs/` | Current documentation | Run instructions, evaluation quality and this map; `archive/` contains superseded research |
 | `results/` | Committed history | Small finished-run summaries in `history.jsonl`; no raw simulator bundles |
 | `runs/` | Generated raw evidence | One directory per job, containing attempts, submitted code, logs, results and evidence; gitignored |
-| `outputs/` | Generated presentations | Offline HTML reports derived from existing runs; gitignored |
+| `outputs/` | Generated presentations | Offline result reports and the task catalog; gitignored |
+| `dist/` | Optional build output | Generated package/build artifacts; gitignored |
 | `.context/` | Local working notes | Research downloads, prepared payloads and illustrative previews; gitignored by the workspace |
 | `.claude/skills/` | Contributor workflow | The signal-triage instructions for deciding which feedback should become an eval; not supplied as a benchmark task |
 | `.venv/` | Python dependencies | The local environment installed by `uv`; generated and gitignored |
@@ -52,8 +53,8 @@ Task IDs remain unchanged so existing results can still be matched to them.
 The missing `feedback-07` number is intentional: that report is still planned
 in `tasks/TRIAGE.md`, not an implemented task.
 `tasks/feedback-reviews.json` is the structured companion for the current MCP
-review batch; it includes covered, held and dropped findings. The new paywall
-task is authored but outside existing 18-task source comparison cohorts pending
+review batch; it includes covered, held and dropped findings. The paywall, native amount-column and authentication-field
+tasks are authored but outside existing 18-task source comparison cohorts pending
 judge calibration. See [the feedback review](feedback-review.md).
 
 The seven simbench tasks cover note creation, scrolling, an occluded form,
@@ -128,6 +129,7 @@ named smoke configs. There are no `fixture`, `partial` or upstream import target
 | `claude_host_agent.py`, `muse_host_agent.py` | Host coding-agent integrations and usage accounting |
 | `metadata.py`, `evaluation_identity.py` | Task vocabulary, suite locks and experiment identity |
 | `report.py`, `report_view.py`, `viewer.py`, `export.py` | Read results, render reports, browse local runs and export history |
+| `catalog.py`, `web/` | Project actual task files into the review website; shared Expo tokens and bundled fonts |
 
 ## Removed pieces
 
@@ -156,12 +158,11 @@ coverage and calibration: eight API exercises need stronger wrong-fix controls;
 the three native profiles remain experimental; Android and data-dependent app
 journeys need executable checks before making broader capability claims.
 
-## Cleanup validation
+## Validation
 
-76 unit tests pass after removing tests for the retired imports and adding
-checks for task placement, job cohorts and native-profile reuse. All 11 moved
-job configs validate against Harbor. The one-picker `--print-config` plan
-still resolves to one task and one attempt. The suite lock now covers 26 tasks, including the new paywall candidate.
-The final validation also includes four offline paywall control tests and a
-structured-review consistency check (81 tests total).
-No model evaluation, native build, simulator or EAS job was run.
+`make test` covers task placement, frozen job cohorts, shared verifier copies,
+control behavior, review inventory, reports and the catalog. Install the pinned
+Node authoring dependencies with `npm ci --prefix tests/contracts` first.
+`make check` verifies the reviewed 28-task suite lock. These commands do not run
+model evaluations, native builds, simulators or EAS jobs. The task website is
+also generated entirely from local files; see [its guide](task-review-site.md).

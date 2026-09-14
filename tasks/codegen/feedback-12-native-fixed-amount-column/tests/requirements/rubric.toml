@@ -1,0 +1,39 @@
+[judge]
+judge = "anthropic/claude-sonnet-4-6"
+files = [
+    "/app",
+]
+prompt_template = "judge-prompt.md"
+timeout = 300
+reasoning_effort = "medium"
+
+[[criterion]]
+name = "native-fixed-column"
+id = "native-fixed-column"
+description = "Trace App.tsx to the rendered SummaryRow and its flattened native styles. For 320/360/390/430dp viewports at font scale 1.0, the amount region stays 112dp wide despite shared flex styles. No positive-flex zero-basis conflict may collapse or distribute away this width. Accept width plus non-growing/non-shrinking sizing, an equivalent definite flex basis, or another correct native layout; do not mandate a particular property spelling or forbid flex shorthand everywhere."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "responsive-content-fit"
+id = "responsive-content-fit"
+description = "The description uses the remaining row width, can shrink/truncate on one line, and never displaces the 112dp amount column or 24dp control outside the screen insets. Preserve 16dp outer insets, 12dp gaps and the two-column layout across the declared widths. The amount label and formatted value remain untruncated on one line at the existing font sizes. Hiding content, clipping overflow, absolute positioning, reduced type size, hard-coded viewport arithmetic or web-only CSS fails."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "visibility-interaction-preserved"
+id = "visibility-interaction-preserved"
+description = "The actually rendered visibility control remains accessible and toggles both ways between the formatted amount and the supplied mask. Keep every description fixture and switching control. Changing only a disconnected style/helper or returning a static success screen fails. No production backend or credential is required."
+type = "binary"
+weight = 1
+
+[[criterion]]
+name = "native-platform-contract"
+id = "native-platform-contract"
+description = "Apply the repair to React Native styles consumed by the native SummaryRow. Keep the Expo/React Native app and public SummaryRow props and render path working. Do not substitute DOM/web-view elements, change only the web branch, remove the shared component usage without a working replacement, or introduce a dependency merely to conceal the flex constraint."
+type = "binary"
+weight = 1
+
+[scoring]
+aggregation = "weighted_mean"

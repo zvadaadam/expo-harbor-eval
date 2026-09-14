@@ -1,0 +1,46 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/feedback-13-auth-field-render-path"
+description = "Trace the rendered authentication form and align its SwiftUI fields with the 52-point submit button."
+authors = [
+    { name = "Expo Harbor Evals" },
+]
+keywords = [
+    "react-native",
+    "expo",
+    "harbor",
+    "codegen",
+    "llm-judge",
+    "expo-feedback",
+]
+
+[metadata]
+family = "expo-codegen"
+category = "expo-feedback"
+tier = "code-gen"
+difficulty = "medium"
+source = "expo-cli-feedback"
+feedback_id = "bf5d9d3cfaa3"
+feedback_record_id = "01a08c74-bdb3-7366-964e-aca18e913ae1"
+motivation = "Reconstructed from a report of three edits to a reusable field that did not affect the separate rendered authentication form. Original application files were not supplied. @expo/ui 57.0.18 TextField, SecureField and modifier declarations verify the supplied APIs; SwiftUI frame and padding are ordered wrapper modifiers. The fixture requires 52-point outer frames at standard text size and a distinct 44-point settings field. React control checks follow the real App render path and model only the declared frame/padding contract; they do not measure native SwiftUI geometry, dynamic type or keyboard behavior."
+distractor = "Edits the similarly named Settings field instead of the rendered auth fields, also breaking Settings' 44-point height. Calibration requires both auth failures and this collateral regression separately. Reconstructed from the reported wrong approach; exact original patch was not supplied."
+requirements = 4
+verifier = "rewardkit-weighted-binary"
+validation_status = "source-calibration-failed"
+authoring_checks = ["tests/contracts/run-controls.mjs", "tests/contracts/render-fixture.mjs", "tests/test_native_contracts.py"]
+reference_validation = "On 2026-09-14, both valid references passed one Sonnet 5 source-judge calibration, but a negative control failed calibration. Sonnet 5 rejected the wrong fix for height and Settings but still credited its rendered-authentication-path criterion; the declared negative-control expectations did not all hold. See results/pilots/2026-09-14-new-feedback.json for the original evaluated hashes, controls and four single-attempt candidates. Offline React/Yoga authoring checks pass; no native build or simulator validation."
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+timeout_sec = 900.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+workdir = "/app"
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240

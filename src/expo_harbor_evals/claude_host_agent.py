@@ -42,6 +42,7 @@ class ClaudeHostAgent(BaseAgent):
         reasoning_effort: str | None = None,
         allowed_tools: str | None = None,
         preface: str | None = None,
+        clean_config: bool = False,
         **kwargs,
     ) -> None:
         super().__init__(*args, **kwargs)
@@ -64,6 +65,7 @@ class ClaudeHostAgent(BaseAgent):
         self._effort = reasoning_effort
         self._allowed_tools = allowed_tools or ALLOWED_TOOLS
         self._preface = PROMPT_PREFACE if preface is None else preface
+        self._clean_config = clean_config
 
     @staticmethod
     @override
@@ -93,6 +95,15 @@ class ClaudeHostAgent(BaseAgent):
             "--permission-mode acceptEdits "
             f"--allowedTools {shlex.quote(self._allowed_tools)} "
         )
+        if self._clean_config:
+            # Keep subscription authentication, but exclude personal skills,
+            # hooks, MCP servers and memory from a reproducible source pilot.
+            command += (
+                "--safe-mode --restricted --no-session-persistence --no-chrome "
+                "--strict-mcp-config --mcp-config '{\"mcpServers\":{}}' "
+                f"--tools {shlex.quote(self._allowed_tools)} "
+                "--permission-prompts none "
+            )
         if self._cli_model:
             command += f"--model {shlex.quote(self._cli_model)} "
         if self._effort:
@@ -124,6 +135,8 @@ class ClaudeHostAgent(BaseAgent):
             "is_error": envelope.get("is_error"),
             "num_turns": envelope.get("num_turns"),
             "exit_code": result.return_code,
+            "clean_config": self._clean_config,
+            "model_usage": envelope.get("modelUsage"),
         }
 
         if envelope.get("is_error"):

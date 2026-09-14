@@ -44,3 +44,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+## Expo report and task catalog design
+
+The report and catalog use semantic tokens from `@expo/styleguide-base` 3.3.0
+(Expo, MIT), Inter, and JetBrains Mono (SIL Open Font License 1.1). Full notices
+are in [the bundled asset licenses](src/expo_harbor_evals/web/licenses.txt) and
+are embedded in generated HTML alongside the font data. Layout and typography
+follow the Expo Universe website.

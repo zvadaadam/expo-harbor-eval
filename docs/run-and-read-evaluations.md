@@ -1,9 +1,11 @@
 # Run a small pilot, then read the evidence
 
-Nothing in this guide has been executed as an evaluation during the report
-improvements. The HTML preview uses fabricated data. Formatting an existing
-report, inspecting a configuration and preparing a source payload make no model
-calls and start no simulator.
+The native commands in this guide remain unexecuted. The separate
+[new-feedback source pilot](new-feedback-pilot.md) was run once on September 14,
+2026 and exposed grading failures. Its real evidence is separate from the
+illustrative HTML preview, which uses fabricated data. Formatting a report,
+inspecting a configuration and preparing a source payload make no model calls
+and start no simulator.
 
 ## What each command costs
 
@@ -161,9 +163,9 @@ do not establish a precise ranking or a general probability of success.
 
 ## Do the tasks and static judging make sense?
 
-Yes, as a focused regression suite. There are **26 task definitions**, not 26
-fully runnable Expo apps: 19 coding tasks and 7 fixed-app simulator tasks.
-The external result-import task has been removed. The three native repair profiles are a subset of the 19
+Yes, as a focused regression suite. There are **28 task definitions**, not 28
+fully runnable Expo apps: 21 coding tasks and 7 fixed-app simulator tasks.
+The external result-import task has been removed. The three native repair profiles are a subset of the 21
 source tasks, not three additional task definitions.
 
 Static judging is useful for explicit API usage, lifecycle cleanup, routing

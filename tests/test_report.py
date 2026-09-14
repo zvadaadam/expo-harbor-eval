@@ -25,6 +25,37 @@ def test_modes_separate_even_without_an_experiment_hash():
     assert "no combined mobile-app score" in page
 
 
+def test_failed_or_stale_source_calibration_separates_raw_grades(tmp_path):
+    write_json(tmp_path / "done/result.json", {"task_name": "layout",
+        "agent_info": {"name": "claude-host", "model_info": {"name": "haiku"}},
+        "verifier_result": {"rewards": {"reward": 1}}})
+    write_json(tmp_path / "done/evaluation.json", {"measurement": "source-review",
+        "task_sha256": "task-v1", "suite_sha256": "suite-v1",
+        "condition": {"verifier": {"REWARDKIT_REASONING_EFFORT": "medium"}}})
+    write_json(tmp_path / "done/verifier/reward-details.json", {
+        "reward": {"judge": {"model": "sonnet"}}})
+    calibration = {"scope": "source-judge-calibration", "suite_sha256": "suite-v1",
+        "task_hashes": {"layout": "task-v1"},
+        "judge": {"model": "sonnet", "reasoning_effort": "medium"},
+        "results": [{"task": "layout", "bracket": "baseline-comment", "ok": False}]}
+    write_json(tmp_path / "source-calibration.json", calibration)
+    _, records = load_runs([tmp_path])
+    assert records[0].reward == 1  # Never rewrite the recorded judge answer.
+    assert records[0].measurement == "source-unvalidated"
+    assert "failed: baseline-comment" in records[0].provenance["calibration_warning"]
+    normal = trial(measurement="source-review", model="haiku", agent="claude-host")
+    assert len(build_series([normal, records[0]])) == 2
+    page = build_html(records, "Pilot", "fixtures")
+    assert 'id="lane-source-unvalidated"' in page
+    assert "Raw full-credit grades" in page and "diagnostic only" in page
+    calibration["results"][0]["ok"] = True
+    calibration["task_hashes"]["layout"] = "stale-definition"
+    write_json(tmp_path / "source-calibration.json", calibration)
+    _, records = load_runs([tmp_path])
+    assert records[0].measurement == "source-unvalidated"
+    assert "does not match" in records[0].provenance["calibration_warning"]
+
+
 def test_pending_is_not_an_execution_error_or_completed_attempt():
     records = [trial(), trial(name="waiting", reward=None, pending=True)]
     stat = series_stats(group_tasks(records), records[0].series_key)
@@ -97,7 +128,7 @@ def test_native_calibration_control_names_and_application_outcomes(tmp_path):
 def test_report_escapes_names_reasons_and_native_errors():
     payload = '</script><script>alert("untrusted")</script>'
     page = build_html([trial(task=payload, error=payload, checks=[{"name": payload,
-        "passed": False, "notes": payload}])], payload, payload)
+        "passed": False, "notes": payload}], inspection={"note": payload, "patch": payload})], payload, payload)
     assert payload not in page
     assert "&lt;/script&gt;" in page
 
