@@ -215,6 +215,10 @@ def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
                     criteria = reward_details.get("criteria") or []
                     judge = reward_details.get("judge") or {}
 
+            judge_errors = [str(c["error"]) for c in criteria if c.get("error")]
+            if judge_errors:
+                exception = exception or "Source judge failed: " + "; ".join(dict.fromkeys(judge_errors))
+
             agent_info = raw.get("agent_info") or {}
             model_info = agent_info.get("model_info") or {}
             agent_result = raw.get("agent_result") or {}
@@ -225,7 +229,7 @@ def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
                     task=task_name.split("/")[-1],
                     agent=agent_info.get("name") or "unknown",
                     model=model_info.get("name") or "",
-                    reward=None if runner_ok == 0 else rewards.get("reward"),
+                    reward=None if runner_ok == 0 or judge_errors else rewards.get("reward"),
                     criteria=criteria,
                     judge=judge,
                     error=exception,

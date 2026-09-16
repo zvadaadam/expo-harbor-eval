@@ -1,0 +1,654 @@
+{
+  "schema_version": 1,
+  "experiment": "Sonnet subscription effort pilot, 2026-09-16",
+  "candidate_model": "claude-sonnet-4-6",
+  "judge_effort": "medium",
+  "claude_code_version": "2.1.273",
+  "wrapper_sha256": "c15a3c8ce54df5887201857a3aa2e17d1024b3bc3cce9546484f0d076ab4bdbe",
+  "conditions": {
+    "candidate_tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep"
+    ],
+    "judge_tools": [
+      "Read",
+      "Glob",
+      "Grep"
+    ],
+    "safe_mode": true,
+    "restricted": true,
+    "session_persistence": false,
+    "candidate_cap_usd": 0.75,
+    "judge_cap_usd": 0.2,
+    "stop_dispatch_at_usd": 8.5,
+    "user_limit_usd": 10,
+    "cli_timeout_seconds": 540
+  },
+  "native_apps_executed": false,
+  "planned_attempts": 12,
+  "recorded_attempts": 12,
+  "model_dispatched_attempts": 8,
+  "scored_attempts": 7,
+  "complete": false,
+  "source_calibration": {
+    "ok": true,
+    "scope": "source-judge-calibration",
+    "results": [
+      {
+        "task": "feedback-05-slider-relative-recenter",
+        "bracket": "empty",
+        "reward": 0.0,
+        "guarded": true,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "task": "feedback-05-slider-relative-recenter",
+        "bracket": "baseline",
+        "reward": 0.0,
+        "guarded": true,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "task": "feedback-06-sortable-grid-stable-layers",
+        "bracket": "empty",
+        "reward": 0.0,
+        "guarded": true,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "task": "feedback-06-sortable-grid-stable-layers",
+        "bracket": "baseline",
+        "reward": 0.0,
+        "guarded": true,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "task": "feedback-11-anonymous-paywall-eligibility",
+        "bracket": "empty",
+        "reward": 0.0,
+        "guarded": true,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "task": "feedback-11-anonymous-paywall-eligibility",
+        "bracket": "baseline",
+        "reward": 0.0,
+        "guarded": true,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "task": "feedback-05-slider-relative-recenter",
+        "bracket": "reference",
+        "reward": 1.0,
+        "guarded": false,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "task": "feedback-05-slider-relative-recenter",
+        "bracket": "baseline-comment",
+        "reward": 0.25,
+        "guarded": false,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "task": "feedback-05-slider-relative-recenter",
+        "bracket": "distractor",
+        "reward": 0.5,
+        "guarded": false,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "task": "feedback-06-sortable-grid-stable-layers",
+        "bracket": "reference",
+        "reward": 1.0,
+        "guarded": false,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "task": "feedback-06-sortable-grid-stable-layers",
+        "bracket": "baseline-comment",
+        "reward": 0.0,
+        "guarded": false,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "task": "feedback-06-sortable-grid-stable-layers",
+        "bracket": "distractor",
+        "reward": 0.0,
+        "guarded": false,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "task": "feedback-11-anonymous-paywall-eligibility",
+        "bracket": "reference",
+        "reward": 1.0,
+        "guarded": false,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "task": "feedback-11-anonymous-paywall-eligibility",
+        "bracket": "baseline-comment",
+        "reward": 0.75,
+        "guarded": false,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "task": "feedback-11-anonymous-paywall-eligibility",
+        "bracket": "reference-alternative",
+        "reward": 1.0,
+        "guarded": false,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "task": "feedback-11-anonymous-paywall-eligibility",
+        "bracket": "distractor",
+        "reward": 0.25,
+        "guarded": false,
+        "ok": true,
+        "note": ""
+      }
+    ]
+  },
+  "usage": {
+    "calls": 25,
+    "reported_api_equivalent_usd": 2.2428639,
+    "accounted_with_reserves_usd": 2.9928639,
+    "unreported_cost_reserve_usd": 0.75,
+    "candidate_reported_usd": 1.0017764,
+    "judge_reported_usd": 1.2410875000000001,
+    "unknown_cost_calls": 1,
+    "note": "CLI-reported API-equivalent usage under subscription login, not an invoice. A reserve is not an actual charge; the timed-out call's final cost is unknown. Dispatch stopped after that call."
+  },
+  "trials": [
+    {
+      "round": "discovery",
+      "task": "feedback-05-slider-relative-recenter",
+      "trial": "runs/sonnet-effort-discovery/feedback-05-slider-relative-rece__jMTgvZC",
+      "model": "claude-sonnet-4-6@low#isolated-pilot",
+      "suite_sha256": "9b26c000ea9862a1d1026d97c876825d75749993e20f22a89c4c8e0c62e1076f",
+      "task_sha256": "0589ad46e72a29e7755745ddf8c068c41e40c73eb0f295af4c70292ea4c8d762",
+      "experiment_sha256": "0d9c2efa19a5495fe1048a0a47705b93cea039b251bea5dc97fa13f17d7aa4f3",
+      "effort": "low",
+      "outcome": "pass",
+      "model_dispatched": true,
+      "score": 1.0,
+      "full_pass": true,
+      "exception": null,
+      "failed_criteria": [],
+      "paywall_contract": null,
+      "candidate_cost_usd": 0.1049732,
+      "judge_cost_usd": 0.0628958,
+      "candidate_seconds": 52.62705683708191,
+      "thinking_tokens": 1248,
+      "output_tokens": 2798,
+      "source_sha256": {
+        "App.tsx": "44366e6039daf9228f19f46c866f4d0e1a49a4547124ee5659ccff6d0fc3d1ca",
+        "ExposureTrim.tsx": "edca62386e537657f830d95e51f82c1d5035d7236f8df9884ed973d3c1f5ebf1",
+        "package.json": "86897a52e11d590c19b3b15d80767330b01c559ced27e9da5e1b8b01181051b1"
+      }
+    },
+    {
+      "round": "discovery",
+      "task": "feedback-05-slider-relative-recenter",
+      "trial": "runs/sonnet-effort-discovery/feedback-05-slider-relative-rece__kbpTMUh",
+      "model": "claude-sonnet-4-6@high#isolated-pilot",
+      "suite_sha256": "9b26c000ea9862a1d1026d97c876825d75749993e20f22a89c4c8e0c62e1076f",
+      "task_sha256": "0589ad46e72a29e7755745ddf8c068c41e40c73eb0f295af4c70292ea4c8d762",
+      "experiment_sha256": "6232ace927a59ea4390b0ae46e7227ef5f0f0130ccf7b7fc91eb151c4af5c45a",
+      "effort": "high",
+      "outcome": "partial",
+      "model_dispatched": true,
+      "score": 0.75,
+      "full_pass": false,
+      "exception": null,
+      "failed_criteria": [
+        "recenter-reaches-native"
+      ],
+      "paywall_contract": null,
+      "candidate_cost_usd": 0.11826460000000001,
+      "judge_cost_usd": 0.1158571,
+      "candidate_seconds": 66.53297781944275,
+      "thinking_tokens": 1831,
+      "output_tokens": 3676,
+      "source_sha256": {
+        "App.tsx": "44366e6039daf9228f19f46c866f4d0e1a49a4547124ee5659ccff6d0fc3d1ca",
+        "ExposureTrim.tsx": "9452f0b843e550bade1318c64ba591555283934609426406ff041ad716704bc5",
+        "package.json": "86897a52e11d590c19b3b15d80767330b01c559ced27e9da5e1b8b01181051b1"
+      }
+    },
+    {
+      "round": "discovery",
+      "task": "feedback-06-sortable-grid-stable-layers",
+      "trial": "runs/sonnet-effort-discovery/feedback-06-sortable-grid-stable__2a8CHdw",
+      "model": "claude-sonnet-4-6@low#isolated-pilot",
+      "suite_sha256": "9b26c000ea9862a1d1026d97c876825d75749993e20f22a89c4c8e0c62e1076f",
+      "task_sha256": "a2587f7ec47d413aa43d05eab1df37f2553d50531c79d013aadc4b645fc5d2e3",
+      "experiment_sha256": "0d9c2efa19a5495fe1048a0a47705b93cea039b251bea5dc97fa13f17d7aa4f3",
+      "effort": "low",
+      "outcome": "pass",
+      "model_dispatched": true,
+      "score": 1.0,
+      "full_pass": true,
+      "exception": null,
+      "failed_criteria": [],
+      "paywall_contract": null,
+      "candidate_cost_usd": 0.15408909999999998,
+      "judge_cost_usd": 0.0643437,
+      "candidate_seconds": 55.92654609680176,
+      "thinking_tokens": 1217,
+      "output_tokens": 4165,
+      "source_sha256": {
+        "App.tsx": "d308a29871e1b4b587eb74ed23c30b7735d35fd38e270a37c554b8e67e5b9930",
+        "MoodboardGrid.tsx": "d818daf1288ccf0c5bb960a07bc48ec9f46b38456d3d6c1eb1c8ba824e7d9e44",
+        "package.json": "d951e92e79f7478b223c515b60843f854a146e6fc70c4f43d3e0d1b7880a51cb"
+      }
+    },
+    {
+      "round": "discovery",
+      "task": "feedback-06-sortable-grid-stable-layers",
+      "trial": "runs/sonnet-effort-discovery/feedback-06-sortable-grid-stable__q77DcyM",
+      "model": "claude-sonnet-4-6@high#isolated-pilot",
+      "suite_sha256": "9b26c000ea9862a1d1026d97c876825d75749993e20f22a89c4c8e0c62e1076f",
+      "task_sha256": "a2587f7ec47d413aa43d05eab1df37f2553d50531c79d013aadc4b645fc5d2e3",
+      "experiment_sha256": "6232ace927a59ea4390b0ae46e7227ef5f0f0130ccf7b7fc91eb151c4af5c45a",
+      "effort": "high",
+      "outcome": "partial",
+      "model_dispatched": true,
+      "score": 0.5,
+      "full_pass": false,
+      "exception": null,
+      "failed_criteria": [
+        "sibling-motion-not-commit-driven",
+        "single-order-commit"
+      ],
+      "paywall_contract": null,
+      "candidate_cost_usd": 0.3971794,
+      "judge_cost_usd": 0.0746888,
+      "candidate_seconds": 216.32648396492004,
+      "thinking_tokens": 14026,
+      "output_tokens": 17168,
+      "source_sha256": {
+        "App.tsx": "d308a29871e1b4b587eb74ed23c30b7735d35fd38e270a37c554b8e67e5b9930",
+        "MoodboardGrid.tsx": "0fdd5f91c37f388da39b15d91018eaf702f7250dfc6d053dfab139f33d7314c4",
+        "package.json": "d951e92e79f7478b223c515b60843f854a146e6fc70c4f43d3e0d1b7880a51cb"
+      }
+    },
+    {
+      "round": "discovery",
+      "task": "feedback-11-anonymous-paywall-eligibility",
+      "trial": "runs/sonnet-effort-discovery/feedback-11-anonymous-paywall-el__AVfukbp",
+      "model": "claude-sonnet-4-6@low#isolated-pilot",
+      "suite_sha256": "9b26c000ea9862a1d1026d97c876825d75749993e20f22a89c4c8e0c62e1076f",
+      "task_sha256": "9d96e06269d9ea395eba62493e430add4fa8597e0665a4a3d603ecb3dda69160",
+      "experiment_sha256": "0d9c2efa19a5495fe1048a0a47705b93cea039b251bea5dc97fa13f17d7aa4f3",
+      "effort": "low",
+      "outcome": "pass",
+      "model_dispatched": true,
+      "score": 1.0,
+      "full_pass": true,
+      "exception": null,
+      "failed_criteria": [],
+      "paywall_contract": {
+        "checks": 4860,
+        "failedGroups": [
+          "anonymous-and-identified-eligibility"
+        ],
+        "failedCases": 8
+      },
+      "candidate_cost_usd": 0.036101799999999996,
+      "judge_cost_usd": 0.0632062,
+      "candidate_seconds": 10.802329778671265,
+      "thinking_tokens": 25,
+      "output_tokens": 668,
+      "source_sha256": {
+        "App.tsx": "665f939b7e0d988b611b46d7d311a71b55f5fac8b7d34adea59443a60e72db70",
+        "app.json": "ce81d907e0604d333df2f3c68a9af70f411d20e1bb3de39f0e3c87101ffdab18",
+        "fixtures.js": "73e46c5d6ade22598ab9fa20bd811a39c6590890b85f9e6c344dddbdb2807355",
+        "package.json": "a54b4b436142e3ddb26eb2ec34fb7fffa84779a626cd31ed9c5d3744a1ac0a03",
+        "paywall.js": "4bc1427b97e0a999bb34628fe998e5304b4f730ab44d483bc05c80b27ee50ed1"
+      }
+    },
+    {
+      "round": "discovery",
+      "task": "feedback-11-anonymous-paywall-eligibility",
+      "trial": "runs/sonnet-effort-discovery/feedback-11-anonymous-paywall-el__DskcMjZ",
+      "model": "claude-sonnet-4-6@high#isolated-pilot",
+      "suite_sha256": "9b26c000ea9862a1d1026d97c876825d75749993e20f22a89c4c8e0c62e1076f",
+      "task_sha256": "9d96e06269d9ea395eba62493e430add4fa8597e0665a4a3d603ecb3dda69160",
+      "experiment_sha256": "6232ace927a59ea4390b0ae46e7227ef5f0f0130ccf7b7fc91eb151c4af5c45a",
+      "effort": "high",
+      "outcome": "pass",
+      "model_dispatched": true,
+      "score": 1.0,
+      "full_pass": true,
+      "exception": null,
+      "failed_criteria": [],
+      "paywall_contract": {
+        "checks": 4860,
+        "failedGroups": [
+          "anonymous-and-identified-eligibility"
+        ],
+        "failedCases": 4
+      },
+      "candidate_cost_usd": 0.0380087,
+      "judge_cost_usd": 0.0660271,
+      "candidate_seconds": 16.39500117301941,
+      "thinking_tokens": 29,
+      "output_tokens": 775,
+      "source_sha256": {
+        "App.tsx": "665f939b7e0d988b611b46d7d311a71b55f5fac8b7d34adea59443a60e72db70",
+        "app.json": "ce81d907e0604d333df2f3c68a9af70f411d20e1bb3de39f0e3c87101ffdab18",
+        "fixtures.js": "73e46c5d6ade22598ab9fa20bd811a39c6590890b85f9e6c344dddbdb2807355",
+        "package.json": "a54b4b436142e3ddb26eb2ec34fb7fffa84779a626cd31ed9c5d3744a1ac0a03",
+        "paywall.js": "6ba4de51ab8163d52bd08bc0b4c2e4817b62df0de30d52deddc5913f18fc73f0"
+      }
+    },
+    {
+      "round": "repeat",
+      "task": "feedback-05-slider-relative-recenter",
+      "trial": "runs/sonnet-effort-repeat/feedback-05-slider-relative-rece__djVrjve",
+      "model": "claude-sonnet-4-6@low#isolated-pilot",
+      "suite_sha256": "9b26c000ea9862a1d1026d97c876825d75749993e20f22a89c4c8e0c62e1076f",
+      "task_sha256": "0589ad46e72a29e7755745ddf8c068c41e40c73eb0f295af4c70292ea4c8d762",
+      "experiment_sha256": "0d9c2efa19a5495fe1048a0a47705b93cea039b251bea5dc97fa13f17d7aa4f3",
+      "effort": "low",
+      "outcome": "withheld-unknown-cost",
+      "model_dispatched": false,
+      "score": null,
+      "full_pass": false,
+      "exception": {
+        "exception_type": "RuntimeError",
+        "exception_message": "claude CLI exited with code 1: "
+      },
+      "failed_criteria": [],
+      "paywall_contract": null,
+      "candidate_cost_usd": null,
+      "judge_cost_usd": 0,
+      "candidate_seconds": null,
+      "thinking_tokens": null,
+      "output_tokens": null,
+      "source_sha256": {
+        "App.tsx": "44366e6039daf9228f19f46c866f4d0e1a49a4547124ee5659ccff6d0fc3d1ca",
+        "ExposureTrim.tsx": "fd3c1a685bac4b0a83d8fe9d0a115182da3a91c22c830024383bc6c7a5c4d165",
+        "package.json": "86897a52e11d590c19b3b15d80767330b01c559ced27e9da5e1b8b01181051b1"
+      }
+    },
+    {
+      "round": "repeat",
+      "task": "feedback-05-slider-relative-recenter",
+      "trial": "runs/sonnet-effort-repeat/feedback-05-slider-relative-rece__qbmsc8F",
+      "model": "claude-sonnet-4-6@high#isolated-pilot",
+      "suite_sha256": "9b26c000ea9862a1d1026d97c876825d75749993e20f22a89c4c8e0c62e1076f",
+      "task_sha256": "0589ad46e72a29e7755745ddf8c068c41e40c73eb0f295af4c70292ea4c8d762",
+      "experiment_sha256": "6232ace927a59ea4390b0ae46e7227ef5f0f0130ccf7b7fc91eb151c4af5c45a",
+      "effort": "high",
+      "outcome": "withheld-unknown-cost",
+      "model_dispatched": false,
+      "score": null,
+      "full_pass": false,
+      "exception": {
+        "exception_type": "RuntimeError",
+        "exception_message": "claude CLI exited with code 1: "
+      },
+      "failed_criteria": [],
+      "paywall_contract": null,
+      "candidate_cost_usd": null,
+      "judge_cost_usd": 0,
+      "candidate_seconds": null,
+      "thinking_tokens": null,
+      "output_tokens": null,
+      "source_sha256": {
+        "App.tsx": "44366e6039daf9228f19f46c866f4d0e1a49a4547124ee5659ccff6d0fc3d1ca",
+        "ExposureTrim.tsx": "fd3c1a685bac4b0a83d8fe9d0a115182da3a91c22c830024383bc6c7a5c4d165",
+        "package.json": "86897a52e11d590c19b3b15d80767330b01c559ced27e9da5e1b8b01181051b1"
+      }
+    },
+    {
+      "round": "repeat",
+      "task": "feedback-06-sortable-grid-stable-layers",
+      "trial": "runs/sonnet-effort-repeat/feedback-06-sortable-grid-stable__HuqxZvs",
+      "model": "claude-sonnet-4-6@low#isolated-pilot",
+      "suite_sha256": "9b26c000ea9862a1d1026d97c876825d75749993e20f22a89c4c8e0c62e1076f",
+      "task_sha256": "a2587f7ec47d413aa43d05eab1df37f2553d50531c79d013aadc4b645fc5d2e3",
+      "experiment_sha256": "0d9c2efa19a5495fe1048a0a47705b93cea039b251bea5dc97fa13f17d7aa4f3",
+      "effort": "low",
+      "outcome": "pass",
+      "model_dispatched": true,
+      "score": 1.0,
+      "full_pass": true,
+      "exception": null,
+      "failed_criteria": [],
+      "paywall_contract": null,
+      "candidate_cost_usd": 0.1531596,
+      "judge_cost_usd": 0.0638988,
+      "candidate_seconds": 75.04384803771973,
+      "thinking_tokens": 3316,
+      "output_tokens": 5865,
+      "source_sha256": {
+        "App.tsx": "d308a29871e1b4b587eb74ed23c30b7735d35fd38e270a37c554b8e67e5b9930",
+        "MoodboardGrid.tsx": "3294de25bbd18ec139aaa8380160eddd54e3f378a5bc353c4fc4475fe6684eb9",
+        "package.json": "d951e92e79f7478b223c515b60843f854a146e6fc70c4f43d3e0d1b7880a51cb"
+      }
+    },
+    {
+      "round": "repeat",
+      "task": "feedback-06-sortable-grid-stable-layers",
+      "trial": "runs/sonnet-effort-repeat/feedback-06-sortable-grid-stable__MJxrWgC",
+      "model": "claude-sonnet-4-6@high#isolated-pilot",
+      "suite_sha256": "9b26c000ea9862a1d1026d97c876825d75749993e20f22a89c4c8e0c62e1076f",
+      "task_sha256": "a2587f7ec47d413aa43d05eab1df37f2553d50531c79d013aadc4b645fc5d2e3",
+      "experiment_sha256": "6232ace927a59ea4390b0ae46e7227ef5f0f0130ccf7b7fc91eb151c4af5c45a",
+      "effort": "high",
+      "outcome": "timeout",
+      "model_dispatched": true,
+      "score": null,
+      "full_pass": false,
+      "exception": {
+        "exception_type": "RuntimeError",
+        "exception_message": "claude CLI exited with code 124: "
+      },
+      "failed_criteria": [],
+      "paywall_contract": null,
+      "candidate_cost_usd": null,
+      "judge_cost_usd": 0,
+      "candidate_seconds": 540.0221331119537,
+      "thinking_tokens": null,
+      "output_tokens": null,
+      "source_sha256": {
+        "App.tsx": "d308a29871e1b4b587eb74ed23c30b7735d35fd38e270a37c554b8e67e5b9930",
+        "MoodboardGrid.tsx": "5014b8d70dd9ece737b4ed25c0d28a2664e94a5f3e4e4d1fe9fc53921b56bf61",
+        "package.json": "d951e92e79f7478b223c515b60843f854a146e6fc70c4f43d3e0d1b7880a51cb"
+      }
+    },
+    {
+      "round": "repeat",
+      "task": "feedback-11-anonymous-paywall-eligibility",
+      "trial": "runs/sonnet-effort-repeat/feedback-11-anonymous-paywall-el__7bohRFE",
+      "model": "claude-sonnet-4-6@low#isolated-pilot",
+      "suite_sha256": "9b26c000ea9862a1d1026d97c876825d75749993e20f22a89c4c8e0c62e1076f",
+      "task_sha256": "9d96e06269d9ea395eba62493e430add4fa8597e0665a4a3d603ecb3dda69160",
+      "experiment_sha256": "0d9c2efa19a5495fe1048a0a47705b93cea039b251bea5dc97fa13f17d7aa4f3",
+      "effort": "low",
+      "outcome": "withheld-unknown-cost",
+      "model_dispatched": false,
+      "score": null,
+      "full_pass": false,
+      "exception": {
+        "exception_type": "RuntimeError",
+        "exception_message": "claude CLI exited with code 1: "
+      },
+      "failed_criteria": [],
+      "paywall_contract": null,
+      "candidate_cost_usd": null,
+      "judge_cost_usd": 0,
+      "candidate_seconds": null,
+      "thinking_tokens": null,
+      "output_tokens": null,
+      "source_sha256": {
+        "App.tsx": "665f939b7e0d988b611b46d7d311a71b55f5fac8b7d34adea59443a60e72db70",
+        "app.json": "ce81d907e0604d333df2f3c68a9af70f411d20e1bb3de39f0e3c87101ffdab18",
+        "fixtures.js": "73e46c5d6ade22598ab9fa20bd811a39c6590890b85f9e6c344dddbdb2807355",
+        "package.json": "a54b4b436142e3ddb26eb2ec34fb7fffa84779a626cd31ed9c5d3744a1ac0a03",
+        "paywall.js": "a197b6cc10167f8d84441c890b906803973bcbe80cf5e961308bf08fbb85b777"
+      }
+    },
+    {
+      "round": "repeat",
+      "task": "feedback-11-anonymous-paywall-eligibility",
+      "trial": "runs/sonnet-effort-repeat/feedback-11-anonymous-paywall-el__SbTX69H",
+      "model": "claude-sonnet-4-6@high#isolated-pilot",
+      "suite_sha256": "9b26c000ea9862a1d1026d97c876825d75749993e20f22a89c4c8e0c62e1076f",
+      "task_sha256": "9d96e06269d9ea395eba62493e430add4fa8597e0665a4a3d603ecb3dda69160",
+      "experiment_sha256": "6232ace927a59ea4390b0ae46e7227ef5f0f0130ccf7b7fc91eb151c4af5c45a",
+      "effort": "high",
+      "outcome": "withheld-unknown-cost",
+      "model_dispatched": false,
+      "score": null,
+      "full_pass": false,
+      "exception": {
+        "exception_type": "RuntimeError",
+        "exception_message": "claude CLI exited with code 1: "
+      },
+      "failed_criteria": [],
+      "paywall_contract": null,
+      "candidate_cost_usd": null,
+      "judge_cost_usd": 0,
+      "candidate_seconds": null,
+      "thinking_tokens": null,
+      "output_tokens": null,
+      "source_sha256": {
+        "App.tsx": "665f939b7e0d988b611b46d7d311a71b55f5fac8b7d34adea59443a60e72db70",
+        "app.json": "ce81d907e0604d333df2f3c68a9af70f411d20e1bb3de39f0e3c87101ffdab18",
+        "fixtures.js": "73e46c5d6ade22598ab9fa20bd811a39c6590890b85f9e6c344dddbdb2807355",
+        "package.json": "a54b4b436142e3ddb26eb2ec34fb7fffa84779a626cd31ed9c5d3744a1ac0a03",
+        "paywall.js": "a197b6cc10167f8d84441c890b906803973bcbe80cf5e961308bf08fbb85b777"
+      }
+    }
+  ],
+  "grader_probes": {
+    "kind": "offline-grader-counterexamples",
+    "native_apps_executed": false,
+    "slider_sign_only_behavior": {
+      "scenario_passed": true,
+      "checks": [
+        {
+          "name": "recenter-and-accumulate-0",
+          "passed": true
+        },
+        {
+          "name": "recenter-and-accumulate-1",
+          "passed": true
+        },
+        {
+          "name": "recenter-and-accumulate-2",
+          "passed": true
+        },
+        {
+          "name": "recenter-and-accumulate-3",
+          "passed": true
+        },
+        {
+          "name": "centre-release-is-neutral",
+          "passed": true
+        }
+      ],
+      "interior_offset": 0.25,
+      "expected_ev": 0.125,
+      "actual_ev": 0.5
+    },
+    "native_unrelated_failure_accepted_as_calibration": {
+      "result": {
+        "status": "failed",
+        "input": {
+          "profile": "picker"
+        },
+        "errors": [],
+        "checks": [
+          {
+            "name": "candidate-build",
+            "passed": true
+          },
+          {
+            "name": "native-ui",
+            "passed": false,
+            "notes": "Unrelated launch screen assertion; picker was never opened"
+          }
+        ]
+      },
+      "accepted": true
+    },
+    "vision_grid_after_relaunch": {
+      "state": {
+        "grid-taps.json": [
+          "red"
+        ],
+        "events.json": [
+          {
+            "kind": "grid-tapped-ui",
+            "title": "teal@0,0"
+          },
+          {
+            "kind": "grid-tapped-ui",
+            "title": "teal@0,1"
+          },
+          {
+            "kind": "grid-tapped-ui",
+            "title": "teal@0,2"
+          },
+          {
+            "kind": "grid-tapped-ui",
+            "title": "teal@0,3"
+          },
+          {
+            "kind": "grid-tapped-ui",
+            "title": "teal@0,4"
+          },
+          {
+            "kind": "grid-tapped-ui",
+            "title": "red@1,1"
+          }
+        ]
+      },
+      "checks": [
+        {
+          "name": "the red square was tapped",
+          "passed": true
+        },
+        {
+          "name": "at most 3 wrong squares tapped in total",
+          "passed": true,
+          "notes": null
+        },
+        {
+          "name": "tap has a matching grid-tapped-ui journal event",
+          "passed": true
+        }
+      ],
+      "metrics": {
+        "sim_red_tapped": 1.0,
+        "sim_wrong_taps": 0.0,
+        "sim_ui_event_found": 1.0
+      },
+      "actual_wrong_taps_in_journal": 5,
+      "verifier_passed": true
+    }
+  }
+}

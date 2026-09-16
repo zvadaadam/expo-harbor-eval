@@ -81,6 +81,17 @@ def test_standalone_native_evidence_is_read_without_inventing_an_agent(tmp_path)
     assert records[0].outcome == "error" and records[0].reward is None
 
 
+def test_historical_judge_timeout_is_an_error_not_a_candidate_failure(tmp_path):
+    write_json(tmp_path / "trial/result.json", {"task_name": "picker", "agent_info": {"name": "example"},
+        "verifier_result": {"rewards": {"reward": 0}}})
+    write_json(tmp_path / "trial/verifier/reward-details.json", {"reward": {"criteria": [
+        {"id": "preview", "value": 0, "error": "judge timed out after 300s"}]}})
+    _, records = load_runs([tmp_path])
+    assert records[0].outcome == "error" and records[0].reward is None
+    stats = series_stats(group_tasks(records), records[0].series_key)
+    assert stats.errors == 1 and stats.mean is None
+
+
 def test_native_calibration_control_names_and_application_outcomes(tmp_path):
     write_json(tmp_path / "calibration.json", {"kind": "native-scenario-calibration"})
     write_json(tmp_path / "baseline-1/evaluation/details.json", {"kind": "native-ui",

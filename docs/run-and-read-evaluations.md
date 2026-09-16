@@ -1,9 +1,10 @@
 # Run a small pilot, then read the evidence
 
-Nothing in this guide has been executed as an evaluation during the report
-improvements. The HTML preview uses fabricated data. Formatting an existing
-report, inspecting a configuration and preparing a source payload make no model
-calls and start no simulator.
+The original HTML preview uses fabricated data. Actual subscription source
+runs and their limitations are recorded in the
+[Sonnet effort pilot](sonnet-effort-pilot.md); the native commands below still
+need calibration. Formatting an existing report, inspecting a configuration
+and preparing a source payload make no model calls and start no simulator.
 
 ## What each command costs
 
