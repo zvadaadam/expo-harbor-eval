@@ -35,6 +35,10 @@ TIERS = {
     "exact-value-adjustment",
     "async-patience",
     "vision-no-tree",
+    # simbench OAuth tier: web sign-in surfaces, in ascending difficulty
+    "embedded-web-form",
+    "system-auth-session",
+    "cross-app-browser-handoff",
     # simbench flow tier: multi-step sequences over the atomic tiers
     "app-flows",
 }

@@ -5,7 +5,8 @@ description = "Expo coding and simulator-operation benchmarks with Harbor."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-  "harbor>=0.16.1",
+  "harbor==0.23.0",
+  "harbor-rewardkit @ git+https://github.com/harbor-framework/harbor.git@cfc54c995e90cd438deb862189a58053b9d89fd3#subdirectory=packages/rewardkit",
   "python-dotenv>=1.2.2",
   "pyyaml>=6.0.2",
   "tomli-w>=1.2.0",
@@ -16,6 +17,7 @@ expo-eval-report = "expo_harbor_evals.report:main"
 expo-eval-viewer = "expo_harbor_evals.viewer:main"
 expo-eval-export = "expo_harbor_evals.export:main"
 expo-codegen-calibrate = "expo_harbor_evals.codegen_calibrate:main"
+expo-codegen-regrade = "expo_harbor_evals.codegen_regrade:main"
 expo-simbench-calibrate = "expo_harbor_evals.simbench_calibrate:main"
 expo-eas-eval = "expo_harbor_evals.eas_runner:main"
 expo-mobile-eval = "expo_harbor_evals.mobile_eval:main"

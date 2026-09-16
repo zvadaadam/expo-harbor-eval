@@ -25,6 +25,27 @@ def test_modes_separate_even_without_an_experiment_hash():
     assert "no combined mobile-app score" in page
 
 
+def test_policy_modes_and_regrades_keep_scope_and_spend_separate(tmp_path):
+    write_json(tmp_path / "regraded/result.json", {"task_name": "paywall",
+        "agent_info": {"name": "claude-host", "model_info": {"name": "sonnet"}},
+        "config": {"source_trial": {"action": "regrade", "path": "runs/original"}},
+        "agent_result": {"cost_usd": 2, "n_output_tokens": 1000, "metadata": {"num_turns": 5}},
+        "verifier_result": {"rewards": {"reward": 0}}})
+    write_json(tmp_path / "regraded/evaluation.json", {"measurement": "source-and-policy"})
+    _, records = load_runs([tmp_path])
+    assert records[0].cost_usd == 0 and records[0].output_tokens == 0 and records[0].steps == 0
+    assert records[0].regrade_of == "runs/original"
+    assert records[0].series_key.endswith("|regrade")
+    page = build_html([*records, trial(measurement="policy-behavior")], "Regrades", "fixtures")
+    assert 'id="lane-source-and-policy"' in page and 'id="lane-policy-behavior"' in page
+    assert "No new generation" in page and "saved submissions regraded" in page
+    from expo_harbor_evals.viewer import render_trial
+    live_page = render_trial(tmp_path.parent, tmp_path.name, "regraded")
+    assert "Regraded from" in live_page and "No new generation" in live_page
+    assert '<td>Agent cost</td><td>$0.00</td>' in live_page
+    assert '<td>Agent steps</td><td>0</td>' in live_page
+
+
 def test_pending_is_not_an_execution_error_or_completed_attempt():
     records = [trial(), trial(name="waiting", reward=None, pending=True)]
     stat = series_stats(group_tasks(records), records[0].series_key)

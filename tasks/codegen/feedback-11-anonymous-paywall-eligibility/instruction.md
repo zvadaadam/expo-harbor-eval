@@ -6,6 +6,8 @@ This app deliberately supports purchases without an account. The local fixtures
 stand in for auth, RevenueCat customer info and placement offerings; no account,
 SDK key, backend, purchase or deployment is needed. Keep the screen wired to
 `getPaywallOffering` in `paywall.js`, with the same inputs and return value.
+Keep this helper a standalone CommonJS module with no imports, I/O or timers;
+its exported function is executed against snapshots in an isolated JavaScript context.
 
 The product contract is:
 

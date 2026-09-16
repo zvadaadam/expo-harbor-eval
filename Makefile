@@ -3,7 +3,7 @@
 # target with HARBOR_WITH="--with ../harbor".
 HARBOR_WITH ?=
 
-.PHONY: help test check codegen-calibrate codegen-oracle codegen-baseline codegen-judge codegen-models codegen-muse simbench-ladder simbench-hard simbench-unguided simbench-flows simbench-muse simbench-calibrate report viewer export
+.PHONY: help test check codegen-calibrate codegen-oracle codegen-baseline codegen-judge codegen-models codegen-muse simbench-ladder simbench-hard simbench-unguided simbench-flows simbench-oauth simbench-muse simbench-calibrate report viewer export
 
 # The default target describes commands; it never starts an evaluation.
 help:
@@ -70,6 +70,10 @@ simbench-unguided:
 # Flow tier: journal-sequence-verified multi-step flow (see CONTRIBUTING).
 simbench-flows:
 	uv run $(HARBOR_WITH) harbor run -c jobs/simbench/flows.yaml --job-name simbench-flows --yes
+
+# OAuth tier: embedded + system web sign-in surfaces (see docs/oauth-simbench.md).
+simbench-oauth:
+	uv run $(HARBOR_WITH) harbor run -c jobs/simbench/oauth.yaml --job-name simbench-oauth --yes
 
 # Muse Code (Meta) x driver-tool cells over the ladder tiers + flow task;
 # floors/ceilings live in the ladder/flows runs (merge reports to compare).

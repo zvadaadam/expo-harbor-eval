@@ -1,0 +1,17 @@
+# Offline policy verification through real Harbor trials; no model calls.
+jobs_dir: runs
+n_attempts: 1
+n_concurrent_trials: 1
+environment:
+  import_path: expo_harbor_evals.mac_sandbox_env:MacSandboxEnvironment
+  delete: true
+verifier:
+  env:
+    EXPO_EVAL_VERIFIER_MODE: behavior
+agents:
+  - name: nop
+  - name: oracle
+datasets:
+  - path: tasks/codegen
+    task_names:
+      - feedback-11-anonymous-paywall-eligibility

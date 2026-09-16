@@ -16,11 +16,13 @@ case "$MODE" in
       "$LOGS_DIR/verifier/reward.json" \
       --details "$LOGS_DIR/verifier/reward-details.json"
     ;;
-  judge)
+  judge|behavior)
+    extra=()
+    if [[ "$MODE" == "behavior" ]]; then extra+=(--behavior-only); fi
     uv run "$TESTS_DIR/run_rewardkit.py" \
       "$TESTS_DIR/requirements" \
       "$APP_DIR" \
-      "$LOGS_DIR/verifier/reward.json"
+      "$LOGS_DIR/verifier/reward.json" "${extra[@]}"
     ;;
   mobile)
     # Opt-in candidate-app verification. This command is supplied by the

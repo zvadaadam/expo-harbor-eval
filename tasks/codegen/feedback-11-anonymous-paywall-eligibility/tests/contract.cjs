@@ -1,10 +1,25 @@
-// Offline authoring checks for the supplied controls. This is not the Harbor
-// judge and does not verify native rendering or execute a model submission.
+// Execute the submitted pure policy helper. Rendering remains a separate check.
 'use strict';
-const { getPaywallOffering } = require(require('node:path').resolve(process.argv[2]));
-const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const context = vm.createContext(Object.create(null), {
+  codeGeneration: { strings: false, wasm: false },
+});
+let loadError = null;
+try {
+  const source = fs.readFileSync(process.argv[2], 'utf8');
+  vm.runInContext(`const module = { exports: {} }; const exports = module.exports;\n(function(module, exports) {\n${source}\n})(module, exports);`, context, { timeout: 1000 });
+  if (vm.runInContext('typeof module.exports.getPaywallOffering', context, { timeout: 1000 }) !== 'function') {
+    throw new Error('Missing getPaywallOffering export');
+  }
+} catch {
+  loadError = 'Candidate module failed to load or export getPaywallOffering';
+}
 const failures = new Set();
 let checks = 0;
+let executedChecks = 0;
+let failedChecks = 0;
+const counterexamples = {};
 
 function freeze(value) {
   if (value && typeof value === 'object') {
@@ -16,12 +31,23 @@ function freeze(value) {
 
 function check(group, state, expected) {
   checks++;
-  const before = JSON.stringify(state);
+  let actual;
   try {
-    assert.equal(getPaywallOffering(freeze(state)), expected);
-    assert.equal(JSON.stringify(state), before);
+    if (loadError) throw new Error('Candidate unavailable');
+    // No host objects or callbacks enter the candidate's context. Each call
+    // has a deadline; a nonterminating helper is a candidate failure.
+    executedChecks++;
+    actual = vm.runInContext(`module.exports.getPaywallOffering((${freeze.toString()})(${JSON.stringify(state)}))`, context, { timeout: 50 });
   } catch {
+    // Do not inspect candidate-owned exceptions or objects on the host.
+    loadError ??= 'Candidate helper threw or timed out';
+  }
+  if (loadError || actual !== expected) {
     failures.add(group);
+    failedChecks++;
+    counterexamples[group] ??= { state, expected,
+      actual: actual === null || typeof actual === 'string' || typeof actual === 'boolean'
+        ? actual : `<${typeof actual}>`, error: loadError };
   }
 }
 
@@ -61,4 +87,5 @@ for (const identity of identities) {
     }
   }
 }
-process.stdout.write(JSON.stringify({ checks, failedGroups: [...failures].sort() }) + '\n');
+process.stdout.write(JSON.stringify({ checks, executedChecks, failedChecks,
+  failedGroups: [...failures].sort(), counterexamples, loadError }) + '\n');

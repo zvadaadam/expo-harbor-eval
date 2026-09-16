@@ -38,7 +38,7 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
 
-from expo_harbor_evals.codegen_rewardkit_runner import SCAFFOLDING_FILES
+from expo_harbor_evals.codegen_rewardkit_runner import SCAFFOLDING_FILES, behavior_spec
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
@@ -77,7 +77,7 @@ def _copy_environment(environment: Path, workspace: Path) -> None:
             shutil.copy2(child, workspace / child.name)
 
 
-def _run_verifier(task_dir: Path, workspace: Path, output: Path) -> dict:
+def _run_verifier(task_dir: Path, workspace: Path, output: Path, behavior_only: bool = False) -> dict:
     completed = subprocess.run(
         [
             "uv",
@@ -86,6 +86,7 @@ def _run_verifier(task_dir: Path, workspace: Path, output: Path) -> dict:
             str(task_dir / "tests" / "requirements"),
             str(workspace),
             str(output),
+            *(["--behavior-only"] if behavior_only else []),
         ],
         capture_output=True,
         text=True,
@@ -101,7 +102,8 @@ def _run_verifier(task_dir: Path, workspace: Path, output: Path) -> dict:
     if details_path.exists():
         details = json.loads(details_path.read_text()).get("reward", {})
     return {"reward": reward, "guarded": "guard" in details,
-            "criteria": details.get("criteria", [])}
+            "criteria": details.get("criteria", []), "behavior_only": behavior_only,
+            "source_review_skipped": details.get("source_review_skipped")}
 
 
 def assess_bracket(task_dir: Path, bracket: str, result: dict) -> tuple[bool, str]:
@@ -112,6 +114,11 @@ def assess_bracket(task_dir: Path, bracket: str, result: dict) -> tuple[bool, st
     if bracket in ("empty", "baseline"):
         return (reward == 0 and guarded), "must guard to 0 without a judge call"
     rubric = tomllib.loads((task_dir / "tests/requirements/rubric.toml").read_text())
+    behavior = behavior_spec(task_dir / "tests/requirements")
+    if result.get("behavior_only") or result.get("source_review_skipped"):
+        if behavior is None:
+            return False, "no declared behavioral contract"
+        rubric["criterion"] = [c for c in rubric["criterion"] if c["id"] in behavior["criteria"]]
     expected_ids = {c["id"] for c in rubric["criterion"]}
     rows = result.get("criteria", [])
     if not isinstance(rows, list) or any(not isinstance(c, dict) for c in rows):
@@ -121,12 +128,16 @@ def assess_bracket(task_dir: Path, bracket: str, result: dict) -> tuple[bool, st
     if any(not isinstance(c.get("id", c.get("name")), str) for c in rows):
         return False, "judge criterion IDs must be strings"
     values = {c.get("id", c.get("name")): c.get("value") for c in rows}
+    if result.get("source_review_skipped") and not any(value == 0 for value in values.values()):
+        return False, "source review can only be skipped for a failed required policy"
     if guarded or set(values) != expected_ids or len(rows) != len(expected_ids):
         return False, "judge must return each declared criterion exactly once"
     if any(isinstance(v, bool) or v not in (0.0, 1.0) for v in values.values()):
         return False, "binary criteria must contain numeric 0 or 1"
     expected_reward = sum(values[c["id"]] * c["weight"] for c in rubric["criterion"]) / sum(c["weight"] for c in rubric["criterion"])
-    # Rewardkit 0.1.7 serializes the aggregate to four decimal places.
+    if behavior is not None:
+        expected_reward = float(all(values.values()))
+    # Rewardkit serializes the aggregate to four decimal places.
     if not math.isclose(reward, round(expected_reward, 4), abs_tol=1e-6):
         return False, "aggregate reward disagrees with criterion results"
     if bracket.startswith("reference"):
@@ -140,7 +151,7 @@ def assess_bracket(task_dir: Path, bracket: str, result: dict) -> tuple[bool, st
 
 
 def _bracket(
-    task_dir: Path, bracket: str, scratch: Path
+    task_dir: Path, bracket: str, scratch: Path, behavior_only: bool = False,
 ) -> BracketResult:
     workspace = scratch / task_dir.name / bracket / "app"
     output = scratch / task_dir.name / bracket / "reward.json"
@@ -159,7 +170,7 @@ def _bracket(
             raise ValueError(f"No TSX entry for negative control: {task_dir.name}")
         source.write_text(source.read_text() + "\n// Calibration: unchanged behavior.\n")
     try:
-        result = _run_verifier(task_dir, workspace, output)
+        result = _run_verifier(task_dir, workspace, output, behavior_only)
         ok, note = assess_bracket(task_dir, bracket, result)
     except (RuntimeError, ValueError, KeyError, OSError, subprocess.TimeoutExpired) as error:
         return BracketResult(task_dir.name, bracket, None, False, False, str(error))
@@ -183,10 +194,15 @@ def main() -> None:
         help="Calibrate only the named task directory (repeatable).",
     )
     parser.add_argument("--jobs", type=int, default=3)
+    parser.add_argument("--behavior-only", action="store_true", help="Calibrate declared policy contracts without a source judge")
     parser.add_argument("--output", type=Path, help="Save machine-readable bracket results")
     args = parser.parse_args()
 
     task_dirs = codegen_task_dirs(args.tasks)
+    if args.behavior_only:
+        task_dirs = [task for task in task_dirs if behavior_spec(task / "tests/requirements")]
+        if not task_dirs:
+            parser.error("No tasks with behavioral contracts")
     if args.only:
         wanted = set(args.only)
         task_dirs = [d for d in task_dirs if d.name in wanted]
@@ -209,7 +225,7 @@ def main() -> None:
         # broken guard costs no judge spend.
         for task_dir in task_dirs:
             for bracket in ("empty", "baseline"):
-                results.append(_bracket(task_dir, bracket, scratch))
+                results.append(_bracket(task_dir, bracket, scratch, args.behavior_only))
         if judged and any(not result.ok for result in results):
             print(
                 "Guard bracket violation(s) — skipping judged brackets.",
@@ -220,7 +236,7 @@ def main() -> None:
             with ThreadPoolExecutor(max_workers=args.jobs) as pool:
                 results.extend(
                     pool.map(
-                        lambda pair: _bracket(pair[0], pair[1], scratch),
+                        lambda pair: _bracket(pair[0], pair[1], scratch, args.behavior_only),
                         judged,
                     )
                 )
@@ -230,7 +246,7 @@ def main() -> None:
         from dataclasses import asdict
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps({"ok": not failures,
-            "scope": "guards-only" if args.guards_only else "source-judge-calibration",
+            "scope": "guards-only" if args.guards_only else "policy-behavior-calibration" if args.behavior_only else "source-judge-calibration",
             "results": [asdict(result) for result in results]}, indent=2) + "\n")
     by_task: dict[str, list[BracketResult]] = {}
     for result in results:

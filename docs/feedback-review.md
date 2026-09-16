@@ -70,7 +70,7 @@ The task remains `requires-judge-calibration`. Its four source criteria also
 check that the helper remains connected to the screen.
 
 Existing comparison jobs deliberately retain their frozen 18-task source
-cohort. The repository now has 19 coding definitions and seven simulator tasks.
+cohort. The repository now has 19 coding definitions and ten simulator tasks.
 The new task can be inspected without executing it:
 
 ```sh

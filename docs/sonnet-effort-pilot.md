@@ -1,5 +1,9 @@
 # Sonnet effort pilot and grading audit — 16 September 2026
 
+Follow-up: [Harbor adoption and replay results](harbor-adoption.md) now implement
+the recommended executable paywall grading. Both saved candidates regrade to
+zero; the original scores and historical findings below remain unchanged.
+
 This repository is useful for developing Expo repair evaluations. It does not
 yet establish a reliable “low effort fails, high effort succeeds” benchmark.
 The most consequential finding in this pilot is a real false positive: Sonnet's
@@ -157,7 +161,7 @@ desired effort comparison appear.
 ## What would make this a strong Expo eval?
 
 Keep source review, execution of submitted Expo apps, and fixed-app device use
-as separate measurements. The seven SwiftUI simulator tasks measure device
+as separate measurements. The ten SwiftUI simulator tasks measure device
 operation; they do not establish Expo coding correctness. The 19 source tasks
 provide useful screening, while only three currently have native scenarios.
 

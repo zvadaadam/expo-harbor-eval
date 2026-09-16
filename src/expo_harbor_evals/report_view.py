@@ -14,6 +14,8 @@ from expo_harbor_evals.report import Trial, _series_for, build_series, fmt, fmt_
 LANES = {
     "native-ui": ("Native app behavior", "Built candidate apps · native UI checks", "Experimental. Calibrate the reference and broken apps on the target runtime before interpreting model results."),
     "source-review": ("Source review", "Submitted code · criterion-based judging", "A source score measures the declared code criteria. It does not establish that the app builds or works on a device."),
+    "source-and-policy": ("Source and policy checks", "Executable policy contract · source integration review", "Every required criterion must pass. A failed policy skips paid source review. These checks do not establish native UI behavior."),
+    "policy-behavior": ("Policy behavior", "Executable helper contract · no source judge", "This score covers the policy helper only. It does not verify screen integration or native UI behavior."),
     "device-use": ("Simulator operation", "Fixed apps · model and driver behavior", "These trials measure operating a known app. They do not measure the quality of generated Expo code."),
     "reference-smoke": ("Reference smoke checks", "Exact reference matching · harness plumbing", "Passing verifies the smoke-check contract, not general coding ability."),
     "unversioned": ("Unversioned results", "Historical or missing experiment identity", "Experiment provenance is incomplete. Keep these records separate from versioned comparisons."),
@@ -81,8 +83,12 @@ def render_configurations(trials: list[Trial]) -> str:
         missing = max(0, (expected or 0) - len(records))
         plan = f"{stat.attempts}/{expected} outcomes" if expected is not None else f"{stat.attempts} outcomes · plan unknown"
         details = [first.backend or "backend not recorded", f"experiment {first.experiment[:8]}" if first.experiment else "unversioned"]
+        if first.regrade_of:
+            details.append("saved submissions regraded")
         cost_known = sum(t.cost_usd is not None for t in records)
         cost = f"${stat.total_cost:.2f}" if stat.total_cost is not None else "Not recorded"
+        steps_known = sum(t.steps is not None for t in records)
+        steps_note = f"{stat.total_steps:,} steps · {steps_known}/{len(records)} recorded" if stat.total_steps is not None else "steps not recorded"
         rows.append(f'''<tr>
           <td class="configuration"><strong>{esc(_series_for(first.agent, first.model).label)}</strong>
             <small>{esc(' · '.join(details))}</small>{stack(records, expected)}
@@ -91,7 +97,7 @@ def render_configurations(trials: list[Trial]) -> str:
           <td class="number"><strong>{counts['pass']} / {stat.attempts}</strong><small>complete attempts</small></td>
           <td class="number"><strong>{fmt(stat.mean)}</strong><small>valid scores only</small></td>
           <td class="number"><strong>{len({t.task for t in records})} / {len(names)}</strong><small>tasks observed</small><small>{plan}</small></td>
-          <td class="number"><strong>{cost}</strong><small>{cost_known}/{len(records)} costs recorded</small></td>
+          <td class="number"><strong>{cost}</strong><small>{cost_known}/{len(records)} costs recorded</small><small>{steps_note}</small></td>
         </tr>''')
     return '<div class="table-scroll"><table class="config-table"><thead><tr><th>Configuration</th><th>Completion</th><th>Mean score</th><th>Coverage</th><th>Agent spend</th></tr></thead><tbody>' + "".join(rows) + '</tbody></table></div>'
 
@@ -184,8 +190,12 @@ def render_trial(trial: Trial) -> str:
         "Source judge": " · ".join(str(trial.judge[k]) for k in ("agent", "model") if trial.judge.get(k)) or "Not recorded / programmatic",
         "Agent cost": f"${trial.cost_usd:.2f}" if trial.cost_usd is not None else "Not recorded",
         "Input / cache / output tokens": " / ".join(fmt_tokens(n) for n in (trial.input_tokens, trial.cache_tokens, trial.output_tokens)),
+        "Agent steps": str(trial.steps) if trial.steps is not None else "Not recorded",
         "Calibration": "Not established by this report",
     }
+    if trial.regrade_of:
+        provenance["Regraded from"] = trial.regrade_of
+        provenance["Agent usage"] = "No new generation; original usage remains in the source trial. Judge costs are separate."
     metadata = "".join(f'<dt>{esc(k)}</dt><dd>{esc(v)}</dd>' for k, v in provenance.items())
     score = "Pending" if trial.pending else f"Score {fmt(trial.reward)}"
     error = f'<p class="error-message">{esc(trial.error)}</p>' if trial.error else ""
@@ -194,7 +204,7 @@ def render_trial(trial: Trial) -> str:
       <summary><span class="status {outcome}">{SYMBOLS[outcome]} {LABELS[outcome]}</span>
         <span class="trial-title"><strong>{esc(short_task(trial.task))}</strong><small>{esc(_series_for(trial.agent, trial.model).label)} · {esc(trial.name)}</small></span>
         <span class="trial-score">{score}</span><span class="expand" aria-hidden="true">+</span></summary>
-      <div class="trial-body">{error}<div class="evidence-columns"><div><h4>{'Native / state checks' if trial.checks else 'Source criteria'}</h4>
+      <div class="trial-body">{error}<div class="evidence-columns"><div><h4>{'Native / state checks' if trial.checks else 'Grading criteria'}</h4>
       <ol class="checks">{''.join(steps)}</ol>{'<p class="subtle">No check details recorded.</p>' if not steps else ''}</div><div><h4>Recorded evidence</h4>{evidence}</div></div>
       {transcript}<details class="provenance"><summary>Reproduction details</summary><dl>{metadata}</dl></details></div>
     </details>'''

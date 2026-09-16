@@ -293,8 +293,13 @@ def render_trial(runs_dir: Path, run_name: str, trial_name: str) -> str | None:
             if agent_result.get(field) is not None
         )
         or "—",
-        "Agent turns": str(metadata.get("num_turns") or "—"),
+        "Agent steps": str(metadata.get("num_turns") or "—"),
     }
+    source_trial = (raw.get("config") or {}).get("source_trial") or {}
+    if source_trial.get("action") == "regrade":
+        info_rows.update({"Regraded from": str(source_trial.get("path") or source_trial.get("trial_id") or "Unknown trial"),
+                          "Agent cost": "$0.00", "Agent tokens": "0", "Agent steps": "0",
+                          "Agent usage": "No new generation; original usage remains in the source trial. Judge costs are separate."})
     sections.append(
         '<table class="kv"><tbody>'
         + "".join(

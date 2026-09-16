@@ -10,22 +10,25 @@ The [feedback review](docs/feedback-review.md) explains the 15 reviewed reports,
 the new paywall task and review tracking in the feedback MCP.
 The [Sonnet effort pilot](docs/sonnet-effort-pilot.md) records subscription runs,
 behavioral counterchecks and current grading weaknesses.
+The [Harbor adoption guide](docs/harbor-adoption.md) covers executable paywall
+grading, saved-submission regrading and the actual replay results.
 
 ## What is evaluated
 
 | Task family | Measurement | Current coverage |
 |---|---|---|
-| `tasks/codegen/` | Source review of submitted Expo code | 19 tasks: 9 API exercises and 10 field-report regressions |
+| `tasks/codegen/` | Source review; paywall also executes a policy contract | 19 tasks: 9 API exercises and 10 field-report regressions |
 | The same `tasks/codegen/` tasks | Build and native UI behavior | 3 experimental iOS repair profiles |
-| `tasks/simbench/` | Agent and device-tool operation of a fixed app | 7 SwiftUI simulator tasks |
+| `tasks/simbench/` | Agent and device-tool operation of a fixed app | 10 SwiftUI simulator tasks (7 UI probes + 3 OAuth sign-in) |
 
-There are **26 task definitions**. Native verification reuses three coding tasks;
+There are **29 task definitions**. Native verification reuses three coding tasks;
 it does not add another task family. Keep source, native and device-use scores
 separate. Native profiles still require simulator calibration before their
 model results can be interpreted.
 The paywall task passed its initial source controls, but actual candidates
-exposed source-judge false positives. Existing coding comparison jobs keep
-their frozen 18-task cohort while its grading is strengthened.
+exposed source-judge false positives. The normal grader now rejects these using
+executable policy checks. Existing coding comparison jobs keep their frozen
+18-task cohort pending full calibration of the combined grader.
 
 Exact-reference comparison is available as a harness smoke check. It is not
 coding-quality scoring. The external mobile-result import bridge has been removed.
@@ -60,7 +63,7 @@ for their purpose and the structure inside each task.
 
 ```sh
 uv sync --dev
-# Node.js is needed for the offline paywall fixture checks.
+# Node.js 24+ is needed for the executable paywall checks.
 make check
 make test
 

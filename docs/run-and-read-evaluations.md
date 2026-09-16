@@ -5,12 +5,16 @@ runs and their limitations are recorded in the
 [Sonnet effort pilot](sonnet-effort-pilot.md); the native commands below still
 need calibration. Formatting an existing report, inspecting a configuration
 and preparing a source payload make no model calls and start no simulator.
+For a coding run without model calls, use the paywall controls and
+[saved-submission regrading guide](harbor-adoption.md).
 
 ## What each command costs
 
 | Activity | Coding-agent tokens | Judge tokens | Native / cloud compute |
 |---|---|---|---|
 | `expo-eval-report`, `expo-eval-suite check`, Harbor `--print-config` | None | None | None |
+| `jobs/codegen/behavior-controls.yaml`, `expo-codegen-regrade --mode behavior` | None | None | Local Node policy checks only |
+| `expo-codegen-regrade --mode judge` | None | Yes, unless a guard or failed policy decides the result | No native builds |
 | `expo-mobile-eval prepare`, `expo-eas-eval prepare` | None | None | File preparation only |
 | `expo-mobile-calibrate` | None | None | Builds and simulator trials |
 | `expo-mobile-eval run` on an existing candidate | None | None | One build and simulator trial |
@@ -162,8 +166,9 @@ do not establish a precise ranking or a general probability of success.
 
 ## Do the tasks and static judging make sense?
 
-Yes, as a focused regression suite. There are **26 task definitions**, not 26
-fully runnable Expo apps: 19 coding tasks and 7 fixed-app simulator tasks.
+Yes, as a focused regression suite. There are **29 task definitions**, not 29
+fully runnable Expo apps: 19 coding tasks and 10 fixed-app simulator tasks
+(three of them OAuth sign-in surfaces; see [oauth-simbench.md](oauth-simbench.md)).
 The external result-import task has been removed. The three native repair profiles are a subset of the 19
 source tasks, not three additional task definitions.
 

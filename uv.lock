@@ -429,6 +429,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "harbor" },
+    { name = "harbor-rewardkit" },
     { name = "python-dotenv" },
     { name = "pyyaml" },
     { name = "tomli-w" },
@@ -441,7 +442,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "harbor", specifier = ">=0.16.1" },
+    { name = "harbor", specifier = "==0.23.0" },
+    { name = "harbor-rewardkit", git = "https://github.com/harbor-framework/harbor.git?subdirectory=packages%2Frewardkit&rev=cfc54c995e90cd438deb862189a58053b9d89fd3" },
     { name = "python-dotenv", specifier = ">=1.2.2" },
     { name = "pyyaml", specifier = ">=6.0.2" },
     { name = "tomli-w", specifier = ">=1.2.0" },
@@ -638,7 +640,7 @@ wheels = [
 
 [[package]]
 name = "harbor"
-version = "0.18.0"
+version = "0.23.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dirhash" },
@@ -646,6 +648,7 @@ dependencies = [
     { name = "filelock" },
     { name = "httpx" },
     { name = "jinja2" },
+    { name = "jsonschema" },
     { name = "litellm" },
     { name = "packaging" },
     { name = "pathspec" },
@@ -663,9 +666,17 @@ dependencies = [
     { name = "typer" },
     { name = "uvicorn" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/38/24/7222433d3b9f665db1759456c281a9c136b921300be5d7af269f183ee59e/harbor-0.18.0.tar.gz", hash = "sha256:9b918b99ec38b4e16db7e0b797dcebf92bfc8be9d9ba22a2d2ed6ebb8feb38df", size = 1535447, upload-time = "2026-07-07T20:29:46.878Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/2a/3a/b05d0e8752d5d531e56fbb2955f0e656c0a9b5fbcd202dbad7313b29d4df/harbor-0.23.0.tar.gz", hash = "sha256:a8b87e98db59877228bb36d2c24757cc422a3144ffaf31a1f88955c65c911e4d", size = 1907464, upload-time = "2026-09-12T04:55:11.919Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e8/81/b5d4f3119b131ee4a41e7036c7c1315e13c27849ffb59c3364875768132a/harbor-0.18.0-py3-none-any.whl", hash = "sha256:e436f04fca35bb3705be603b8c123d0472418d10120cfd7e5ba8dc902e56bc32", size = 1735449, upload-time = "2026-07-07T20:29:45.064Z" },
+    { url = "https://files.pythonhosted.org/packages/19/c7/607ff037dff1f40d1f941b9854742d66fd43630274fd4e7b8de8480dad34/harbor-0.23.0-py3-none-any.whl", hash = "sha256:8747400dbb2a5e2298e1338e17e88eba38433c0433fd700f34d1a9021bba5c37", size = 2142100, upload-time = "2026-09-12T04:55:10.014Z" },
+]
+
+[[package]]
+name = "harbor-rewardkit"
+version = "0.2.1"
+source = { git = "https://github.com/harbor-framework/harbor.git?subdirectory=packages%2Frewardkit&rev=cfc54c995e90cd438deb862189a58053b9d89fd3#cfc54c995e90cd438deb862189a58053b9d89fd3" }
+dependencies = [
+    { name = "litellm" },
 ]
 
 [[package]]

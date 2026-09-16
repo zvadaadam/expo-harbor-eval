@@ -1,0 +1,85 @@
+# OAuth tier: web sign-in surfaces over the GoldenGate golden app x two models
+# x two driver tools, 3 attempts per cell, bracketed by nop floor and scripted
+# oracle ceiling. The embedded surface is an in-app WKWebView; the system
+# surface is iOS ASWebAuthenticationSession (the expo-web-browser /
+# expo-auth-session flow) whose out-of-process web sheet is sparse to
+# agent-device. A sign-in counts only when the app session, the ordered
+# UI-event journal and the provider's PKCE-bound record agree. The Safari
+# hand-off task (simbench-ios-10) is authored but held out of this cohort
+# pending a driver that can drive Safari web input (see docs/oauth-simbench.md).
+# Each trial owns a simulator; keep the job serialized to bound local resources.
+jobs_dir: runs
+n_attempts: 3
+timeout_multiplier: 1.0
+n_concurrent_trials: 1
+quiet: false
+
+environment:
+  import_path: expo_harbor_evals.simbench_env:SimbenchEnvironment
+  delete: true
+
+agents:
+  - name: nop
+  - name: oracle
+  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
+    model_name: "haiku#agent-device"
+    kwargs:
+      allowed_tools: "Bash Read Write Edit Glob Grep LS TodoWrite"
+      preface: &agent_device_preface |
+        You are operating directly on the macOS host for this task. Your
+        working directory is the task workspace (called /app in the
+        instructions).
+
+        Simulator driver tool for this run: the agent-device CLI. Typical loop:
+          agent-device open --platform ios --device "$SIMBENCH_DEVICE_NAME" <bundle-id>
+          agent-device snapshot -i                 # interactive elements with @refs
+          agent-device fill @eN "some text" --settle
+          agent-device press @eN --settle
+          agent-device swipe <x1> <y1> <x2> <y2> [durationMs]   # screen points
+          agent-device close
+        Selectors also work as targets, e.g. press 'label="Add"' or
+        press 'id="some-accessibility-id"'. Element refs go stale whenever the
+        UI changes (for example when the keyboard appears) — run snapshot
+        again after each mutating action and use fresh refs. Run
+        `agent-device help workflow` for the full command reference if needed.
+
+  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
+    model_name: "haiku#argent"
+    kwargs:
+      allowed_tools: "Bash Read Write Edit Glob Grep LS TodoWrite"
+      preface: &argent_preface |
+        You are operating directly on the macOS host for this task. Your
+        working directory is the task workspace (called /app in the
+        instructions).
+
+        Simulator driver tool for this run: the argent CLI (tool-server).
+        Typical loop:
+          UDID="$SIMBENCH_DEVICE"
+          argent run launch-app --udid "$UDID" --bundleId <bundle-id>
+          argent run describe --udid "$UDID"    # accessibility tree
+          argent run gesture-tap --udid "$UDID" --x 0.42 --y 0.21
+          argent run gesture-swipe --udid "$UDID" --fromX 0.5 --fromY 0.7 --toX 0.5 --toY 0.3
+          argent run keyboard --udid "$UDID" --text "hello"
+        describe returns normalized [0,1] fractional coordinates; tap element
+        centers (x + width/2, y + height/2). If describe returns an empty tree
+        with a boot hint, follow it: argent run boot-device --udid "$UDID"
+        --force true, then continue. Run `argent tools` for the full tool list
+        if needed.
+
+  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
+    model_name: "sonnet#agent-device"
+    kwargs:
+      allowed_tools: "Bash Read Write Edit Glob Grep LS TodoWrite"
+      preface: *agent_device_preface
+
+  - import_path: expo_harbor_evals.claude_host_agent:ClaudeHostAgent
+    model_name: "sonnet#argent"
+    kwargs:
+      allowed_tools: "Bash Read Write Edit Glob Grep LS TodoWrite"
+      preface: *argent_preface
+
+datasets:
+  - path: tasks/simbench
+    task_names:
+      - simbench-ios-08-goldengate-embedded-web-login
+      - simbench-ios-09-goldengate-system-auth-session

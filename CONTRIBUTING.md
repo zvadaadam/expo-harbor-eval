@@ -52,6 +52,14 @@ An unrelated deduction does not establish that the judge recognizes the bug.
 Supply alternative valid references when the rubric allows different designs.
 Rerun calibration after changing task behavior, criteria, prompts or the judge.
 
+A task may declare executable criteria in `tests/requirements/behavior.json`.
+For paywall, these are required gates: a policy failure skips paid judging,
+while a policy pass still requires source integration to pass. Use
+`expo-codegen-calibrate --behavior-only` for free contract controls; this does
+not replace full combined calibration. Keep candidate artifacts and separate
+verifier scaffolding in every coding task so Harbor can regrade saved source.
+See [the adoption guide](docs/harbor-adoption.md) for evidence and commands.
+
 The native lane is opt-in and experimental. `expo-mobile-calibrate` requires
 complete references to build and pass all native checks, while baselines and
 applicable distractors must build and fail UI assertions. An infrastructure or
@@ -130,6 +138,24 @@ while errors compound over flows. Rules for flow tasks:
 - **Name conditions honestly.** `jobs/simbench/unguided.yaml` is an unguided
   condition: the tools remain installed. A true no-tool comparison requires
   enforcing a restricted tool surface, not merely changing the preface.
+
+The **OAuth tier** (`simbench-ios-08/09/10`, one `GoldenGate` golden app) is
+the first tier whose flows leave the app under test — into a system consent
+alert, an out-of-process web sheet, or Safari and back over a custom-scheme
+callback. Rules specific to it:
+
+- **Verify the whole round-trip, not just a session file.** A sign-in counts
+  only when the app session, the ordered UI-event journal AND the in-app
+  identity provider's own PKCE-bound record agree; a `session.json` written
+  directly cannot fake the provider record. Ship a consent-denied negative
+  control (login completes, access refused) so the verifier is shown to grade
+  consent, not mere login.
+- **Only ship a surface whose oracle you can drive deterministically.** The
+  system sheet reads as a sparse tree to agent-device, so its oracle is an
+  agent-device + argent hybrid; the Safari hand-off cannot yet be typed into
+  with the pinned agent-device, so that task is authored and locked but held
+  out of the job cohorts (like the paywall codegen task) until a driver can
+  drive Safari web input. See [docs/oauth-simbench.md](docs/oauth-simbench.md).
 
 Real production apps as surfaces (AppControlBench uses frozen Bluesky and
 Element builds) come after flows, as their own task family. When they do:

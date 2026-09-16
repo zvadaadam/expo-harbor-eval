@@ -31,6 +31,7 @@ SCAFFOLD_TEMPLATES = {
     "solution/solve.sh": "SOLUTION_SH",
     "tests/requirements/judge-prompt.md": "JUDGE_PROMPT",
     "environment/Dockerfile": "DOCKERFILE",
+    "tests/Dockerfile": "VERIFIER_DOCKERFILE",
 }
 
 
@@ -57,7 +58,7 @@ def test_job_groups_select_existing_tasks_and_keep_results_separate() -> None:
         if path.parent.name == "native":
             assert mode == "mobile"
         elif path.parent.name == "codegen":
-            assert mode in ("judge", "reference")
+            assert mode in ("judge", "reference", "behavior")
 
 
 def test_native_profiles_reuse_existing_coding_tasks() -> None:

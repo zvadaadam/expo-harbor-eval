@@ -18,12 +18,30 @@ from expo_harbor_evals.simbench_evidence import write_json
 
 FLOW_TASK = "simbench-ios-07-goldennotes-shift-flow"
 
+# Flow tasks add a wrong-order oracle: it must complete the end state
+# (sim_flow_state_complete == 1) and still score 0, proving the verifier
+# grades the journal sequence rather than the final files.
+FLOW_TASKS = {FLOW_TASK}
+
+# Other scripted negative controls, keyed by task: each runs the oracle with
+# the given environment, is expected to leave the app in a clean state, and
+# must score 0 with sim_runner_ok == 1. The consent-denied control proves a
+# completed HarborID login whose access-consent was refused does not count as a
+# sign-in.
+_DENIED = [{"model_name": "consent-denied", "env": {"SIMBENCH_OAUTH_CONSENT": "deny"}}]
+NEGATIVE_CONTROLS: dict[str, list[dict]] = {
+    "simbench-ios-08-goldengate-embedded-web-login": _DENIED,
+    "simbench-ios-09-goldengate-system-auth-session": _DENIED,
+}
+
 
 def calibration_config(repo: Path, task: str, attempts: int) -> dict:
     agents = [{"name": "nop"}, {"name": "oracle"}]
-    if task == FLOW_TASK:
+    if task in FLOW_TASKS:
         agents.append({"name": "oracle", "model_name": "out-of-order",
                        "env": {"SIMBENCH_FLOW_ORDER": "out-of-order"}})
+    for control in NEGATIVE_CONTROLS.get(task, []):
+        agents.append({"name": "oracle", **control})
     return {
         "jobs_dir": "runs", "n_attempts": attempts, "n_concurrent_trials": 1,
         "environment": {"import_path": "expo_harbor_evals.simbench_env:SimbenchEnvironment",
@@ -33,11 +51,14 @@ def calibration_config(repo: Path, task: str, attempts: int) -> dict:
     }
 
 
-def check_calibration(run: Path, attempts: int, flow: bool) -> dict:
+def check_calibration(run: Path, attempts: int, flow: bool,
+                      negative: list[str] | None = None) -> dict:
     rows = []
     expected_counts = {"nop": attempts, "oracle": attempts}
     if flow:
         expected_counts["out-of-order"] = attempts
+    for name in negative or []:
+        expected_counts[name] = attempts
     counts = {key: 0 for key in expected_counts}
     for path in sorted(run.glob("*/result.json")):
         try:
@@ -50,7 +71,8 @@ def check_calibration(run: Path, attempts: int, flow: bool) -> dict:
             continue
         agent = raw.get("agent_info") or {}
         name = (agent.get("model_info") or {}).get("name")
-        condition = "out-of-order" if name == "out-of-order" else agent.get("name")
+        controls = {"out-of-order", *(negative or [])}
+        condition = name if name in controls else agent.get("name")
         rewards = (raw.get("verifier_result") or {}).get("rewards") or {}
         expected = 1.0 if condition == "oracle" else 0.0
         passed = (condition in counts and not raw.get("exception_info")
@@ -60,6 +82,9 @@ def check_calibration(run: Path, attempts: int, flow: bool) -> dict:
             counts[condition] += 1
         if condition == "out-of-order":
             passed = passed and rewards.get("sim_flow_state_complete") == 1.0
+        if condition == "consent-denied":
+            passed = (passed and rewards.get("sim_oauth_consent_denied") == 1.0
+                      and rewards.get("sim_oauth_signed_in") == 0.0)
         # Harbor's oracle records nonzero exits without necessarily raising.
         oracle_exit = path.parent / "agent/exit-code.txt"
         if oracle_exit.exists() and oracle_exit.read_text().strip() != "0":
@@ -144,7 +169,9 @@ def main() -> None:
                 process.wait()
     finally:
         cleanup_errors = cleanup_devices(run)
-        summary = check_calibration(run, args.attempts, args.task == FLOW_TASK)
+        summary = check_calibration(
+            run, args.attempts, args.task in FLOW_TASKS,
+            [c["model_name"] for c in NEGATIVE_CONTROLS.get(args.task, [])])
         summary.update(exit_code=exit_code, failure=failure, cleanup_errors=cleanup_errors)
         summary["ok"] = summary["ok"] and exit_code == 0 and failure is None and not cleanup_errors
         write_json(output / "calibration.json", summary)
