@@ -5,97 +5,97 @@
     "feedback-01-transparent-header-content-inset": {
       "path": "tasks/codegen/feedback-01-transparent-header-content-inset",
       "family": "expo-codegen",
-      "definition_sha256": "b53c42ce146cb6f131c52d5339900dba83737ffe21f74854c9f8204558a41bf7"
+      "definition_sha256": "39535f9864f645976f9d4cc0d4d02043cc20c1ee5068e89683ffc0a8c44a25f3"
     },
     "feedback-02-styled-title-keeps-native-stack": {
       "path": "tasks/codegen/feedback-02-styled-title-keeps-native-stack",
       "family": "expo-codegen",
-      "definition_sha256": "6a0f454fec87638d56995bdc3dade42f434af56952ed8aed06937318d6449640"
+      "definition_sha256": "d18fcfd8d7b6297b78b6a8266222dc92569c2724e3d88081a877beb10d1b75e8"
     },
     "feedback-03-shop-grid-sticky-header": {
       "path": "tasks/codegen/feedback-03-shop-grid-sticky-header",
       "family": "expo-codegen",
-      "definition_sha256": "dfffd06d01646343dcf1508a5142fea30a78b8eff809775d871b3f7d05356817"
+      "definition_sha256": "fbeba5cbea0f3c8144c74f5c800abc02c785cd1d6fa97f27b50c440a19f7f2c8"
     },
     "feedback-04-modal-editor-touch-freeze": {
       "path": "tasks/codegen/feedback-04-modal-editor-touch-freeze",
       "family": "expo-codegen",
-      "definition_sha256": "7cc0fc358b38492153c27e40ed24516d9f82244a78cb51392c3fcfa3cf38014e"
+      "definition_sha256": "adc1cec2a99a3fcd457e1f46b3c49abda39af81c0b7d2dc4a8c30d9053c67ef9"
     },
     "feedback-05-slider-relative-recenter": {
       "path": "tasks/codegen/feedback-05-slider-relative-recenter",
       "family": "expo-codegen",
-      "definition_sha256": "11ee1762f1c0fe33d9d684b5cfcc6999bd943c67c1ce0225d67d2ee4e5c5c321"
+      "definition_sha256": "0589ad46e72a29e7755745ddf8c068c41e40c73eb0f295af4c70292ea4c8d762"
     },
     "feedback-06-sortable-grid-stable-layers": {
       "path": "tasks/codegen/feedback-06-sortable-grid-stable-layers",
       "family": "expo-codegen",
-      "definition_sha256": "7492a5b9bd767dbb19d6c508a74435bd434780bd7fe5e03a798ffecac6b05de7"
+      "definition_sha256": "a2587f7ec47d413aa43d05eab1df37f2553d50531c79d013aadc4b645fc5d2e3"
     },
     "feedback-08-modal-keyboard-viewport": {
       "path": "tasks/codegen/feedback-08-modal-keyboard-viewport",
       "family": "expo-codegen",
-      "definition_sha256": "3cbfe058db83cd8319cbbd57c1f71c92383f5264d577abb1c2947df4df07af27"
+      "definition_sha256": "c30fa6c13650930d898f96e378e9d338aa97b6738a9295acfd555581131cee51"
     },
     "feedback-09-invite-links-web-fallback": {
       "path": "tasks/codegen/feedback-09-invite-links-web-fallback",
       "family": "expo-codegen",
-      "definition_sha256": "9ff007de85064e36313104d0bd8be35769e3321ae715817d7b2ef121c9c58a44"
+      "definition_sha256": "f2e49aa3bf19530d8e9bf9113ccb075692ba88c4917cec8766fda38a3164bcd8"
     },
     "feedback-10-three-scene-cargo-cult": {
       "path": "tasks/codegen/feedback-10-three-scene-cargo-cult",
       "family": "expo-codegen",
-      "definition_sha256": "c2b3ea1b52a325508ea7825aa9e7e9b82207239d4f4cedf90cfefbd0419ce9d0"
+      "definition_sha256": "230eb05bf577aa83a6e53f18b4d755d4a7c71fa7e2453c412c03755068e3e280"
     },
     "feedback-11-anonymous-paywall-eligibility": {
       "path": "tasks/codegen/feedback-11-anonymous-paywall-eligibility",
       "family": "expo-codegen",
-      "definition_sha256": "e0d46e649d4162fc143bd441d032b82211bdd09e94ee9b82d55ad695cbf1d4af"
+      "definition_sha256": "9d96e06269d9ea395eba62493e430add4fa8597e0665a4a3d603ecb3dda69160"
     },
     "router-02-stack-layout-not-native-stack-import": {
       "path": "tasks/codegen/router-02-stack-layout-not-native-stack-import",
       "family": "expo-codegen",
-      "definition_sha256": "e81246af16cb0afa4cbb56e1bfe08ba6b854ca24a56ac8160434f11e290094ca"
+      "definition_sha256": "dc2ca6830c32dca116d095591bdb01020b3684cca90024e0922780cef5db8619"
     },
     "router-07-protected-routes-auth": {
       "path": "tasks/codegen/router-07-protected-routes-auth",
       "family": "expo-codegen",
-      "definition_sha256": "c054e4edd54f21c189be4ab812c84ca66b9c80b46c4ad50e4ddda4caba9e5bd8"
+      "definition_sha256": "28db1f75a098a8101446918574e04d9901e58051dbdceb73e5fe550e2948c69b"
     },
     "router-08-serializable-search-params": {
       "path": "tasks/codegen/router-08-serializable-search-params",
       "family": "expo-codegen",
-      "definition_sha256": "786a634f0ab68861b7f50fa805e7e821a28bf5008bf5de38c964ac8ad77b4cf3"
+      "definition_sha256": "d24955fcdd848a8b110afacc8ec9072b8d835b72ff139aaf2def63d7acb69fb2"
     },
     "sdk-04-image-picker-canceled-assets-guard": {
       "path": "tasks/codegen/sdk-04-image-picker-canceled-assets-guard",
       "family": "expo-codegen",
-      "definition_sha256": "fc2946a151371f069c0b881e24cb8506829d36168f379cbdb04e3129bd4e21c4"
+      "definition_sha256": "cd9e9ea3fd7e537188bc746cbc57d53c165f046fe016cd4ad5c5fa8e0c2f0528"
     },
     "sdk-10-notifications-listener-cleanup": {
       "path": "tasks/codegen/sdk-10-notifications-listener-cleanup",
       "family": "expo-codegen",
-      "definition_sha256": "16db918af03238379258952cf8eea6f55214f84cebebf0de78a7b9af3d766d2b"
+      "definition_sha256": "13eaff6a6a62574d45abe530f27950980dde672f12bf02237c2dc2235483140f"
     },
     "sdk-12-filesystem-object-api-read-write": {
       "path": "tasks/codegen/sdk-12-filesystem-object-api-read-write",
       "family": "expo-codegen",
-      "definition_sha256": "5cffce1dd399133082c9073226c298281ccc313d9e53e6884fb690fa4694f7e0"
+      "definition_sha256": "299ecf266f9625205ce01aa14a4ccb92b5df2df441b8ea7e41ac67504ada4683"
     },
     "ui-01-universal-layout-controls": {
       "path": "tasks/codegen/ui-01-universal-layout-controls",
       "family": "expo-codegen",
-      "definition_sha256": "2b013692abc2d000958e199686a01265f5bcd46bf4615f450e74c0e59e9f03e2"
+      "definition_sha256": "9e63fb14b4e0bf6da7963d7cbb76217b46631faead2ec79f22d94b2d559ebfa9"
     },
     "ui-02-bottom-sheet-controlled": {
       "path": "tasks/codegen/ui-02-bottom-sheet-controlled",
       "family": "expo-codegen",
-      "definition_sha256": "1f9cb158990093502c55c8ac06d1ec4bfd74a5be6e97522b278e7fbed5b2a96f"
+      "definition_sha256": "7380fcc91729d85c2e4ca190311167a70567cbfa1b49615b14fced36a705db43"
     },
     "ui-06-native-state-text-input": {
       "path": "tasks/codegen/ui-06-native-state-text-input",
       "family": "expo-codegen",
-      "definition_sha256": "0dfde3b20e2a1010b248e3a7d8f19808e29ddf640c111d844b6e9eee3757ab8f"
+      "definition_sha256": "d4f798bb134e6b979fb1e5d927fd24ad8fa6e4c44cd4c2a4a0e86e22c08ecbe6"
     },
     "simbench-ios-01-goldennotes-create-note": {
       "path": "tasks/simbench/simbench-ios-01-goldennotes-create-note",
@@ -149,9 +149,9 @@
     "pyproject.toml": "9082ae5fab238e55b3fd9fc716de34a00dede627e5ab94d0111ffbe9a0003467",
     "src/expo_harbor_evals/__init__.py": "2785d405887a71a64ea76c6af267fba17ba053ecf0516ec8fe6aaf602503f534",
     "src/expo_harbor_evals/claude_host_agent.py": "3035b5b8ca7b63e26f5c0d73cedc86a486fb85a2e98cc29c9ec1aa19ae147e79",
-    "src/expo_harbor_evals/codegen_calibrate.py": "413f90e8997560681c686878fd3a9a58447a02c0550e733e2d79f144adaae7c1",
+    "src/expo_harbor_evals/codegen_calibrate.py": "50c7d04e28f19b9937e164bfbffb27ce15dea90927ba1e6bde71f4c0674e7485",
     "src/expo_harbor_evals/codegen_reference_check.py": "0f522d3e2e443fa51cefda77d6317972590dc6f75ed1b3b4e22efd4ae8d8492f",
-    "src/expo_harbor_evals/codegen_rewardkit_runner.py": "e9a2233ef0c5487ad1943cc6aa7a1e4cf8b9d9f8142ec33c51836001703f67aa",
+    "src/expo_harbor_evals/codegen_rewardkit_runner.py": "3197f25cb555979dbac322b683d019167b3bb825f81753504d044c4a3837de78",
     "src/expo_harbor_evals/codegen_scaffold.py": "8a636ad17ec63fe855d772c728af508ee584d69f56b36c1e04340abb6c9c2d44",
     "src/expo_harbor_evals/eas_runner.py": "c40271699d767c1101facbce5bc30b771aeb465765dfc29601e0b9177e7d3541",
     "src/expo_harbor_evals/evaluation_identity.py": "b10d40aeb8a3c82c6347e649adcc16b11bb99439ae2bb1a4e99ee00257bf2e99",

@@ -2,12 +2,14 @@
 
 For a small first run, costs and the redesigned report, start with
 [Run a small pilot and read the evidence](run-and-read-evaluations.md).
+The [16 September Sonnet pilot](sonnet-effort-pilot.md) contains actual source
+runs and the grading gaps found by behavioral counterchecks.
 
 The repository now distinguishes three questions. Keep their scores separate:
 
 | Measurement | What varies | Evidence | Current scope |
 |---|---|---|---|
-| Source review | Agent-written Expo source | Pinned judge, explicit binary criteria | 19 tasks: 9 adapted API exercises, 10 field bug reports; paywall judge calibration pending |
+| Source review | Agent-written Expo source | Pinned judge, explicit binary criteria | 19 tasks: 9 adapted API exercises, 10 field bug reports; paywall candidate false positives remain |
 | Native UI, experimental | The submitted Expo app | Release build, native interactions, accessibility snapshots, screenshots | 3 iOS repair tasks |
 | Device use | Model and device driver | Fixed SwiftUI app state and ordered UI-event journal | 7 simulator tasks |
 
@@ -33,8 +35,10 @@ calibration. Ten tasks currently have explicit distractors; eight imported
 tasks still need their own realistic wrong fixes.
 
 The vision target is randomized per fresh app installation and the layout is
-saved with the evidence. Wrong taps count across the whole trial, matching the
-prompt. Trusted setup removes its copied golden-app source before agent work.
+saved with the evidence. Wrong taps are intended to count across the whole
+trial, but the Sonnet pilot's offline audit found that relaunch can reset the
+file used by this count; the journal retains the earlier taps. Trusted setup
+removes its copied golden-app source before agent work.
 The dial task is labeled exact-value adjustment because its stepper buttons can
 reach the answer. `jobs/simbench/unguided.yaml` names its condition explicitly:
 installed tools are still available, while driver instructions are omitted.
@@ -203,9 +207,11 @@ expected artifact hash. That arbitrary-repository importer is not implemented.
 `suites/mobile-v2.json` freezes all 26 task definitions and the evaluator/toolchain
 files. Codegen jobs now list their 18 members explicitly; adding a directory
 does not silently change an existing comparison.
-The new paywall definition is outside those cohorts pending judge calibration;
-its offline Node contract checks validate the authored controls, not candidate
-models or native UI. See [the feedback review](feedback-review.md). Inspect or
+The paywall definition remains outside those cohorts. Its initial judge controls
+passed, but separately running the offline Node contract on Sonnet candidates
+revealed false-positive source scores. The contract is not yet part of Harbor's
+candidate grading and does not validate native UI. See
+[the pilot findings](sonnet-effort-pilot.md). Inspect or
 refresh the lock with:
 
 ```sh
@@ -227,12 +233,11 @@ records remain separate from versioned results.
 
 ## Validation and remaining coverage
 
-This revision was checked with unit tests, static task/lock checks and CLI/schema
-validation. No model sweep, native app build, simulator evaluation or EAS job
-was run during these improvements. The new native profiles explicitly retain
-`requires-native-calibration`. Updated source judges and randomized simbench
-fixtures also require fresh calibration; earlier run numbers do not certify
-the revised suite.
+The source pilot and scoring fixes were checked with 85 unit tests and suite
+consistency checks. Its three-task Sonnet runs do not certify the other source
+tasks. No native app build, simulator evaluation or EAS job was run during this
+audit. Native profiles retain `requires-native-calibration`; the offline
+counterexamples in the pilot report are verifier probes, not device evidence.
 
 Next useful coverage is Android keyboard/back behavior, cold-start navigation
 and deep links, notifications lifecycle, file persistence across relaunch, and

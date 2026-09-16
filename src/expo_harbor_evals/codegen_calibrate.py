@@ -116,6 +116,8 @@ def assess_bracket(task_dir: Path, bracket: str, result: dict) -> tuple[bool, st
     rows = result.get("criteria", [])
     if not isinstance(rows, list) or any(not isinstance(c, dict) for c in rows):
         return False, "judge criteria must be a list of results"
+    if any(c.get("error") for c in rows):
+        return False, "judge errors cannot establish calibration"
     if any(not isinstance(c.get("id", c.get("name")), str) for c in rows):
         return False, "judge criterion IDs must be strings"
     values = {c.get("id", c.get("name")): c.get("value") for c in rows}
@@ -124,7 +126,8 @@ def assess_bracket(task_dir: Path, bracket: str, result: dict) -> tuple[bool, st
     if any(isinstance(v, bool) or v not in (0.0, 1.0) for v in values.values()):
         return False, "binary criteria must contain numeric 0 or 1"
     expected_reward = sum(values[c["id"]] * c["weight"] for c in rubric["criterion"]) / sum(c["weight"] for c in rubric["criterion"])
-    if not math.isclose(reward, expected_reward, abs_tol=1e-6):
+    # Rewardkit 0.1.7 serializes the aggregate to four decimal places.
+    if not math.isclose(reward, round(expected_reward, 4), abs_tol=1e-6):
         return False, "aggregate reward disagrees with criterion results"
     if bracket.startswith("reference"):
         return (reward == 1 and all(values.values())), "every reference criterion must pass"

@@ -24,7 +24,7 @@ MODAL = "feedback-04-modal-editor-touch-freeze"
 def judged(task, failed):
     rubric = tomllib.loads((task / "tests/requirements/rubric.toml").read_text())
     rows = [{"id": c["id"], "value": float(c["id"] not in failed)} for c in rubric["criterion"]]
-    return {"reward": sum(r["value"] for r in rows) / len(rows), "guarded": False, "criteria": rows}
+    return {"reward": round(sum(r["value"] for r in rows) / len(rows), 4), "guarded": False, "criteria": rows}
 
 
 def test_wrong_success_path_must_fail_its_actual_criterion():
@@ -46,6 +46,17 @@ def test_calibration_rejects_missing_duplicate_and_inconsistent_details():
     result = judged(task, {"assets-null-guard"})
     result["reward"] = 1
     assert not assess_bracket(task, "reference", result)[0]
+
+
+@pytest.mark.parametrize("bracket", ["baseline-comment", "distractor"])
+def test_calibration_rejects_judge_timeouts_on_negative_controls(bracket):
+    task = REPO / "tasks/codegen" / PICKER
+    rubric = tomllib.loads((task / "tests/requirements/rubric.toml").read_text())
+    result = judged(task, {c["id"] for c in rubric["criterion"]})
+    assert assess_bracket(task, bracket, result)[0]  # A legitimate zero is valid.
+    for row in result["criteria"]:
+        row["error"] = "judge timed out after 300s"
+    assert not assess_bracket(task, bracket, result)[0]
 
 
 def test_all_negative_controls_name_real_failures():

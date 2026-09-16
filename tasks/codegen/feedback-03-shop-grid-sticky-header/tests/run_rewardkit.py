@@ -140,6 +140,17 @@ def prepare_rubric(
     return destination_dir
 
 
+def reject_judge_errors(output: Path) -> None:
+    """A judge timeout is an execution error, not a valid zero for the app."""
+    details = json.loads((output.parent / "reward-details.json").read_text())
+    errors = [str(row["error"]) for row in details["reward"]["criteria"] if row.get("error")]
+    if errors:
+        # Keep the detailed evidence, but never publish a candidate score for
+        # an unsuccessful judge. Harbor will record the verifier exception.
+        output.unlink(missing_ok=True)
+        raise RuntimeError("Source judge failed: " + "; ".join(dict.fromkeys(errors)))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("rubric", type=Path)
@@ -163,6 +174,7 @@ def main() -> None:
             os.getenv("REWARDKIT_MODEL") or None,
         )
         scores = run(prepared, workspace=args.workspace, output=args.output)
+        reject_judge_errors(args.output)
     print(scores)
 
 

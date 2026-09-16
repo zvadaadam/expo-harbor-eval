@@ -4,12 +4,15 @@ import json
 import tomllib
 from pathlib import Path
 
+import pytest
+
 from expo_harbor_evals.codegen_reference_check import compare_reference
 from expo_harbor_evals.codegen_rewardkit_runner import (
     guard_reason,
     submission_manifest,
     prepare_rubric,
     write_guard_result,
+    reject_judge_errors,
 )
 
 
@@ -50,6 +53,22 @@ def test_guards_zero_empty_and_unchanged_submissions(tmp_path: Path) -> None:
     assert details["reward"]["score"] == 0.0
     assert details["reward"]["guard"].startswith("Empty submission")
     assert [c["id"] for c in details["reward"]["criteria"]] == ["returns-value"]
+
+
+def test_judge_timeout_preserves_evidence_but_removes_candidate_score(tmp_path: Path) -> None:
+    output = tmp_path / "reward.json"
+    details = tmp_path / "reward-details.json"
+    output.write_text(json.dumps({"reward": 0.0}))
+    details.write_text(json.dumps({"reward": {"criteria": [{"value": 0, "error": "judge timed out after 300s"}]}}))
+    with pytest.raises(RuntimeError, match="judge timed out"):
+        reject_judge_errors(output)
+    assert not output.exists()
+    assert "judge timed out" in details.read_text()
+
+    output.write_text(json.dumps({"reward": 0.0}))
+    details.write_text(json.dumps({"reward": {"criteria": [{"value": 0}]}}))
+    reject_judge_errors(output)
+    assert json.loads(output.read_text()) == {"reward": 0.0}
 
 
 def test_reference_check_is_exact_for_expected_files_only(tmp_path: Path) -> None:
