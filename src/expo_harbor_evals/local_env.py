@@ -9,9 +9,11 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import json
+import hashlib
 import os
 import signal
 import shutil
+from fnmatch import fnmatch
 from pathlib import Path
 from typing import override
 
@@ -45,7 +47,11 @@ class LocalHostEnvironment(BaseEnvironment):
 
     @override
     async def start(self, force_build: bool) -> None:
-        self._root = self.trial_paths.trial_dir.resolve() / "_local_env"
+        # Harbor starts a separate verifier while retaining the source env.
+        # Each role needs its own root, or verifier setup deletes the candidate.
+        verifier = "__verifier__" in self.session_id or self.environment_dir.name == "tests"
+        suffix = "-" + hashlib.sha256(self.session_id.encode()).hexdigest()[:12] if verifier else ""
+        self._root = self.trial_paths.trial_dir.resolve() / ("_local_env" + suffix)
         if self._root.exists():
             shutil.rmtree(self._root)
         for name in (
@@ -71,7 +77,12 @@ class LocalHostEnvironment(BaseEnvironment):
         # docker_image tasks and would leave /app empty here.
         workdir_target = self._map_path(self.task_env_config.workdir or "/app")
         workdir_target.mkdir(parents=True, exist_ok=True)
-        if self.environment_dir.is_dir():
+        if verifier:
+            # Harbor 0.23 builds separate verifiers from tests/ and skips
+            # uploading tests afterwards. Materialize that image contract.
+            shutil.copytree(self.environment_dir, self._map_path("/tests"),
+                            dirs_exist_ok=True, ignore=shutil.ignore_patterns(*SCAFFOLDING_FILES))
+        elif self.environment_dir.is_dir():
             shutil.copytree(
                 self.environment_dir,
                 workdir_target,
@@ -113,6 +124,24 @@ class LocalHostEnvironment(BaseEnvironment):
         target = Path(target_dir)
         target.mkdir(parents=True, exist_ok=True)
         shutil.copytree(source, target, dirs_exist_ok=True)
+
+    @override
+    async def download_dir_with_exclusions(
+        self, *, source_dir: str, target_dir: Path | str, exclude: list[str],
+    ) -> None:
+        """Copy local artifacts directly; container /tmp tar paths do not map here."""
+        source = self._map_path(source_dir)
+        def ignored(directory, names):
+            relative = Path(directory).relative_to(source)
+            skipped = [name for name in names if any(
+                fnmatch(name, pattern) or fnmatch((relative / name).as_posix(), pattern)
+                for pattern in exclude
+            )]
+            for name in set(names) - set(skipped):
+                if (Path(directory) / name).is_symlink():
+                    raise ValueError("Cannot capture symlinked submission artifacts")
+            return skipped
+        shutil.copytree(source, Path(target_dir), dirs_exist_ok=True, ignore=ignored, symlinks=True)
 
     def _wrap_command(self, mapped_command: str) -> str:
         """Hook for subclasses to wrap the mapped command (e.g. in a sandbox)."""

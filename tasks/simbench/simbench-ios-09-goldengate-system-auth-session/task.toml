@@ -1,0 +1,34 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/simbench-ios-09-goldengate-system-auth-session"
+description = "Sign in through GoldenGate's system ASWebAuthenticationSession sheet (the expo-web-browser/expo-auth-session flow): iOS consent alert, out-of-process web login, access-consent and automatic callback. Verified from app + provider state, no LLM judge."
+authors = [{ name = "Expo evals" }]
+keywords = ["expo", "ios", "simulator", "simbench", "oauth", "auth-session"]
+
+[metadata]
+family = "simbench"
+motivation = "OAuth tier (customer signal 2026-09: agents fail operating sign-in flows on the simulator). System surface: iOS ASWebAuthenticationSession — the exact flow expo-web-browser openAuthSessionAsync / expo-auth-session use. Harder than the embedded surface because the 'Wants to Use ... to Sign In' consent alert is a system dialog and the web sheet runs out of process (agent-device reads it as a sparse tree; the accessibility service exposes it). Ships a consent-denied negative control."
+category = "simbench"
+difficulty = "hard"
+tier = "system-auth-session"
+requires = ["macos-host", "xcode-simulator"]
+verifier = "app-state-programmatic"
+validation_status = "requires-simulator-calibration"
+
+[agent]
+timeout_sec = 1500.0
+
+[verifier]
+timeout_sec = 120.0
+
+[environment]
+build_timeout_sec = 600.0
+workdir = "/app"
+
+# Per-trial readiness doubles as setup: boots the simulator and reinstalls the
+# golden app fresh so every trial starts from a clean data container.
+[environment.healthcheck]
+command = "bash /app/driver/setup.sh"
+timeout_sec = 600.0
+retries = 2

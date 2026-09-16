@@ -50,6 +50,7 @@ class Trial:
     input_tokens: int | None
     cache_tokens: int | None
     output_tokens: int | None
+    steps: int | None = None
     backend: str = ""
     measurement: str = ""
     experiment: str = ""
@@ -60,6 +61,7 @@ class Trial:
     planned_attempts: int | None = None
     pending: bool = False
     provenance: dict = field(default_factory=dict)
+    regrade_of: str = ""
 
     @property
     def outcome(self) -> str:
@@ -75,6 +77,8 @@ class Trial:
         base = f"{base}|{self.backend}" if self.backend else base
         if self.measurement or self.experiment:
             base += f"|{self.measurement}|{self.experiment}"
+        if self.regrade_of:
+            base += "|regrade"
         return base
 
 
@@ -214,6 +218,8 @@ def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
                 if isinstance(reward_details, dict):
                     criteria = reward_details.get("criteria") or []
                     judge = reward_details.get("judge") or {}
+                    if not judge:
+                        judge = (details.get("source_review") or {}).get("judge") or {}
 
             judge_errors = [str(c["error"]) for c in criteria if c.get("error")]
             if judge_errors:
@@ -222,6 +228,14 @@ def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
             agent_info = raw.get("agent_info") or {}
             model_info = agent_info.get("model_info") or {}
             agent_result = raw.get("agent_result") or {}
+            source_trial = (raw.get("config") or {}).get("source_trial") or {}
+            regrade_of = str(source_trial.get("path") or source_trial.get("trial_id") or "Unknown trial") \
+                if source_trial.get("action") == "regrade" else ""
+            # Harbor retains the original agent_result when regrading. Those
+            # historical tokens, steps and costs are not new agent execution.
+            if regrade_of:
+                agent_result = {"cost_usd": 0, "n_input_tokens": 0, "n_cache_tokens": 0,
+                                "n_output_tokens": 0, "metadata": {"num_turns": 0}}
             task_name = raw.get("task_name") or raw.get("trial_name") or "unknown"
             trials.append(
                 Trial(
@@ -237,6 +251,11 @@ def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
                     input_tokens=agent_result.get("n_input_tokens"),
                     cache_tokens=agent_result.get("n_cache_tokens"),
                     output_tokens=agent_result.get("n_output_tokens"),
+                    # num_turns is the claude CLI's internal agent-loop step
+                    # count for the single autonomous prompt (assistant/tool
+                    # rounds), i.e. how many steps the agent took — surfaced as
+                    # "steps" so it is not read as user-agent turns.
+                    steps=(agent_result.get("metadata") or {}).get("num_turns"),
                     backend=backend,
                     measurement=identity.get("measurement", ""),
                     experiment=identity.get("experiment_sha256", ""),
@@ -247,6 +266,7 @@ def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
                     planned_attempts=attempts,
                     pending=pending,
                     provenance=identity,
+                    regrade_of=regrade_of,
                 )
             )
         # Standalone native verification and downloaded EAS candidate evidence
@@ -336,6 +356,7 @@ class SeriesStats:
     input_tokens: int | None
     cache_tokens: int | None
     output_tokens: int | None
+    total_steps: int | None = None
     attempts: int = 0
     errors: int = 0
     completion_rate: float | None = None
@@ -381,6 +402,7 @@ def series_stats(tasks: list[TaskRow], key: str) -> SeriesStats:
         output_tokens=_total(
             [t.output_tokens for t in attempts if t.output_tokens is not None]
         ),
+        total_steps=_total([t.steps for t in attempts if t.steps is not None]),
     )
 
 

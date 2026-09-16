@@ -47,6 +47,7 @@ def summarize_run(run_dir: Path) -> dict | None:
                 "n_input_tokens": stat.input_tokens,
                 "n_cache_tokens": stat.cache_tokens,
                 "n_output_tokens": stat.output_tokens,
+                "n_steps": stat.total_steps,
             }
         )
     costs = [t.cost_usd for t in trials if t.cost_usd is not None]

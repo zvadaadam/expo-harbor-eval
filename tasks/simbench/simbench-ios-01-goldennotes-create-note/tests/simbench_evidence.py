@@ -23,6 +23,10 @@ FILES = {
         "settings.json": dict, "submission.json": dict,
         "grid-taps.json": list, "grid-layout.json": list, "events.json": list,
     },
+    "com.expo.simbench.goldengate": {
+        "session.json": dict, "pairing.json": dict,
+        "provider.json": dict, "events.json": list,
+    },
 }
 MAX_FILE_BYTES = 8 * 1024 * 1024
 

@@ -67,15 +67,22 @@ def trial_identity(task: Path, config: dict, job: dict | None = None) -> dict:
     condition["budget"] = {k: config.get(k) for k in (
         "timeout_multiplier", "agent_timeout_multiplier", "verifier_timeout_multiplier")}
     condition["agent_timeout"] = agent.get("override_timeout_sec")
+    source_trial = config.get("source_trial") or {}
+    if source_trial.get("action") == "regrade":
+        condition["phase"] = "regrade"
     measurement = {"expo-codegen": "source-review", "simbench": "device-use"}[record["family"]]
     if condition["verifier"].get("EXPO_EVAL_VERIFIER_MODE") == "reference":
         measurement = "reference-smoke"
     elif condition["verifier"].get("EXPO_EVAL_VERIFIER_MODE") == "mobile":
         measurement = "native-ui"
+    elif condition["verifier"].get("EXPO_EVAL_VERIFIER_MODE") == "behavior":
+        measurement = "policy-behavior"
+    elif (task / "tests/requirements/behavior.json").is_file():
+        measurement = "source-and-policy"
     return {"suite": suite["suite"], "suite_sha256": fingerprint(suite),
             "experiment_sha256": fingerprint({"suite": suite, "condition": condition}),
             "task_sha256": record["definition_sha256"], "measurement": measurement,
-            "condition": condition}
+            "condition": condition, "source_trial": source_trial}
 
 
 def main():

@@ -5,13 +5,14 @@ For a small first run, costs and the redesigned report, start with
 The [16 September Sonnet pilot](sonnet-effort-pilot.md) contains actual source
 runs and the grading gaps found by behavioral counterchecks.
 
-The repository now distinguishes three questions. Keep their scores separate:
+The repository distinguishes these measurements. Keep their scores separate:
 
 | Measurement | What varies | Evidence | Current scope |
 |---|---|---|---|
-| Source review | Agent-written Expo source | Pinned judge, explicit binary criteria | 19 tasks: 9 adapted API exercises, 10 field bug reports; paywall candidate false positives remain |
+| Source review | Agent-written Expo source | Pinned judge, explicit binary criteria | 18 tasks: 9 adapted API exercises, 9 field bug reports |
+| Source and policy | Agent-written paywall helper and screen | Executable policy contract plus source integration review | 1 field bug report; policy-only mode is reported separately |
 | Native UI, experimental | The submitted Expo app | Release build, native interactions, accessibility snapshots, screenshots | 3 iOS repair tasks |
-| Device use | Model and device driver | Fixed SwiftUI app state and ordered UI-event journal | 7 simulator tasks |
+| Device use | Model and device driver | Fixed SwiftUI app state and ordered UI-event journal | 10 simulator tasks (incl. 3 OAuth sign-in) |
 
 The external result import bridge has been removed. Exact reference matching
 remains a plumbing smoke check, separate from capability measurements.
@@ -204,14 +205,16 @@ stay in their own repositories, but a future importer must bind an immutable
 commit, license, build command, dependency locks, seed/reset procedure and
 expected artifact hash. That arbitrary-repository importer is not implemented.
 
-`suites/mobile-v2.json` freezes all 26 task definitions and the evaluator/toolchain
+`suites/mobile-v2.json` freezes all 29 task definitions and the evaluator/toolchain
 files. Codegen jobs now list their 18 members explicitly; adding a directory
 does not silently change an existing comparison.
 The paywall definition remains outside those cohorts. Its initial judge controls
-passed, but separately running the offline Node contract on Sonnet candidates
-revealed false-positive source scores. The contract is not yet part of Harbor's
-candidate grading and does not validate native UI. See
-[the pilot findings](sonnet-effort-pilot.md). Inspect or
+passed, but executing the Node contract on Sonnet candidates revealed
+false-positive source scores. The contract now gates normal candidate grading;
+both saved Sonnet submissions fail when regraded through Harbor 0.23.0. Policy
+controls pass, while full calibration of the combined source judge remains
+pending. No native UI is validated by this contract. See the
+[adoption results and reproduction guide](harbor-adoption.md). Inspect or
 refresh the lock with:
 
 ```sh

@@ -1,0 +1,882 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-16T18:26:25.092593+00:00",
+  "kind": "harbor-adoption-validation",
+  "versions": {
+    "harbor": "0.23.0",
+    "rewardkit": "0.2.1",
+    "rewardkit_commit": "cfc54c995e90cd438deb862189a58053b9d89fd3",
+    "python": "3.13.9",
+    "node": "v26.4.0",
+    "uv_lock_sha256": "c2d91e2839806e3a33a03e604a021837182cd4238315a4c2413ce07827a9bff5"
+  },
+  "validation": {
+    "offline_pytest": {
+      "tests": 108,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "suite_lock_matches": true,
+    "guards": {
+      "ok": true,
+      "scope": "guards-only",
+      "results": [
+        {
+          "task": "feedback-01-transparent-header-content-inset",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-01-transparent-header-content-inset",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-02-styled-title-keeps-native-stack",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-02-styled-title-keeps-native-stack",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-03-shop-grid-sticky-header",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-03-shop-grid-sticky-header",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-04-modal-editor-touch-freeze",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-04-modal-editor-touch-freeze",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-05-slider-relative-recenter",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-05-slider-relative-recenter",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-06-sortable-grid-stable-layers",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-06-sortable-grid-stable-layers",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-08-modal-keyboard-viewport",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-08-modal-keyboard-viewport",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-09-invite-links-web-fallback",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-09-invite-links-web-fallback",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-10-three-scene-cargo-cult",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-10-three-scene-cargo-cult",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-11-anonymous-paywall-eligibility",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-11-anonymous-paywall-eligibility",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "router-02-stack-layout-not-native-stack-import",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "router-02-stack-layout-not-native-stack-import",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "router-07-protected-routes-auth",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "router-07-protected-routes-auth",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "router-08-serializable-search-params",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "router-08-serializable-search-params",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "sdk-04-image-picker-canceled-assets-guard",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "sdk-04-image-picker-canceled-assets-guard",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "sdk-10-notifications-listener-cleanup",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "sdk-10-notifications-listener-cleanup",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "sdk-12-filesystem-object-api-read-write",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "sdk-12-filesystem-object-api-read-write",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "ui-01-universal-layout-controls",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "ui-01-universal-layout-controls",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "ui-02-bottom-sheet-controlled",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "ui-02-bottom-sheet-controlled",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "ui-06-native-state-text-input",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "ui-06-native-state-text-input",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        }
+      ]
+    },
+    "policy_calibration": {
+      "ok": true,
+      "scope": "policy-behavior-calibration",
+      "results": [
+        {
+          "task": "feedback-11-anonymous-paywall-eligibility",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-11-anonymous-paywall-eligibility",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-11-anonymous-paywall-eligibility",
+          "bracket": "reference",
+          "reward": 1.0,
+          "guarded": false,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-11-anonymous-paywall-eligibility",
+          "bracket": "baseline-comment",
+          "reward": 0.0,
+          "guarded": false,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-11-anonymous-paywall-eligibility",
+          "bracket": "reference-alternative",
+          "reward": 1.0,
+          "guarded": false,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-11-anonymous-paywall-eligibility",
+          "bracket": "distractor",
+          "reward": 0.0,
+          "guarded": false,
+          "ok": true,
+          "note": ""
+        }
+      ]
+    },
+    "fresh_source_judge_calibration": false,
+    "native_or_simulator_execution": false,
+    "docker_builds": false
+  },
+  "harbor_controls": [
+    {
+      "trial": "runs/harbor-adoption-final-controls/feedback-11-anonymous-paywall-el__8ANU3Na",
+      "agent": "nop",
+      "reward": 0.0,
+      "exception": null,
+      "result_sha256": "f85d10516429e315f97eb82173795eab373c58bb280678485800e44b331ad50a",
+      "identity": {
+        "suite": "expo-mobile-v2",
+        "suite_sha256": "554eba3d7b598650a2edae47feacd1e34050bed2c0687ee2ea1d508e00b25ace",
+        "experiment_sha256": "5f576662b6ef4c7798a51a1d4939ea90441b8297f3cd318f64a62162b269a12c",
+        "task_sha256": "78e8bd60cd3586889844bdfe51a2baf64c67e3332e4ed689f6cdfa29cd047f79",
+        "measurement": "policy-behavior",
+        "condition": {
+          "agent": {
+            "name": "nop",
+            "import_path": null,
+            "model_name": null,
+            "skills": null
+          },
+          "kwargs": {
+            "preface": null,
+            "allowed_tools": null,
+            "allow_shell": null,
+            "reasoning_effort": null
+          },
+          "verifier": {
+            "EXPO_EVAL_VERIFIER_MODE": "behavior"
+          },
+          "runtime_requested": null,
+          "cohort": [
+            {
+              "dataset": "codegen",
+              "tasks": [
+                "feedback-11-anonymous-paywall-eligibility"
+              ]
+            }
+          ],
+          "task_paths": [],
+          "budget": {
+            "timeout_multiplier": null,
+            "agent_timeout_multiplier": null,
+            "verifier_timeout_multiplier": null
+          },
+          "agent_timeout": null
+        },
+        "source_trial": {},
+        "backend": "mac-sandbox-dev"
+      },
+      "source_sha256": {
+        "App.tsx": "665f939b7e0d988b611b46d7d311a71b55f5fac8b7d34adea59443a60e72db70",
+        "app.json": "ce81d907e0604d333df2f3c68a9af70f411d20e1bb3de39f0e3c87101ffdab18",
+        "fixtures.js": "73e46c5d6ade22598ab9fa20bd811a39c6590890b85f9e6c344dddbdb2807355",
+        "package.json": "a54b4b436142e3ddb26eb2ec34fb7fffa84779a626cd31ed9c5d3744a1ac0a03",
+        "paywall.js": "a197b6cc10167f8d84441c890b906803973bcbe80cf5e961308bf08fbb85b777"
+      }
+    },
+    {
+      "trial": "runs/harbor-adoption-final-controls/feedback-11-anonymous-paywall-el__jprEhDS",
+      "agent": "oracle",
+      "reward": 1.0,
+      "exception": null,
+      "result_sha256": "1850ad52ce3e477daa94846f3f490ffd0f0242a90b757fef159276d511e2ad4c",
+      "identity": {
+        "suite": "expo-mobile-v2",
+        "suite_sha256": "554eba3d7b598650a2edae47feacd1e34050bed2c0687ee2ea1d508e00b25ace",
+        "experiment_sha256": "7b4b16a49b68c9649813cebc6e7f46d2701582d290a11721953210f0e107ec4a",
+        "task_sha256": "78e8bd60cd3586889844bdfe51a2baf64c67e3332e4ed689f6cdfa29cd047f79",
+        "measurement": "policy-behavior",
+        "condition": {
+          "agent": {
+            "name": null,
+            "import_path": null,
+            "model_name": null,
+            "skills": null
+          },
+          "kwargs": {
+            "preface": null,
+            "allowed_tools": null,
+            "allow_shell": null,
+            "reasoning_effort": null
+          },
+          "verifier": {
+            "EXPO_EVAL_VERIFIER_MODE": "behavior"
+          },
+          "runtime_requested": null,
+          "cohort": [
+            {
+              "dataset": "codegen",
+              "tasks": [
+                "feedback-11-anonymous-paywall-eligibility"
+              ]
+            }
+          ],
+          "task_paths": [],
+          "budget": {
+            "timeout_multiplier": null,
+            "agent_timeout_multiplier": null,
+            "verifier_timeout_multiplier": null
+          },
+          "agent_timeout": null
+        },
+        "source_trial": {},
+        "backend": "mac-sandbox-dev"
+      },
+      "source_sha256": {
+        "App.tsx": "665f939b7e0d988b611b46d7d311a71b55f5fac8b7d34adea59443a60e72db70",
+        "app.json": "ce81d907e0604d333df2f3c68a9af70f411d20e1bb3de39f0e3c87101ffdab18",
+        "fixtures.js": "73e46c5d6ade22598ab9fa20bd811a39c6590890b85f9e6c344dddbdb2807355",
+        "package.json": "a54b4b436142e3ddb26eb2ec34fb7fffa84779a626cd31ed9c5d3744a1ac0a03",
+        "paywall.js": "54f522776af4dc8196cb572aa0e826463700e5a670c8ad3ee34e3283641c7e9e"
+      }
+    }
+  ],
+  "retained_sonnet_regrades": [
+    {
+      "effort": "low",
+      "model": "claude-sonnet-4-6@low#isolated-pilot",
+      "source_trial": "runs/sonnet-effort-discovery/feedback-11-anonymous-paywall-el__AVfukbp",
+      "source_result_sha256": "cfdd5cc16673cb6f73993f8b1ebb1de8ebac78fe635546490b9ffe1ab66e6e21",
+      "trial": "runs/harbor-adoption-final-regrades/feedback-11-anonymous-paywall-el__AVfukbp-regrade",
+      "result_sha256": "1fbd7c52e6637ccb44927dc23d8a8a9bd9b326b58d83dc617049d5e8889657f7",
+      "original_source_reward": 1.0,
+      "combined_reward": 0.0,
+      "source_review_skipped": "Required policy contract failed.",
+      "behavior": {
+        "checks": 4860,
+        "executedChecks": 4860,
+        "failedChecks": 8,
+        "failedGroups": [
+          "anonymous-and-identified-eligibility"
+        ],
+        "counterexamples": {
+          "anonymous-and-identified-eligibility": {
+            "state": {
+              "session": {
+                "status": "ready",
+                "userId": null
+              },
+              "customer": {
+                "status": "ready",
+                "appUserId": "$RCAnonymousID:",
+                "activeEntitlements": []
+              },
+              "offerings": {
+                "status": "ready",
+                "byPlacement": {
+                  "onboarding": {
+                    "identifier": "welcome"
+                  },
+                  "settings": {
+                    "identifier": "annual"
+                  },
+                  "empty": {
+                    "identifier": ""
+                  },
+                  "unset": null
+                },
+                "current": {
+                  "identifier": "unrelated-default"
+                }
+              },
+              "placement": "onboarding"
+            },
+            "expected": null,
+            "actual": "welcome",
+            "error": null
+          }
+        },
+        "loadError": null
+      },
+      "source_sha256": {
+        "App.tsx": "665f939b7e0d988b611b46d7d311a71b55f5fac8b7d34adea59443a60e72db70",
+        "app.json": "ce81d907e0604d333df2f3c68a9af70f411d20e1bb3de39f0e3c87101ffdab18",
+        "fixtures.js": "73e46c5d6ade22598ab9fa20bd811a39c6590890b85f9e6c344dddbdb2807355",
+        "package.json": "a54b4b436142e3ddb26eb2ec34fb7fffa84779a626cd31ed9c5d3744a1ac0a03",
+        "paywall.js": "4bc1427b97e0a999bb34628fe998e5304b4f730ab44d483bc05c80b27ee50ed1"
+      },
+      "original_source_unchanged": true,
+      "identity": {
+        "suite": "expo-mobile-v2",
+        "suite_sha256": "554eba3d7b598650a2edae47feacd1e34050bed2c0687ee2ea1d508e00b25ace",
+        "experiment_sha256": "b5a793598f5effaafebffb7d58a73c324da908d912968535325dc8c40dc9e8d3",
+        "task_sha256": "78e8bd60cd3586889844bdfe51a2baf64c67e3332e4ed689f6cdfa29cd047f79",
+        "measurement": "source-and-policy",
+        "condition": {
+          "agent": {
+            "name": null,
+            "import_path": "expo_harbor_evals.claude_host_agent:ClaudeHostAgent",
+            "model_name": "claude-sonnet-4-6@low#isolated-pilot",
+            "skills": null
+          },
+          "kwargs": {
+            "preface": null,
+            "allowed_tools": null,
+            "allow_shell": null,
+            "reasoning_effort": null
+          },
+          "verifier": {
+            "EXPO_EVAL_VERIFIER_MODE": "judge"
+          },
+          "runtime_requested": null,
+          "cohort": [],
+          "task_paths": [],
+          "budget": {
+            "timeout_multiplier": null,
+            "agent_timeout_multiplier": null,
+            "verifier_timeout_multiplier": null
+          },
+          "agent_timeout": 600.0,
+          "phase": "regrade"
+        },
+        "source_trial": {
+          "action": "regrade",
+          "type": "local",
+          "trial_id": "d9fce56d-8bac-40c6-a796-020be00ea5c4",
+          "path": "/Users/zvada/conductor/workspaces/expo-harbor-eval/st-georges/runs/harbor-adoption-final-regrades/.sources/feedback-11-anonymous-paywall-el__AVfukbp"
+        },
+        "backend": "mac-sandbox-dev"
+      }
+    },
+    {
+      "effort": "high",
+      "model": "claude-sonnet-4-6@high#isolated-pilot",
+      "source_trial": "runs/sonnet-effort-discovery/feedback-11-anonymous-paywall-el__DskcMjZ",
+      "source_result_sha256": "64bfb195ed95026b80d92b955996356ca2f9ce4aee2cb82917a630f804119639",
+      "trial": "runs/harbor-adoption-final-regrades/feedback-11-anonymous-paywall-el__DskcMjZ-regrade",
+      "result_sha256": "3501fb9d5f706db1e2d9c3d9c333998995cd33f63917846dfe0524091dd34f54",
+      "original_source_reward": 1.0,
+      "combined_reward": 0.0,
+      "source_review_skipped": "Required policy contract failed.",
+      "behavior": {
+        "checks": 4860,
+        "executedChecks": 4860,
+        "failedChecks": 4,
+        "failedGroups": [
+          "anonymous-and-identified-eligibility"
+        ],
+        "counterexamples": {
+          "anonymous-and-identified-eligibility": {
+            "state": {
+              "session": {
+                "status": "ready",
+                "userId": null
+              },
+              "customer": {
+                "status": "ready",
+                "appUserId": "$RCAnonymousID:",
+                "activeEntitlements": []
+              },
+              "offerings": {
+                "status": "ready",
+                "byPlacement": {
+                  "onboarding": {
+                    "identifier": "welcome"
+                  },
+                  "settings": {
+                    "identifier": "annual"
+                  },
+                  "empty": {
+                    "identifier": ""
+                  },
+                  "unset": null
+                },
+                "current": {
+                  "identifier": "unrelated-default"
+                }
+              },
+              "placement": "onboarding"
+            },
+            "expected": null,
+            "actual": "welcome",
+            "error": null
+          }
+        },
+        "loadError": null
+      },
+      "source_sha256": {
+        "App.tsx": "665f939b7e0d988b611b46d7d311a71b55f5fac8b7d34adea59443a60e72db70",
+        "app.json": "ce81d907e0604d333df2f3c68a9af70f411d20e1bb3de39f0e3c87101ffdab18",
+        "fixtures.js": "73e46c5d6ade22598ab9fa20bd811a39c6590890b85f9e6c344dddbdb2807355",
+        "package.json": "a54b4b436142e3ddb26eb2ec34fb7fffa84779a626cd31ed9c5d3744a1ac0a03",
+        "paywall.js": "6ba4de51ab8163d52bd08bc0b4c2e4817b62df0de30d52deddc5913f18fc73f0"
+      },
+      "original_source_unchanged": true,
+      "identity": {
+        "suite": "expo-mobile-v2",
+        "suite_sha256": "554eba3d7b598650a2edae47feacd1e34050bed2c0687ee2ea1d508e00b25ace",
+        "experiment_sha256": "5536878b79a7dd56955b687e64b422c6813ed5ef0791baf6ad2ec55b2eadd223",
+        "task_sha256": "78e8bd60cd3586889844bdfe51a2baf64c67e3332e4ed689f6cdfa29cd047f79",
+        "measurement": "source-and-policy",
+        "condition": {
+          "agent": {
+            "name": null,
+            "import_path": "expo_harbor_evals.claude_host_agent:ClaudeHostAgent",
+            "model_name": "claude-sonnet-4-6@high#isolated-pilot",
+            "skills": null
+          },
+          "kwargs": {
+            "preface": null,
+            "allowed_tools": null,
+            "allow_shell": null,
+            "reasoning_effort": null
+          },
+          "verifier": {
+            "EXPO_EVAL_VERIFIER_MODE": "judge"
+          },
+          "runtime_requested": null,
+          "cohort": [],
+          "task_paths": [],
+          "budget": {
+            "timeout_multiplier": null,
+            "agent_timeout_multiplier": null,
+            "verifier_timeout_multiplier": null
+          },
+          "agent_timeout": 600.0,
+          "phase": "regrade"
+        },
+        "source_trial": {
+          "action": "regrade",
+          "type": "local",
+          "trial_id": "47d79956-945c-41e1-a6aa-f0d9cd79efce",
+          "path": "/Users/zvada/conductor/workspaces/expo-harbor-eval/st-georges/runs/harbor-adoption-final-regrades/.sources/feedback-11-anonymous-paywall-el__DskcMjZ"
+        },
+        "backend": "mac-sandbox-dev"
+      }
+    }
+  ],
+  "captured_artifact_regrade": {
+    "source_trial": "runs/harbor-adoption-controls-v2/feedback-11-anonymous-paywall-el__F48rYYN",
+    "trial": "runs/harbor-adoption-final-regrades/feedback-11-anonymous-paywall-el__F48rYYN-regrade",
+    "reward": 1,
+    "exception": null,
+    "legacy_recovery_needed": false,
+    "result_sha256": "875a1a85ba5463619269d72d6a870ad55b33f4ed81d0d2fdb76b897f8285d113",
+    "identity": {
+      "suite": "expo-mobile-v2",
+      "suite_sha256": "554eba3d7b598650a2edae47feacd1e34050bed2c0687ee2ea1d508e00b25ace",
+      "experiment_sha256": "3d91da3f62d93d8a5ed7c50dd0d0ba52c8d4fab7bca0a7f35fab4f3daafc3d8a",
+      "task_sha256": "78e8bd60cd3586889844bdfe51a2baf64c67e3332e4ed689f6cdfa29cd047f79",
+      "measurement": "policy-behavior",
+      "condition": {
+        "agent": {
+          "name": null,
+          "import_path": null,
+          "model_name": null,
+          "skills": null
+        },
+        "kwargs": {
+          "preface": null,
+          "allowed_tools": null,
+          "allow_shell": null,
+          "reasoning_effort": null
+        },
+        "verifier": {
+          "EXPO_EVAL_VERIFIER_MODE": "behavior"
+        },
+        "runtime_requested": null,
+        "cohort": [],
+        "task_paths": [],
+        "budget": {
+          "timeout_multiplier": null,
+          "agent_timeout_multiplier": null,
+          "verifier_timeout_multiplier": null
+        },
+        "agent_timeout": null,
+        "phase": "regrade"
+      },
+      "source_trial": {
+        "action": "regrade",
+        "type": "local",
+        "trial_id": "91d57dd1-d015-403c-8e99-9f4af61578b1",
+        "path": "/Users/zvada/conductor/workspaces/expo-harbor-eval/st-georges/runs/harbor-adoption-controls-v2/feedback-11-anonymous-paywall-el__F48rYYN"
+      },
+      "backend": "mac-sandbox-dev"
+    }
+  },
+  "report_check": {
+    "regrades_loaded": 3,
+    "new_agent_usage_counted": 0,
+    "original_agent_usage_preserved_in_harbor_records": true
+  },
+  "cost": {
+    "new_candidate_calls": 0,
+    "new_source_judge_calls": 0,
+    "additional_eval_model_usage_usd": 0,
+    "earlier_pilot_budget_status": "Fresh paid dispatch remains blocked by an unpriced prior timeout; this record does not reconcile that cost."
+  },
+  "initial_integration_errors": [
+    {
+      "run": "runs/harbor-adoption-controls",
+      "cause": "Published Harbor skips tests upload for separate verifiers; added tests image and local materialization.",
+      "classification": "infrastructure, not candidate failure"
+    },
+    {
+      "run": "runs/harbor-adoption-sonnet-policy",
+      "cause": "Regrade verifier session name lacks __verifier__; recognize the tests build context.",
+      "classification": "infrastructure, not candidate failure"
+    }
+  ],
+  "interpretation": "Both retained Sonnet candidates fail policy correctness. The high-effort answer has fewer failing cases in this pair, but no reliable thinking-performance improvement is established.",
+  "reproduction": "docs/harbor-adoption.md",
+  "pr_review": {
+    "recorded_at": "2026-09-16T21:37:14.606487+00:00",
+    "verdict": "approve-after-fixes",
+    "method": "Sequential correctness, security and design review; parallel review workers were unavailable.",
+    "offline_pytest": {
+      "tests": 131,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "goldengate_swift_typecheck": true,
+    "suite_lock_matches": true,
+    "syntax_checks": {
+      "python_files": 53,
+      "shell_scripts": 34
+    },
+    "suite_sha256": "63cac535f065806f081d289cc740764c0256de865affefc35db95b249bb2718c",
+    "upstream": {
+      "harbor_latest_stable": "0.23.0",
+      "rewardkit_latest_published": "0.2.0",
+      "main_commit_checked": "22185e9c2b8cf9ba966c2dcd1155cd5dce54937f",
+      "rewardkit_package_diff_from_pin": false
+    },
+    "fixes": [
+      "Bind OAuth session token, pairing code and ordered provider events to one authorization request.",
+      "Require actual login and consent-denial evidence for the negative calibration control.",
+      "Show zero new agent usage and original source in the live regrade viewer.",
+      "Bound CommonJS export getters with the same execution deadline as module loading."
+    ],
+    "paywall_controls": {
+      "ok": true,
+      "scope": "policy-behavior-calibration",
+      "results": [
+        {
+          "task": "feedback-11-anonymous-paywall-eligibility",
+          "bracket": "empty",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-11-anonymous-paywall-eligibility",
+          "bracket": "baseline",
+          "reward": 0.0,
+          "guarded": true,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-11-anonymous-paywall-eligibility",
+          "bracket": "reference",
+          "reward": 1.0,
+          "guarded": false,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-11-anonymous-paywall-eligibility",
+          "bracket": "baseline-comment",
+          "reward": 0.0,
+          "guarded": false,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-11-anonymous-paywall-eligibility",
+          "bracket": "reference-alternative",
+          "reward": 1.0,
+          "guarded": false,
+          "ok": true,
+          "note": ""
+        },
+        {
+          "task": "feedback-11-anonymous-paywall-eligibility",
+          "bracket": "distractor",
+          "reward": 0.0,
+          "guarded": false,
+          "ok": true,
+          "note": ""
+        }
+      ]
+    },
+    "harbor_replay": {
+      "trial": "runs/pr-review-regrades/feedback-11-anonymous-paywall-el__AVfukbp-regrade",
+      "reward": 0,
+      "result_sha256": "fc0daee89a0862f7adc3894e044d2c5a1c111d233a25aa123662fa5d11c43609"
+    },
+    "new_model_calls": 0,
+    "live_simulator_calibration_performed": false
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "script": "contract.cjs",
+  "entrypoint": "paywall.js",
+  "checks": 4860,
+  "criteria": [
+    "anonymous-and-identified-eligibility",
+    "resource-and-entitlement-gates",
+    "placement-specific-offering"
+  ]
+}

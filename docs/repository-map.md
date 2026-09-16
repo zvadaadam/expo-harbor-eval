@@ -9,7 +9,7 @@ Local versus EAS is where a check runs, not a separate task family.
 
 | Directory | Purpose | What belongs here |
 |---|---|---|
-| `tasks/` | Benchmark definitions | Prompts, baseline apps, hidden reference fixes and verifiers; currently 26 tasks |
+| `tasks/` | Benchmark definitions | Prompts, baseline apps, hidden reference fixes and verifiers; currently 29 tasks |
 | `jobs/` | Experiment plans | Which tasks, agents, models, attempts and verifier mode to run |
 | `src/expo_harbor_evals/` | Implementation | Shared runners, calibration, environment adapters, scoring and reporting code |
 | `mobile/templates/` | Native app scaffolding | Pinned SDK 54 and SDK 56 Expo project shells, fixture image and npm locks; candidate code is copied into these for native verification |
@@ -56,10 +56,12 @@ review batch; it includes covered, held and dropped findings. The new paywall
 task is authored but outside existing 18-task source comparison cohorts pending
 judge calibration. See [the feedback review](feedback-review.md).
 
-The seven simbench tasks cover note creation, scrolling, an occluded form,
+The ten simbench tasks cover note creation, scrolling, an occluded form,
 exact-value adjustment, waiting for an asynchronous reveal, visual selection,
-and an ordered multi-screen flow. They are useful device-tool probes. They do
-not establish the quality of generated Expo applications.
+an ordered multi-screen flow, and three OAuth sign-in surfaces (embedded
+WKWebView, system ASWebAuthenticationSession, Safari hand-off). They are useful
+device-tool probes. They do not establish the quality of generated Expo
+applications. The OAuth tier is documented in [oauth-simbench.md](oauth-simbench.md).
 
 ### Inside a coding task
 
@@ -84,7 +86,7 @@ task-name/
       baseline-manifest.json    Detects an untouched or empty submission
       calibration.json          Expected outcomes of reference/broken controls
       runtime.json              Native scenario selector, only where supported
-    contract.cjs                Offline authoring checks, where supplied (paywall)
+    contract.cjs                Executable candidate policy checks (paywall)
 ```
 
 The two reference directories serve different Harbor roles: the oracle needs
@@ -108,7 +110,7 @@ event order; the shared `simbench_evidence.py` handles evidence collection.
 | `jobs/codegen/` | `judge.yaml` | Judge baseline/reference controls; uses judge tokens |
 | `jobs/codegen/` | `models.yaml`, `muse.yaml` | Generate candidate code and judge it |
 | `jobs/native/` | `repairs.yaml` | Generate code for the three supported tasks, then build and drive each candidate |
-| `jobs/simbench/` | `ladder.yaml`, `hard.yaml`, `flows.yaml`, `muse.yaml` | Compare models and device tools on fixed apps |
+| `jobs/simbench/` | `ladder.yaml`, `hard.yaml`, `flows.yaml`, `oauth.yaml`, `muse.yaml` | Compare models and device tools on fixed apps |
 | `jobs/simbench/` | `unguided.yaml` | Test tool discovery without driver instructions; installed tools remain available |
 
 All configs write their results to `runs/`. Run commands from the repository root.
@@ -156,12 +158,15 @@ coverage and calibration: eight API exercises need stronger wrong-fix controls;
 the three native profiles remain experimental; Android and data-dependent app
 journeys need executable checks before making broader capability claims.
 
-## Cleanup validation
+## Validation
 
-76 unit tests pass after removing tests for the retired imports and adding
-checks for task placement, job cohorts and native-profile reuse. All 11 moved
-job configs validate against Harbor. The one-picker `--print-config` plan
-still resolves to one task and one attempt. The suite lock now covers 26 tasks, including the new paywall candidate.
-The final validation also includes four offline paywall control tests and a
-structured-review consistency check (81 tests total).
-No model evaluation, native build, simulator or EAS job was run.
+The suite lock covers 29 tasks, including paywall and the three GoldenGate
+OAuth tasks. The pre-merge review passed 131 offline tests, the suite lock
+check, and Swift typechecking for the shared GoldenGate app. It also repeated
+all six paywall policy controls and regraded a retained Sonnet submission
+through Harbor; no new model calls were made.
+
+See [Harbor adoption](harbor-adoption.md) for the recorded runs and
+[OAuth calibration](oauth-simbench.md) for the live simulator checks still
+required before publishing model comparisons. Syntax and evidence tests do
+not establish native UI correctness.

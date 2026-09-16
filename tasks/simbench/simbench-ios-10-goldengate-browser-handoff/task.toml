@@ -1,0 +1,34 @@
+schema_version = "1.3"
+
+[task]
+name = "expo-harbor/simbench-ios-10-goldengate-browser-handoff"
+description = "Sign in through GoldenGate's Safari hand-off: complete the HarborID login in Safari and return via the goldengate:// custom-scheme callback. Verified from app + provider state, no LLM judge."
+authors = [{ name = "Expo evals" }]
+keywords = ["expo", "ios", "simulator", "simbench", "oauth", "deep-link"]
+
+[metadata]
+family = "simbench"
+motivation = "OAuth tier (customer signal 2026-09: agents fail operating sign-in flows on the simulator). Browser surface: the app hands off to Safari and the callback returns over the registered goldengate:// scheme (onOpenURL), crossing two apps plus Safari's 'Open in GoldenGate?' prompt. Hardest of the three and driver-sensitive: agent-device cannot yet focus/type into Safari's out-of-process web content with the pinned version, so this task is authored and locked but held out of the model job cohorts pending a driver that can drive Safari web input (calibrate with argent, whose accessibility service reads Safari). Documented in docs/oauth-simbench.md."
+category = "simbench"
+difficulty = "hard"
+tier = "cross-app-browser-handoff"
+requires = ["macos-host", "xcode-simulator"]
+verifier = "app-state-programmatic"
+validation_status = "held-pending-driver-support"
+
+[agent]
+timeout_sec = 1500.0
+
+[verifier]
+timeout_sec = 120.0
+
+[environment]
+build_timeout_sec = 600.0
+workdir = "/app"
+
+# Per-trial readiness doubles as setup: boots the simulator and reinstalls the
+# golden app fresh so every trial starts from a clean data container.
+[environment.healthcheck]
+command = "bash /app/driver/setup.sh"
+timeout_sec = 600.0
+retries = 2

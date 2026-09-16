@@ -5,132 +5,147 @@
     "feedback-01-transparent-header-content-inset": {
       "path": "tasks/codegen/feedback-01-transparent-header-content-inset",
       "family": "expo-codegen",
-      "definition_sha256": "39535f9864f645976f9d4cc0d4d02043cc20c1ee5068e89683ffc0a8c44a25f3"
+      "definition_sha256": "95cf23c530b7a16753305676a1050428765c4adbdc63b57c9206d22b56fef45c"
     },
     "feedback-02-styled-title-keeps-native-stack": {
       "path": "tasks/codegen/feedback-02-styled-title-keeps-native-stack",
       "family": "expo-codegen",
-      "definition_sha256": "d18fcfd8d7b6297b78b6a8266222dc92569c2724e3d88081a877beb10d1b75e8"
+      "definition_sha256": "4418bd486ce3af1b551109e224524a4303489babf60a723570bd7a0fd8832d80"
     },
     "feedback-03-shop-grid-sticky-header": {
       "path": "tasks/codegen/feedback-03-shop-grid-sticky-header",
       "family": "expo-codegen",
-      "definition_sha256": "fbeba5cbea0f3c8144c74f5c800abc02c785cd1d6fa97f27b50c440a19f7f2c8"
+      "definition_sha256": "4321ed656fc08ce0ce0bdc598f8562ab14074e1b9bc9267f7eda7c9aff154468"
     },
     "feedback-04-modal-editor-touch-freeze": {
       "path": "tasks/codegen/feedback-04-modal-editor-touch-freeze",
       "family": "expo-codegen",
-      "definition_sha256": "adc1cec2a99a3fcd457e1f46b3c49abda39af81c0b7d2dc4a8c30d9053c67ef9"
+      "definition_sha256": "2a30d866e01082af979fcf521f20317563b0cc1d9e0c6c32568ed848c1313baa"
     },
     "feedback-05-slider-relative-recenter": {
       "path": "tasks/codegen/feedback-05-slider-relative-recenter",
       "family": "expo-codegen",
-      "definition_sha256": "0589ad46e72a29e7755745ddf8c068c41e40c73eb0f295af4c70292ea4c8d762"
+      "definition_sha256": "dfa7321b3ba24d233dc9d599a1c4e04e92d3bd27a798b4c10c17f97c1001c894"
     },
     "feedback-06-sortable-grid-stable-layers": {
       "path": "tasks/codegen/feedback-06-sortable-grid-stable-layers",
       "family": "expo-codegen",
-      "definition_sha256": "a2587f7ec47d413aa43d05eab1df37f2553d50531c79d013aadc4b645fc5d2e3"
+      "definition_sha256": "b0b7458cb357ed7033ec5e7c61ce2d349f0f3caed7ec9f3f201394469bf1f044"
     },
     "feedback-08-modal-keyboard-viewport": {
       "path": "tasks/codegen/feedback-08-modal-keyboard-viewport",
       "family": "expo-codegen",
-      "definition_sha256": "c30fa6c13650930d898f96e378e9d338aa97b6738a9295acfd555581131cee51"
+      "definition_sha256": "b34de16b8ced9306ef97c159fdd7e59e2c25ad6e5d93694fdc4613d8ad2b085b"
     },
     "feedback-09-invite-links-web-fallback": {
       "path": "tasks/codegen/feedback-09-invite-links-web-fallback",
       "family": "expo-codegen",
-      "definition_sha256": "f2e49aa3bf19530d8e9bf9113ccb075692ba88c4917cec8766fda38a3164bcd8"
+      "definition_sha256": "f331b6894acdaadd19c4d8f26ad0589afab57037dc8645270b8f3868a1148641"
     },
     "feedback-10-three-scene-cargo-cult": {
       "path": "tasks/codegen/feedback-10-three-scene-cargo-cult",
       "family": "expo-codegen",
-      "definition_sha256": "230eb05bf577aa83a6e53f18b4d755d4a7c71fa7e2453c412c03755068e3e280"
+      "definition_sha256": "4bd86e3c507bf47144848dcbae5ae30a922919940e4d73a2d970b785af12ebaf"
     },
     "feedback-11-anonymous-paywall-eligibility": {
       "path": "tasks/codegen/feedback-11-anonymous-paywall-eligibility",
       "family": "expo-codegen",
-      "definition_sha256": "9d96e06269d9ea395eba62493e430add4fa8597e0665a4a3d603ecb3dda69160"
+      "definition_sha256": "d938bcc2533bf028c9a76f90c37b08b214c59be594885b00d85b34163706eefa"
     },
     "router-02-stack-layout-not-native-stack-import": {
       "path": "tasks/codegen/router-02-stack-layout-not-native-stack-import",
       "family": "expo-codegen",
-      "definition_sha256": "dc2ca6830c32dca116d095591bdb01020b3684cca90024e0922780cef5db8619"
+      "definition_sha256": "9ed146982840e7a96adbd6294c48fd16f465d7ae193e573a2b84116e35f3d855"
     },
     "router-07-protected-routes-auth": {
       "path": "tasks/codegen/router-07-protected-routes-auth",
       "family": "expo-codegen",
-      "definition_sha256": "28db1f75a098a8101446918574e04d9901e58051dbdceb73e5fe550e2948c69b"
+      "definition_sha256": "c96db862984664a61f17ce6333328e7154313257525a2aeba78201fa41f74442"
     },
     "router-08-serializable-search-params": {
       "path": "tasks/codegen/router-08-serializable-search-params",
       "family": "expo-codegen",
-      "definition_sha256": "d24955fcdd848a8b110afacc8ec9072b8d835b72ff139aaf2def63d7acb69fb2"
+      "definition_sha256": "3f020380ddb82ab6333943bab2dec59e28b95833077e916f7ca8e53630271812"
     },
     "sdk-04-image-picker-canceled-assets-guard": {
       "path": "tasks/codegen/sdk-04-image-picker-canceled-assets-guard",
       "family": "expo-codegen",
-      "definition_sha256": "cd9e9ea3fd7e537188bc746cbc57d53c165f046fe016cd4ad5c5fa8e0c2f0528"
+      "definition_sha256": "bd9cce68a1f336ab7c311fcd23fe5c3efc794609d3440286f40f9556f9396905"
     },
     "sdk-10-notifications-listener-cleanup": {
       "path": "tasks/codegen/sdk-10-notifications-listener-cleanup",
       "family": "expo-codegen",
-      "definition_sha256": "13eaff6a6a62574d45abe530f27950980dde672f12bf02237c2dc2235483140f"
+      "definition_sha256": "6545e6cef93e98de39f41693fd7b1e851ec60f5ae73336008239d303a196b949"
     },
     "sdk-12-filesystem-object-api-read-write": {
       "path": "tasks/codegen/sdk-12-filesystem-object-api-read-write",
       "family": "expo-codegen",
-      "definition_sha256": "299ecf266f9625205ce01aa14a4ccb92b5df2df441b8ea7e41ac67504ada4683"
+      "definition_sha256": "48b0e25396d3c39e543fe64c4ad432878eba989ba05c29e5559b1e8a48e52537"
     },
     "ui-01-universal-layout-controls": {
       "path": "tasks/codegen/ui-01-universal-layout-controls",
       "family": "expo-codegen",
-      "definition_sha256": "9e63fb14b4e0bf6da7963d7cbb76217b46631faead2ec79f22d94b2d559ebfa9"
+      "definition_sha256": "812d202470b224f4b2d19c223e6754d0314cd604ee28c601be9cc65b49f99256"
     },
     "ui-02-bottom-sheet-controlled": {
       "path": "tasks/codegen/ui-02-bottom-sheet-controlled",
       "family": "expo-codegen",
-      "definition_sha256": "7380fcc91729d85c2e4ca190311167a70567cbfa1b49615b14fced36a705db43"
+      "definition_sha256": "691a67d7dbefc544ed413798290147dfe834dcf2571fa9e41029dfa9854ac140"
     },
     "ui-06-native-state-text-input": {
       "path": "tasks/codegen/ui-06-native-state-text-input",
       "family": "expo-codegen",
-      "definition_sha256": "d4f798bb134e6b979fb1e5d927fd24ad8fa6e4c44cd4c2a4a0e86e22c08ecbe6"
+      "definition_sha256": "e56a43354eaaca11758880ff7d1318e1f71aca4ac37b0a765dc4c1c8af96218c"
     },
     "simbench-ios-01-goldennotes-create-note": {
       "path": "tasks/simbench/simbench-ios-01-goldennotes-create-note",
       "family": "simbench",
-      "definition_sha256": "bbaa52a8e6073bafd574c83fd896c405f76d1c16f3f660fc760b0319ecf99391"
+      "definition_sha256": "36affd308797d8e2067d5c7257e87292b5a60823332cdb693d189ec3a1e96c3d"
     },
     "simbench-ios-02-inventory-scroll-claim": {
       "path": "tasks/simbench/simbench-ios-02-inventory-scroll-claim",
       "family": "simbench",
-      "definition_sha256": "03406a1c3074cddb7cfb2b504aa7252694fdf57eef20a53144a82bbe567aac1b"
+      "definition_sha256": "908aea2dc52a26f92ce73c0ee5d1871fb307cfff5ccd3b0f474aee2f275afd96"
     },
     "simbench-ios-03-register-occluded-form": {
       "path": "tasks/simbench/simbench-ios-03-register-occluded-form",
       "family": "simbench",
-      "definition_sha256": "027dc251edb18660ddd2d1bc78096439df0af2295da16b11576c5f5d8bc9f510"
+      "definition_sha256": "74c7514553c54987fb50d628dd659d8e4540e60fc4db1018a11cee55642f99e8"
     },
     "simbench-ios-04-goldenlab-dial-precision": {
       "path": "tasks/simbench/simbench-ios-04-goldenlab-dial-precision",
       "family": "simbench",
-      "definition_sha256": "3f463126b3224c8ccb675cd1e7a22d5077b96ac1755938d01ffc1117d2eaab5d"
+      "definition_sha256": "7c749fae5330901e0ced7e598e1a747e0ddf18bd75697d0040fba0c469ea4051"
     },
     "simbench-ios-05-goldenlab-reveal-code": {
       "path": "tasks/simbench/simbench-ios-05-goldenlab-reveal-code",
       "family": "simbench",
-      "definition_sha256": "1f4fa1de018c2660acb0223be36e804b3ce761cdac515c8d8cfcccb4827ca166"
+      "definition_sha256": "deeedd94a1b9ad46ab32fadab09df1c11d99ba30c9ccbdea228b9d490d836235"
     },
     "simbench-ios-06-goldenlab-vision-grid": {
       "path": "tasks/simbench/simbench-ios-06-goldenlab-vision-grid",
       "family": "simbench",
-      "definition_sha256": "93f884c5bb880f7be1bb83b131b6d6fc0ddc5ce17093badfd9b06d88482a65e8"
+      "definition_sha256": "31c8f0008c2da0c8104d213274ab8e16608e4c988dedf03990493fb2f105b106"
     },
     "simbench-ios-07-goldennotes-shift-flow": {
       "path": "tasks/simbench/simbench-ios-07-goldennotes-shift-flow",
       "family": "simbench",
-      "definition_sha256": "2a5cdfd5322b7ccb9626ee0cdb8f56a77be908397dc6ba72763d23bf548dbfea"
+      "definition_sha256": "f1d21f4827f62c605371231befe7f795f16c33dd86792148e724d0a22527a060"
+    },
+    "simbench-ios-08-goldengate-embedded-web-login": {
+      "path": "tasks/simbench/simbench-ios-08-goldengate-embedded-web-login",
+      "family": "simbench",
+      "definition_sha256": "e064bcf77aa5772dc9b10fa45f55d8cfff113ba7b0ce99b454879dd670c10b67"
+    },
+    "simbench-ios-09-goldengate-system-auth-session": {
+      "path": "tasks/simbench/simbench-ios-09-goldengate-system-auth-session",
+      "family": "simbench",
+      "definition_sha256": "f7b8c9e36baf8d4d9de64fc3445ecfcb4c5743d4b8063befccc63ba292806bf4"
+    },
+    "simbench-ios-10-goldengate-browser-handoff": {
+      "path": "tasks/simbench/simbench-ios-10-goldengate-browser-handoff",
+      "family": "simbench",
+      "definition_sha256": "fb93a328b01dd34901611cd8ce54cb9469c7e9049b630c349b6ef11b7ee73f23"
     }
   },
   "engine": {
@@ -146,25 +161,26 @@
     "mobile/templates/sdk56/package-lock.json": "4ed72920fa588efc838c7f3ee488f0f586ef1bb1237118a121274eded9bdc927",
     "mobile/templates/sdk56/package.json": "21c7d107f64fb4a9ca3f4dbe36ff5b3f21d9b66fb003999996ef10935b5c6992",
     "mobile/templates/sdk56/tsconfig.json": "1861e53fa4efc56da0ea5c23c911e0311125b32d9ec67d805118f1a40c5478e1",
-    "pyproject.toml": "9082ae5fab238e55b3fd9fc716de34a00dede627e5ab94d0111ffbe9a0003467",
+    "pyproject.toml": "50c9b71af945ae725a762cc6b96aaebb2443d8579328efb55d231ff73ae3eff6",
     "src/expo_harbor_evals/__init__.py": "2785d405887a71a64ea76c6af267fba17ba053ecf0516ec8fe6aaf602503f534",
     "src/expo_harbor_evals/claude_host_agent.py": "3035b5b8ca7b63e26f5c0d73cedc86a486fb85a2e98cc29c9ec1aa19ae147e79",
-    "src/expo_harbor_evals/codegen_calibrate.py": "50c7d04e28f19b9937e164bfbffb27ce15dea90927ba1e6bde71f4c0674e7485",
+    "src/expo_harbor_evals/codegen_calibrate.py": "c423252d2beae4039b3a0b9f40ed85e644a1cb4cb0f9e594f02a562abbd02e05",
     "src/expo_harbor_evals/codegen_reference_check.py": "0f522d3e2e443fa51cefda77d6317972590dc6f75ed1b3b4e22efd4ae8d8492f",
-    "src/expo_harbor_evals/codegen_rewardkit_runner.py": "3197f25cb555979dbac322b683d019167b3bb825f81753504d044c4a3837de78",
-    "src/expo_harbor_evals/codegen_scaffold.py": "8a636ad17ec63fe855d772c728af508ee584d69f56b36c1e04340abb6c9c2d44",
+    "src/expo_harbor_evals/codegen_regrade.py": "431da40c181581bfd28d8a608a7e50174e0e937fff1e34027bf38403052b30fb",
+    "src/expo_harbor_evals/codegen_rewardkit_runner.py": "cb29026952fc05771518929256a851053306c78bbff322edf76a9232506be0f0",
+    "src/expo_harbor_evals/codegen_scaffold.py": "bc62bfed2ba3d90bd688dcfa3e500566a7f1fad88c6dd0e45725c7264d49a198",
     "src/expo_harbor_evals/eas_runner.py": "c40271699d767c1101facbce5bc30b771aeb465765dfc29601e0b9177e7d3541",
-    "src/expo_harbor_evals/evaluation_identity.py": "b10d40aeb8a3c82c6347e649adcc16b11bb99439ae2bb1a4e99ee00257bf2e99",
-    "src/expo_harbor_evals/local_env.py": "d375941c6c3d990c1b784a3e35add4e57cc53e97b8c6957537f6342affc48d39",
+    "src/expo_harbor_evals/evaluation_identity.py": "a4a4de4784001e9912083e829d768379607749450b29d4b9fcfe16f5474f2c8d",
+    "src/expo_harbor_evals/local_env.py": "ea80e3216bba385b718b8dd68d5be0f1c9c76c8a0e54af3e6dd49a30cdd2ea55",
     "src/expo_harbor_evals/mac_sandbox_env.py": "bbf5bf5c1b1057f1a8b1d49da317e43f59864478c6cf4c5ac672f40de5e0cb32",
-    "src/expo_harbor_evals/metadata.py": "3806a42fc7c49b020ae05f642212d3bb55a939a838f1f6d2fe09a57ef5f29ac9",
+    "src/expo_harbor_evals/metadata.py": "bc0d1f09e718a23d88394b6284df16b6b4ed4666f3311564db380f256f77d223",
     "src/expo_harbor_evals/mobile_calibrate.py": "e7c816dc4609da92e1129a35831b6a6acc3ceb6b3d4fa178a07d0140ba1c449e",
     "src/expo_harbor_evals/mobile_eval.py": "8962e0c90394358768703e331886e18ee48676c8ac6f5952a1cd5a5138281c11",
     "src/expo_harbor_evals/mobile_scenarios.py": "8b70c308f9fd230d597b29adf4194287c45daa6863ea8e4a2423fc88bc87c6d2",
     "src/expo_harbor_evals/muse_host_agent.py": "e2ab9df31b424b861b54dafdd09100c8d69c8f32f6d9175f63310e951a8b8067",
-    "src/expo_harbor_evals/simbench_calibrate.py": "1b53b3fb0de625838c6f7703a298761263625a93ade0810f4569f0a4983b590b",
+    "src/expo_harbor_evals/simbench_calibrate.py": "7bc08d265472ce93efbf532c8aa6d2d1cde9ce2b0b31f24910f8d34a35f6eefc",
     "src/expo_harbor_evals/simbench_env.py": "cc636e8b2215da98ede918a09284b09e60a6ce30fcb50e88ef94e2761665710e",
-    "src/expo_harbor_evals/simbench_evidence.py": "e4608d33d91e8339d5e740129f1b39a16f173b8cda560086f87bd06e5d4a524d",
-    "uv.lock": "a73ae1ac8b447a780655584d9611d1fde587efbea14cfea3fa115420f782e511"
+    "src/expo_harbor_evals/simbench_evidence.py": "2cc0ba7d313c943bd9dac7f468516b3940614bdfbb8f6d72ca71688eddce2269",
+    "uv.lock": "c2d91e2839806e3a33a03e604a021837182cd4238315a4c2413ce07827a9bff5"
   }
 }
