@@ -61,6 +61,21 @@ for their purpose and the structure inside each task.
 
 ## Start without running an evaluation
 
+For the local web workbench (Node.js 22.12+ and Python 3.12+):
+
+```sh
+uv sync --frozen
+npm --prefix studio ci
+make studio  # http://127.0.0.1:4747
+```
+
+**Harbor Studio** browses every task and saved attempt, creates and edits tasks
+with a shared RewardKit check picker, exports Harbor task folders, and launches
+free coding controls with logs and cancellation. It uses TanStack Start,
+Router and Query, Zustand, Zod, and Expo's current shared design tokens.
+Sonnet experiments download as explicit CLI plans; opening the UI makes no
+model calls. See [Studio setup and scope](studio/README.md).
+
 ```sh
 uv sync --dev
 # Node.js 24+ is needed for the executable paywall checks.

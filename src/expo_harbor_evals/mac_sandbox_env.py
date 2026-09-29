@@ -73,10 +73,17 @@ class MacSandboxEnvironment(LocalHostEnvironment):
         """
         assert self._root is not None
         blocked = [self._root / name for name in ("tests", "solution", "logs/verifier", "logs/artifacts")]
-        task_root = next((p for p in self.environment_dir.parents if p.name == "tasks"), None)
-        if task_root:
-            blocked += [task_root, *[task_root.parent / name for name in
-                        (".context", "runs", "src", "suites", "mobile", ".git")]]
+        # Exported drafts also carry their verifier and oracle beside environment/.
+        blocked.append(self.environment_dir.parent)
+        repo_root = next((p for p in self.environment_dir.parents
+                          if (p / "suites/mobile-v2.json").is_file()), None)
+        if repo_root is None:
+            task_root = next((p for p in self.environment_dir.parents if p.name == "tasks"), None)
+            repo_root = task_root.parent if task_root else None
+        if repo_root:
+            # Drafts and exports contain the same hidden answers as library tasks.
+            blocked += [repo_root / name for name in
+                        ("tasks", ".studio", "outputs", ".context", "runs", "src", "suites", "mobile", ".git")]
         if getattr(self, "_device", None):
             blocked.append(Path.home() / "Library/Developer/CoreSimulator/Devices" / self._device / "data/Containers/Data/Application")
         profile_path = self._root / "agent.sb"

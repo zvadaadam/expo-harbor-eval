@@ -161,18 +161,18 @@
     "mobile/templates/sdk56/package-lock.json": "4ed72920fa588efc838c7f3ee488f0f586ef1bb1237118a121274eded9bdc927",
     "mobile/templates/sdk56/package.json": "21c7d107f64fb4a9ca3f4dbe36ff5b3f21d9b66fb003999996ef10935b5c6992",
     "mobile/templates/sdk56/tsconfig.json": "1861e53fa4efc56da0ea5c23c911e0311125b32d9ec67d805118f1a40c5478e1",
-    "pyproject.toml": "50c9b71af945ae725a762cc6b96aaebb2443d8579328efb55d231ff73ae3eff6",
+    "pyproject.toml": "8a639b3b381ef1d615bd62f69b52b13a9d2b8e997f21376c764f4e2d6d11d699",
     "src/expo_harbor_evals/__init__.py": "2785d405887a71a64ea76c6af267fba17ba053ecf0516ec8fe6aaf602503f534",
     "src/expo_harbor_evals/claude_host_agent.py": "3035b5b8ca7b63e26f5c0d73cedc86a486fb85a2e98cc29c9ec1aa19ae147e79",
-    "src/expo_harbor_evals/codegen_calibrate.py": "c423252d2beae4039b3a0b9f40ed85e644a1cb4cb0f9e594f02a562abbd02e05",
+    "src/expo_harbor_evals/codegen_calibrate.py": "27cbb912f5a8d2ac8124a438cbdc3d235b039bc22341b0b7c588310e8e61e5a3",
     "src/expo_harbor_evals/codegen_reference_check.py": "0f522d3e2e443fa51cefda77d6317972590dc6f75ed1b3b4e22efd4ae8d8492f",
     "src/expo_harbor_evals/codegen_regrade.py": "431da40c181581bfd28d8a608a7e50174e0e937fff1e34027bf38403052b30fb",
     "src/expo_harbor_evals/codegen_rewardkit_runner.py": "cb29026952fc05771518929256a851053306c78bbff322edf76a9232506be0f0",
     "src/expo_harbor_evals/codegen_scaffold.py": "bc62bfed2ba3d90bd688dcfa3e500566a7f1fad88c6dd0e45725c7264d49a198",
     "src/expo_harbor_evals/eas_runner.py": "c40271699d767c1101facbce5bc30b771aeb465765dfc29601e0b9177e7d3541",
-    "src/expo_harbor_evals/evaluation_identity.py": "a4a4de4784001e9912083e829d768379607749450b29d4b9fcfe16f5474f2c8d",
-    "src/expo_harbor_evals/local_env.py": "ea80e3216bba385b718b8dd68d5be0f1c9c76c8a0e54af3e6dd49a30cdd2ea55",
-    "src/expo_harbor_evals/mac_sandbox_env.py": "bbf5bf5c1b1057f1a8b1d49da317e43f59864478c6cf4c5ac672f40de5e0cb32",
+    "src/expo_harbor_evals/evaluation_identity.py": "8ba249f7683355701d0f2e6ea81bc37dd9177e2a7806b5c18e3060542cfd763b",
+    "src/expo_harbor_evals/local_env.py": "6fc85a4d0493825c95ee0ade82fc3dc4c42fd92bc12d5fcb3610ec8b89b9cddb",
+    "src/expo_harbor_evals/mac_sandbox_env.py": "927e83fa7b84a34baeacade99e17c1de4865904bde833d3db6268b0b1f97b7f1",
     "src/expo_harbor_evals/metadata.py": "bc0d1f09e718a23d88394b6284df16b6b4ed4666f3311564db380f256f77d223",
     "src/expo_harbor_evals/mobile_calibrate.py": "e7c816dc4609da92e1129a35831b6a6acc3ceb6b3d4fa178a07d0140ba1c449e",
     "src/expo_harbor_evals/mobile_eval.py": "8962e0c90394358768703e331886e18ee48676c8ac6f5952a1cd5a5138281c11",
@@ -181,6 +181,6 @@
     "src/expo_harbor_evals/simbench_calibrate.py": "7bc08d265472ce93efbf532c8aa6d2d1cde9ce2b0b31f24910f8d34a35f6eefc",
     "src/expo_harbor_evals/simbench_env.py": "cc636e8b2215da98ede918a09284b09e60a6ce30fcb50e88ef94e2761665710e",
     "src/expo_harbor_evals/simbench_evidence.py": "2cc0ba7d313c943bd9dac7f468516b3940614bdfbb8f6d72ca71688eddce2269",
-    "uv.lock": "c2d91e2839806e3a33a03e604a021837182cd4238315a4c2413ce07827a9bff5"
+    "uv.lock": "f34bb68fe21ae9c12a31e4c023046df6335faf2366473587bedb526cfde6da0c"
   }
 }

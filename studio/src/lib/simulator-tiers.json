@@ -1,0 +1,13 @@
+{
+  "forms-and-keyboard": "Forms & keyboard",
+  "scroll-and-find": "Scrolling & finding items",
+  "keyboard-occlusion": "Keyboard occlusion",
+  "gesture-precision": "Gesture precision",
+  "exact-value-adjustment": "Precise values",
+  "async-patience": "Waiting for async changes",
+  "vision-no-tree": "Vision without accessibility",
+  "embedded-web-form": "Embedded web sign-in",
+  "system-auth-session": "System sign-in",
+  "cross-app-browser-handoff": "Browser hand-off",
+  "app-flows": "Multi-step app flows"
+}

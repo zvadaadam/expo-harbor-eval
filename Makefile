@@ -3,13 +3,14 @@
 # target with HARBOR_WITH="--with ../harbor".
 HARBOR_WITH ?=
 
-.PHONY: help test check codegen-calibrate codegen-oracle codegen-baseline codegen-judge codegen-models codegen-muse simbench-ladder simbench-hard simbench-unguided simbench-flows simbench-oauth simbench-muse simbench-calibrate report viewer export
+.PHONY: help test check codegen-calibrate codegen-oracle codegen-baseline codegen-judge codegen-models codegen-muse simbench-ladder simbench-hard simbench-unguided simbench-flows simbench-oauth simbench-muse simbench-calibrate report viewer export studio studio-check
 
 # The default target describes commands; it never starts an evaluation.
 help:
 	@echo "Read README.md and docs/repository-map.md for the layout."
 	@echo "Safe checks: make test; make check"
 	@echo "Results: make viewer; make report; make export"
+	@echo "Local workbench: npm --prefix studio ci; make studio (http://127.0.0.1:4747)"
 	@echo "Evaluation targets use model tokens and/or simulator compute. See docs/run-and-read-evaluations.md."
 
 test:
@@ -94,3 +95,12 @@ export:
 
 simbench-calibrate:
 	uv run expo-simbench-calibrate
+
+# TanStack Start workbench. Opening it never launches a model or simulator.
+studio:
+	npm --prefix studio run dev
+
+studio-check:
+	npm --prefix studio run typecheck
+	npm --prefix studio test
+	npm --prefix studio run build

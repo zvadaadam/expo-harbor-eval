@@ -160,3 +160,17 @@ def test_presentation_changes_do_not_invalidate_the_evaluation_suite(tmp_path):
     assert make_suite(tmp_path) == before
     (code / "mobile_scenarios.py").write_text("different score logic")
     assert make_suite(tmp_path) != before
+
+
+def test_weighted_sum_completion_uses_declared_grader_outcome(tmp_path):
+    run = tmp_path / 'trial'
+    (run / 'verifier').mkdir(parents=True)
+    (run / 'result.json').write_text(json.dumps({'task_name': 'example', 'agent_info': {'name': 'oracle'},
+        'verifier_result': {'rewards': {'reward': 3}}}))
+    (run / 'verifier/reward-details.json').write_text(json.dumps({'reward': {'score': 3, 'passed': True, 'aggregation': 'weighted-sum', 'criteria': []}}))
+    _, records = load_runs([tmp_path])
+    assert len(records) == 1
+    assert records[0].reward == 3
+    assert records[0].outcome == 'pass'
+    assert trial(reward=1, reward_passed=False).outcome == 'partial'
+    assert trial(reward=0, reward_passed=False).outcome == 'fail'

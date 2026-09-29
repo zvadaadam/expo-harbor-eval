@@ -26,7 +26,8 @@ from expo_harbor_evals.simbench_evidence import write_json
 
 
 class LocalHostEnvironment(BaseEnvironment):
-    def __init__(self, *args, keep_root: bool = False, **kwargs) -> None:
+    def __init__(self, *args, keep_root: bool = False, allow_unversioned_tasks: bool = False, **kwargs) -> None:
+        self._allow_unversioned_tasks = allow_unversioned_tasks
         self._keep_root = keep_root
         self._root: Path | None = None
         super().__init__(*args, **kwargs)
@@ -68,7 +69,7 @@ class LocalHostEnvironment(BaseEnvironment):
             config = json.loads(config_path.read_text()) if config_path.exists() else {}
             job_path = self.trial_paths.trial_dir.parent / "config.json"
             job = json.loads(job_path.read_text()) if job_path.exists() else {}
-            identity = trial_identity(self.environment_dir.parent, config, job)
+            identity = trial_identity(self.environment_dir.parent, config, job, allow_unversioned=self._allow_unversioned_tasks)
             identity["backend"] = os.environ.get("SIMBENCH_BACKEND", self.type())
             write_json(self.trial_paths.trial_dir / "evaluation.json", identity)
         # There is no image build in this environment, so environment/ must
