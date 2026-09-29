@@ -20,3 +20,11 @@ outputs/
 .env.*
 !.env.example
 /eval-output/
+
+# Local evaluation studio
+/studio/node_modules/
+/studio/.output/
+/studio/.nitro/
+/studio/.tanstack/
+/studio/dist/
+/.studio/

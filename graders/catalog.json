@@ -1,0 +1,686 @@
+{
+  "schemaVersion": 1,
+  "checks": {
+    "ai-review": {
+      "label": "AI review",
+      "description": "A judge reads the submitted code against your requirement. Uses model tokens; does not run the app.",
+      "builtin": null,
+      "fields": [],
+      "group": "AI review"
+    },
+    "test-script": {
+      "label": "Tests pass",
+      "description": "Run your verifier's Node.js or Python assertions against the submission. No model calls.",
+      "builtin": "command_succeeds",
+      "fields": [
+        {
+          "key": "script",
+          "label": "Test file",
+          "type": "script",
+          "placeholder": "check.cjs"
+        }
+      ],
+      "group": "Tests & commands"
+    },
+    "file-exists": {
+      "label": "File exists",
+      "description": "Check that a path exists in the submission. Checks structure, not whether the app works.",
+      "builtin": "file_exists",
+      "fields": [
+        {
+          "key": "path",
+          "label": "File path",
+          "type": "path",
+          "placeholder": "app/index.tsx"
+        }
+      ],
+      "group": "Files & text"
+    },
+    "file-contains": {
+      "label": "File contains text",
+      "description": "Look for literal text, including comments. Use tests or AI review when behavior matters.",
+      "builtin": "file_contains",
+      "fields": [
+        {
+          "key": "path",
+          "label": "File path",
+          "type": "path",
+          "placeholder": "app.json"
+        },
+        {
+          "key": "text",
+          "label": "Expected text",
+          "type": "multiline",
+          "placeholder": "Expected content",
+          "allowEmpty": true
+        }
+      ],
+      "group": "Files & text"
+    },
+    "json-key-equals": {
+      "label": "JSON value matches",
+      "description": "Check a top-level key against an exact JSON value. No model calls.",
+      "builtin": "json_key_equals",
+      "fields": [
+        {
+          "key": "path",
+          "label": "JSON file",
+          "type": "path",
+          "placeholder": "package.json"
+        },
+        {
+          "key": "key",
+          "label": "Top-level key",
+          "type": "text",
+          "placeholder": "main"
+        },
+        {
+          "key": "expected",
+          "label": "Expected value (JSON)",
+          "type": "json",
+          "placeholder": "\"expo-router/entry\""
+        }
+      ],
+      "group": "Structured data"
+    },
+    "custom-python": {
+      "label": "Custom Python criterion",
+      "group": "Tests & commands",
+      "description": "Write a RewardKit @criterion function that returns a boolean or a score from 0 to 1. No model calls.",
+      "builtin": null,
+      "fields": [
+        {
+          "key": "script",
+          "label": "Python file",
+          "type": "python",
+          "placeholder": "check.py"
+        },
+        {
+          "key": "factory",
+          "label": "Criterion function",
+          "type": "identifier",
+          "placeholder": "check",
+          "default": "check"
+        }
+      ],
+      "score": "continuous"
+    },
+    "command-succeeds": {
+      "label": "Command succeeds",
+      "group": "Tests & commands",
+      "description": "Run a shell command in the submission. Passes when it exits with code 0.",
+      "builtin": "command_succeeds",
+      "fields": [
+        {
+          "key": "cmd",
+          "label": "Command",
+          "type": "multiline",
+          "placeholder": "npm test"
+        },
+        {
+          "key": "cwd",
+          "label": "Working directory",
+          "type": "path",
+          "placeholder": "Submission root (default)",
+          "optional": true
+        },
+        {
+          "key": "timeout",
+          "label": "Timeout (seconds)",
+          "type": "integer",
+          "placeholder": "30",
+          "default": "30",
+          "min": 1,
+          "max": 300,
+          "optional": true
+        }
+      ]
+    },
+    "command-output-contains": {
+      "label": "Command output contains text",
+      "group": "Tests & commands",
+      "description": "Inspect stdout from a command run in the submitted workspace.",
+      "builtin": "command_output_contains",
+      "fields": [
+        {
+          "key": "cmd",
+          "label": "Command",
+          "type": "multiline",
+          "placeholder": "npm test"
+        },
+        {
+          "key": "text",
+          "label": "Expected text",
+          "type": "multiline",
+          "placeholder": "Expected content",
+          "allowEmpty": true
+        },
+        {
+          "key": "cwd",
+          "label": "Working directory",
+          "type": "path",
+          "placeholder": "Submission root (default)",
+          "optional": true
+        },
+        {
+          "key": "timeout",
+          "label": "Timeout (seconds)",
+          "type": "integer",
+          "placeholder": "30",
+          "default": "30",
+          "min": 1,
+          "max": 300,
+          "optional": true
+        }
+      ]
+    },
+    "command-output-matches": {
+      "label": "Command output matches text",
+      "group": "Tests & commands",
+      "description": "Inspect stdout from a command run in the submitted workspace.",
+      "builtin": "command_output_matches",
+      "fields": [
+        {
+          "key": "cmd",
+          "label": "Command",
+          "type": "multiline",
+          "placeholder": "npm test"
+        },
+        {
+          "key": "expected",
+          "label": "Expected text",
+          "type": "multiline",
+          "placeholder": "Expected content",
+          "allowEmpty": true
+        },
+        {
+          "key": "cwd",
+          "label": "Working directory",
+          "type": "path",
+          "placeholder": "Submission root (default)",
+          "optional": true
+        },
+        {
+          "key": "timeout",
+          "label": "Timeout (seconds)",
+          "type": "integer",
+          "placeholder": "30",
+          "default": "30",
+          "min": 1,
+          "max": 300,
+          "optional": true
+        }
+      ]
+    },
+    "command-output-matches-regex": {
+      "label": "Command output matches regex",
+      "group": "Tests & commands",
+      "description": "Inspect stdout from a command run in the submitted workspace.",
+      "builtin": "command_output_matches_regex",
+      "fields": [
+        {
+          "key": "cmd",
+          "label": "Command",
+          "type": "multiline",
+          "placeholder": "npm test"
+        },
+        {
+          "key": "pattern",
+          "label": "Regular expression",
+          "type": "regex",
+          "placeholder": "^PASS"
+        },
+        {
+          "key": "cwd",
+          "label": "Working directory",
+          "type": "path",
+          "placeholder": "Submission root (default)",
+          "optional": true
+        },
+        {
+          "key": "timeout",
+          "label": "Timeout (seconds)",
+          "type": "integer",
+          "placeholder": "30",
+          "default": "30",
+          "min": 1,
+          "max": 300,
+          "optional": true
+        }
+      ]
+    },
+    "file-not-exists": {
+      "label": "File does not exist",
+      "group": "Files & text",
+      "description": "Check that a path is absent from the submission.",
+      "builtin": "file_not_exists",
+      "fields": [
+        {
+          "key": "path",
+          "label": "File path",
+          "type": "path",
+          "placeholder": "app/index.tsx"
+        }
+      ]
+    },
+    "file-contains-regex": {
+      "label": "File matches regex",
+      "group": "Files & text",
+      "description": "Search file contents using a Python regular expression.",
+      "builtin": "file_contains_regex",
+      "fields": [
+        {
+          "key": "path",
+          "label": "File path",
+          "type": "path",
+          "placeholder": "app/index.tsx"
+        },
+        {
+          "key": "pattern",
+          "label": "Regular expression",
+          "type": "regex",
+          "placeholder": "export\\s+default"
+        }
+      ]
+    },
+    "file-matches": {
+      "label": "File matches text",
+      "group": "Files & text",
+      "description": "Compare full file contents, ignoring leading and trailing whitespace.",
+      "builtin": "file_matches",
+      "fields": [
+        {
+          "key": "path",
+          "label": "File path",
+          "type": "path",
+          "placeholder": "app/index.tsx"
+        },
+        {
+          "key": "expected",
+          "label": "Expected text",
+          "type": "multiline",
+          "placeholder": "Expected content",
+          "allowEmpty": true
+        }
+      ]
+    },
+    "files-equal": {
+      "label": "Two files match",
+      "group": "Files & text",
+      "description": "Compare the contents of two files in the submission.",
+      "builtin": "files_equal",
+      "fields": [
+        {
+          "key": "path1",
+          "label": "First file",
+          "type": "path",
+          "placeholder": "app/index.tsx"
+        },
+        {
+          "key": "path2",
+          "label": "Second file",
+          "type": "path",
+          "placeholder": "app/index.tsx"
+        }
+      ]
+    },
+    "diff-ratio": {
+      "label": "Text similarity",
+      "group": "Files & text",
+      "description": "Score text similarity from 0 to 1. Leading and trailing whitespace is ignored.",
+      "builtin": "diff_ratio",
+      "fields": [
+        {
+          "key": "path",
+          "label": "File path",
+          "type": "path",
+          "placeholder": "app/index.tsx"
+        },
+        {
+          "key": "expected",
+          "label": "Expected text",
+          "type": "multiline",
+          "placeholder": "Expected content",
+          "allowEmpty": true
+        }
+      ],
+      "score": "continuous"
+    },
+    "json-path-equals": {
+      "label": "Nested JSON value matches",
+      "group": "Structured data",
+      "description": "Follow dot-separated object keys and array indexes, then compare an exact JSON value.",
+      "builtin": "json_path_equals",
+      "fields": [
+        {
+          "key": "path",
+          "label": "File path",
+          "type": "path",
+          "placeholder": "app/index.tsx"
+        },
+        {
+          "key": "json_path",
+          "label": "JSON path",
+          "type": "text",
+          "placeholder": "expo.plugins.0"
+        },
+        {
+          "key": "expected",
+          "label": "Expected value (JSON)",
+          "type": "json",
+          "placeholder": "true"
+        }
+      ]
+    },
+    "csv-cell-equals": {
+      "label": "CSV cell matches",
+      "group": "Structured data",
+      "description": "Check a CSV cell by zero-based row and column index, or a quoted column heading.",
+      "builtin": "csv_cell_equals",
+      "fields": [
+        {
+          "key": "path",
+          "label": "File path",
+          "type": "path",
+          "placeholder": "app/index.tsx"
+        },
+        {
+          "key": "row",
+          "label": "Row (zero-based)",
+          "type": "integer",
+          "placeholder": "0",
+          "min": 0
+        },
+        {
+          "key": "col",
+          "label": "Column index or heading (JSON)",
+          "type": "column",
+          "placeholder": "\"name\""
+        },
+        {
+          "key": "expected",
+          "label": "Expected value",
+          "type": "multiline",
+          "placeholder": "Expected content",
+          "allowEmpty": true
+        }
+      ]
+    },
+    "xlsx-cell-equals": {
+      "label": "Spreadsheet cell matches",
+      "group": "Structured data",
+      "description": "Check an Excel cell against a JSON value. Uses the active sheet unless a sheet is named.",
+      "builtin": "xlsx_cell_equals",
+      "fields": [
+        {
+          "key": "path",
+          "label": "File path",
+          "type": "path",
+          "placeholder": "app/index.tsx"
+        },
+        {
+          "key": "cell",
+          "label": "Cell",
+          "type": "text",
+          "placeholder": "A1"
+        },
+        {
+          "key": "expected",
+          "label": "Expected value (JSON)",
+          "type": "json",
+          "placeholder": "true"
+        },
+        {
+          "key": "sheet",
+          "label": "Sheet",
+          "type": "text",
+          "placeholder": "Active sheet (default)",
+          "optional": true
+        }
+      ]
+    },
+    "sqlite-query-equals": {
+      "label": "SQLite query matches",
+      "group": "Structured data",
+      "description": "Compare the first column of the first query result to a JSON value.",
+      "builtin": "sqlite_query_equals",
+      "fields": [
+        {
+          "key": "db_path",
+          "label": "Database file",
+          "type": "path",
+          "placeholder": "app/index.tsx"
+        },
+        {
+          "key": "query",
+          "label": "SQL query",
+          "type": "multiline",
+          "placeholder": "SELECT COUNT(*) FROM notes"
+        },
+        {
+          "key": "expected",
+          "label": "Expected value (JSON)",
+          "type": "json",
+          "placeholder": "true"
+        }
+      ]
+    },
+    "image-size-equals": {
+      "label": "Image dimensions match",
+      "group": "Images",
+      "description": "Check the image width and height in pixels.",
+      "builtin": "image_size_equals",
+      "fields": [
+        {
+          "key": "path",
+          "label": "File path",
+          "type": "path",
+          "placeholder": "app/index.tsx"
+        },
+        {
+          "key": "width",
+          "label": "Width (pixels)",
+          "type": "integer",
+          "placeholder": "1170",
+          "min": 1
+        },
+        {
+          "key": "height",
+          "label": "Height (pixels)",
+          "type": "integer",
+          "placeholder": "2532",
+          "min": 1
+        }
+      ]
+    },
+    "image-similarity": {
+      "label": "Image similarity",
+      "group": "Images",
+      "description": "Score the fraction of exactly matching pixels from 0 to 1. Different sizes score 0.",
+      "builtin": "image_similarity",
+      "fields": [
+        {
+          "key": "path1",
+          "label": "First image",
+          "type": "path",
+          "placeholder": "app/index.tsx"
+        },
+        {
+          "key": "path2",
+          "label": "Second image",
+          "type": "path",
+          "placeholder": "app/index.tsx"
+        }
+      ],
+      "score": "continuous"
+    },
+    "http-status-equals": {
+      "label": "HTTP status matches",
+      "group": "HTTP",
+      "description": "Send a GET request from the verifier and check its status code. The service must be reachable from the verifier.",
+      "builtin": "http_status_equals",
+      "fields": [
+        {
+          "key": "url",
+          "label": "URL",
+          "type": "url",
+          "placeholder": "http://localhost:8080/health"
+        },
+        {
+          "key": "status",
+          "label": "Expected status",
+          "type": "integer",
+          "placeholder": "200",
+          "default": "200",
+          "min": 100,
+          "max": 599,
+          "optional": true
+        },
+        {
+          "key": "timeout",
+          "label": "Timeout (seconds)",
+          "type": "integer",
+          "placeholder": "10",
+          "default": "10",
+          "min": 1,
+          "max": 300,
+          "optional": true
+        }
+      ]
+    },
+    "http-response-contains": {
+      "label": "HTTP response contains text",
+      "group": "HTTP",
+      "description": "Send a GET request and check the response body. The service must be reachable from the verifier.",
+      "builtin": "http_response_contains",
+      "fields": [
+        {
+          "key": "url",
+          "label": "URL",
+          "type": "url",
+          "placeholder": "http://localhost:8080/"
+        },
+        {
+          "key": "text",
+          "label": "Expected text",
+          "type": "multiline",
+          "placeholder": "Expected content",
+          "allowEmpty": true
+        },
+        {
+          "key": "timeout",
+          "label": "Timeout (seconds)",
+          "type": "integer",
+          "placeholder": "10",
+          "default": "10",
+          "min": 1,
+          "max": 300,
+          "optional": true
+        }
+      ]
+    },
+    "trajectory-tool-used": {
+      "label": "Tool was used",
+      "group": "Agent trajectory",
+      "description": "Check recorded agent tool calls in the trusted Harbor trajectory. Missing evidence fails the check.",
+      "builtin": "trajectory_tool_used",
+      "fields": [
+        {
+          "key": "tool_name",
+          "label": "Tool name",
+          "type": "text",
+          "placeholder": "run_command"
+        },
+        {
+          "key": "min_count",
+          "label": "Minimum calls",
+          "type": "integer",
+          "placeholder": "1",
+          "default": "1",
+          "min": 1,
+          "optional": true
+        },
+        {
+          "key": "path",
+          "label": "Trajectory file",
+          "type": "trajectory",
+          "placeholder": "/logs/agent/trajectory.json",
+          "default": "/logs/agent/trajectory.json",
+          "optional": true
+        }
+      ]
+    },
+    "trajectory-tool-not-used": {
+      "label": "Tool was not used",
+      "group": "Agent trajectory",
+      "description": "Check that a tool never appears in the trusted Harbor trajectory. Missing evidence fails the check.",
+      "builtin": "trajectory_tool_not_used",
+      "fields": [
+        {
+          "key": "tool_name",
+          "label": "Tool name",
+          "type": "text",
+          "placeholder": "run_command"
+        },
+        {
+          "key": "path",
+          "label": "Trajectory file",
+          "type": "trajectory",
+          "placeholder": "/logs/agent/trajectory.json",
+          "default": "/logs/agent/trajectory.json",
+          "optional": true
+        }
+      ]
+    },
+    "trajectory-turn-count": {
+      "label": "Agent turn budget",
+      "group": "Agent trajectory",
+      "description": "Full credit within the turn budget; declines linearly to zero at twice the budget. Missing evidence scores 0.",
+      "builtin": "trajectory_turn_count",
+      "fields": [
+        {
+          "key": "max_turns",
+          "label": "Maximum turns",
+          "type": "integer",
+          "placeholder": "20",
+          "min": 1
+        },
+        {
+          "key": "path",
+          "label": "Trajectory file",
+          "type": "trajectory",
+          "placeholder": "/logs/agent/trajectory.json",
+          "default": "/logs/agent/trajectory.json",
+          "optional": true
+        }
+      ],
+      "score": "continuous"
+    }
+  },
+  "aggregations": {
+    "weighted-mean": {
+      "label": "Weighted average",
+      "description": "Average check scores using their weights. Scores range from 0 to 1."
+    },
+    "all-pass": {
+      "label": "All checks pass",
+      "description": "Score 1 when every check scores above 0. Use binary checks for strict pass/fail."
+    },
+    "any-pass": {
+      "label": "Any check passes",
+      "description": "Score 1 when at least one check scores above 0."
+    },
+    "threshold": {
+      "label": "Average meets threshold",
+      "description": "Score 1 when the weighted average meets the threshold."
+    },
+    "required-pass": {
+      "label": "All required checks pass",
+      "description": "Score 1 when every non-optional check scores above 0. At least one check must be required."
+    },
+    "weighted-sum": {
+      "label": "Weighted sum",
+      "description": "Add weighted scores. Supports negative weights and may produce rewards outside 0\u20131."
+    }
+  }
+}

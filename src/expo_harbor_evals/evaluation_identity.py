@@ -42,13 +42,17 @@ def make_suite(repo: Path) -> dict:
     return {"schema_version": 1, "suite": "expo-mobile-v2", "tasks": tasks, "engine": engine}
 
 
-def trial_identity(task: Path, config: dict, job: dict | None = None) -> dict:
+def trial_identity(task: Path, config: dict, job: dict | None = None, *, allow_unversioned: bool = False) -> dict:
     """Use a common suite digest, plus the actual condition (not a display alias)."""
     repo = next((p for p in task.parents if (p / "suites/mobile-v2.json").exists()), None)
     if repo is None:
         return {"measurement": "unversioned", "task_sha256": task_digest(task)}
     suite = json.loads((repo / "suites/mobile-v2.json").read_text())
     record = suite["tasks"].get(task.name)
+    if allow_unversioned and not record and not task.resolve().is_relative_to((repo / 'tasks').resolve()):
+        digest = task_digest(task)
+        return {"measurement": "unversioned", "task_sha256": digest,
+                "experiment_sha256": fingerprint({'unversioned_task': digest})}
     if not record or record["definition_sha256"] != task_digest(task):
         raise ValueError("Task changed since suite lock; review and run expo-eval-suite lock")
     for filename, expected in suite["engine"].items():
@@ -79,6 +83,10 @@ def trial_identity(task: Path, config: dict, job: dict | None = None) -> dict:
         measurement = "policy-behavior"
     elif (task / "tests/requirements/behavior.json").is_file():
         measurement = "source-and-policy"
+    elif (task / "tests/requirements/grading.json").is_file():
+        plan = json.loads((task / "tests/requirements/grading.json").read_text())
+        kinds = {check["kind"] for check in plan["checks"].values()}
+        measurement = "source-review" if kinds == {"ai-review"} else "source-and-checks" if "ai-review" in kinds else "programmatic-checks"
     return {"suite": suite["suite"], "suite_sha256": fingerprint(suite),
             "experiment_sha256": fingerprint({"suite": suite, "condition": condition}),
             "task_sha256": record["definition_sha256"], "measurement": measurement,

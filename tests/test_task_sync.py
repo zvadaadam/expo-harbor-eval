@@ -74,6 +74,9 @@ def test_codegen_task_scripts_match_src_copies() -> None:
         for vendored_name, src_name in VENDORED_CODEGEN_SCRIPTS.items():
             vendored = task_dir / "tests" / vendored_name
             expected = (SRC / src_name).read_text()
+            if vendored_name == "run_rewardkit.py" and (task_dir / "tests/requirements/grading.json").is_file():
+                assert (task_dir / "tests/source_runner.py").read_text() == expected
+                expected = (REPO_ROOT / "graders/kit_runner.py").read_text()
             assert vendored.read_text() == expected, (
                 f"{vendored} drifted from src/expo_harbor_evals/{src_name}; "
                 "copy the canonical src file over the task copy"

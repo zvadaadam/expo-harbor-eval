@@ -62,6 +62,7 @@ class Trial:
     pending: bool = False
     provenance: dict = field(default_factory=dict)
     regrade_of: str = ""
+    reward_passed: bool | None = None
 
     @property
     def outcome(self) -> str:
@@ -69,7 +70,8 @@ class Trial:
             return "pending"
         if self.error or self.reward is None:
             return "error"
-        return "pass" if self.reward == 1 else "fail" if self.reward == 0 else "partial"
+        passed = self.reward_passed if self.reward_passed is not None else self.reward == 1
+        return "pass" if passed else "fail" if self.reward == 0 else "partial"
 
     @property
     def series_key(self) -> str:
@@ -210,12 +212,15 @@ def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
 
             criteria: list[dict] = []
             judge: dict = {}
+            reward_passed = None
             details = read_json(
                 trial_result.parent / "verifier" / "reward-details.json"
             )
             if isinstance(details, dict):
                 reward_details = details.get("reward")
                 if isinstance(reward_details, dict):
+                    if type(reward_details.get('passed')) is bool:
+                        reward_passed = reward_details['passed']
                     criteria = reward_details.get("criteria") or []
                     judge = reward_details.get("judge") or {}
                     if not judge:
@@ -244,6 +249,7 @@ def load_runs(run_dirs: list[Path]) -> tuple[dict, list[Trial]]:
                     agent=agent_info.get("name") or "unknown",
                     model=model_info.get("name") or "",
                     reward=None if runner_ok == 0 or judge_errors else rewards.get("reward"),
+                    reward_passed=reward_passed,
                     criteria=criteria,
                     judge=judge,
                     error=exception,
@@ -382,7 +388,7 @@ def series_stats(tasks: list[TaskRow], key: str) -> SeriesStats:
     solved = sum(
         1
         for cell in cells
-        if all(t.reward is not None and t.reward >= 1.0 and not t.error and not t.pending for t in cell)
+        if all(t.outcome == 'pass' for t in cell)
     )
     return SeriesStats(
         mean=mean(cell_means),
@@ -390,7 +396,7 @@ def series_stats(tasks: list[TaskRow], key: str) -> SeriesStats:
         n_tasks=len(cells),
         attempts=len(attempts),
         errors=sum(t.error is not None or t.reward is None for t in attempts),
-        completion_rate=sum(t.reward == 1.0 and not t.error for t in attempts) / len(attempts) if attempts else None,
+        completion_rate=sum(t.outcome == 'pass' for t in attempts) / len(attempts) if attempts else None,
         mean_cost=sum(costs) / len(costs) if costs else None,
         total_cost=sum(costs) if costs else None,
         input_tokens=_total(

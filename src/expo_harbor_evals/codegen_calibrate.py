@@ -109,11 +109,12 @@ def _run_verifier(task_dir: Path, workspace: Path, output: Path, behavior_only: 
 def assess_bracket(task_dir: Path, bracket: str, result: dict) -> tuple[bool, str]:
     """A negative control must fail the behavior deliberately broken by it."""
     reward, guarded = result["reward"], result["guarded"]
-    if isinstance(reward, bool) or not isinstance(reward, (int, float)) or not math.isfinite(reward) or not 0 <= reward <= 1:
+    rubric = tomllib.loads((task_dir / "tests/requirements/rubric.toml").read_text())
+    aggregation = rubric.get('scoring', {}).get('aggregation', 'weighted-mean').replace('_', '-')
+    if isinstance(reward, bool) or not isinstance(reward, (int, float)) or not math.isfinite(reward) or (aggregation != 'weighted-sum' and not 0 <= reward <= 1):
         return False, "invalid reward"
     if bracket in ("empty", "baseline"):
         return (reward == 0 and guarded), "must guard to 0 without a judge call"
-    rubric = tomllib.loads((task_dir / "tests/requirements/rubric.toml").read_text())
     behavior = behavior_spec(task_dir / "tests/requirements")
     if result.get("behavior_only") or result.get("source_review_skipped"):
         if behavior is None:
@@ -132,21 +133,29 @@ def assess_bracket(task_dir: Path, bracket: str, result: dict) -> tuple[bool, st
         return False, "source review can only be skipped for a failed required policy"
     if guarded or set(values) != expected_ids or len(rows) != len(expected_ids):
         return False, "judge must return each declared criterion exactly once"
-    if any(isinstance(v, bool) or v not in (0.0, 1.0) for v in values.values()):
-        return False, "binary criteria must contain numeric 0 or 1"
-    expected_reward = sum(values[c["id"]] * c["weight"] for c in rubric["criterion"]) / sum(c["weight"] for c in rubric["criterion"])
+    for criterion in rubric['criterion']:
+        value = values[criterion['id']]
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or not 0 <= value <= 1:
+            return False, 'criteria must contain finite normalized scores from 0 to 1'
+        if criterion.get('type', 'binary') == 'binary' and value not in (0, 1):
+            return False, 'binary criteria must contain numeric 0 or 1'
+    from rewardkit.models import Score
+    from rewardkit.reward import aggregate_scores
+    expected_reward = aggregate_scores([Score(name=c['id'], value=values[c['id']], raw=values[c['id']], weight=c['weight'], optional=c.get('optional', False)) for c in rubric['criterion']], aggregation, rubric.get('scoring', {}).get('threshold', 0.5))
     if behavior is not None:
         expected_reward = float(all(values.values()))
     # Rewardkit serializes the aggregate to four decimal places.
     if not math.isclose(reward, round(expected_reward, 4), abs_tol=1e-6):
         return False, "aggregate reward disagrees with criterion results"
+    maximum = sum(max(0, c['weight']) for c in rubric['criterion']) if aggregation == 'weighted-sum' else 1
+    ideal = {c['id']: 0 if aggregation == 'weighted-sum' and c['weight'] < 0 else 1 for c in rubric['criterion']}
     if bracket.startswith("reference"):
-        return (reward == 1 and all(values.values())), "every reference criterion must pass"
+        return math.isclose(reward, round(maximum, 4), abs_tol=1e-6) and all(values[key] == value for key, value in ideal.items()), "every reference criterion must achieve its ideal score"
     spec = json.loads((task_dir / "tests/requirements/calibration.json").read_text())
     required_failures = spec[bracket]["must_fail"]
     if not required_failures or not set(required_failures) <= expected_ids:
         return False, "invalid negative-control criterion IDs"
-    return (reward < 1 and all(values[key] == 0 for key in required_failures)), \
+    return (reward < maximum and all(values[key] == 1 - ideal[key] for key in required_failures)), \
         "must fail: " + ", ".join(required_failures)
 
 

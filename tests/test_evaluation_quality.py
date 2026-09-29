@@ -208,6 +208,17 @@ def test_suite_and_report_separate_changed_experiments(tmp_path):
         trial_identity(task, {})
 
 
+@pytest.mark.parametrize("kind,measurement", [("file-exists", "programmatic-checks"), ("ai-review", "source-and-checks")])
+def test_rewardkit_recipes_have_distinct_measurement_identity(tmp_path, kind, measurement):
+    task = tmp_path / "tasks/codegen/example"
+    task.mkdir(parents=True)
+    (task / "task.toml").write_text('[metadata]\nfamily="expo-codegen"\n')
+    write_json(task / "tests/requirements/grading.json", {"checks": {"first": {"kind": "file-exists"}, "second": {"kind": kind}}})
+    write_json(tmp_path / "suites/mobile-v2.json", make_suite(tmp_path))
+    assert trial_identity(task, {})["measurement"] == measurement
+    assert trial_identity(task, {"verifier": {"env": {"EXPO_EVAL_VERIFIER_MODE": "reference"}}})["measurement"] == "reference-smoke"
+
+
 def test_report_completion_includes_infrastructure_errors(tmp_path):
     for name, rewards in (("pass", {"reward": 1, "sim_runner_ok": 1}),
                           ("error", {"reward": 0, "sim_runner_ok": 0})):
@@ -221,14 +232,24 @@ def test_report_completion_includes_infrastructure_errors(tmp_path):
 
 
 @pytest.mark.skipif(sys.platform != "darwin", reason="macOS seatbelt")
-def test_candidate_can_read_app_but_not_reference_files(tmp_path):
+@pytest.mark.parametrize("task_location", ["tasks/example", "outputs/studio/draft/example"])
+def test_candidate_can_read_app_but_not_reference_files(tmp_path, task_location):
     from expo_harbor_evals.mac_sandbox_env import MacSandboxEnvironment, PROFILE_TEMPLATE
     env = object.__new__(MacSandboxEnvironment)
     env._root = tmp_path / "runs/trial/_local_env"
-    env.environment_dir = tmp_path / "tasks/example/environment"
+    env.environment_dir = tmp_path / task_location / "environment"
     env.environment_dir.mkdir(parents=True)
     reference = env.environment_dir.parent / "reference.txt"
     reference.write_text("hidden answer")
+    write_json(tmp_path / "suites/mobile-v2.json", {})
+    other_answers = [tmp_path / name for name in (
+        "tasks/other/reference.txt",
+        ".studio/drafts/copy.json",
+        "outputs/studio/other-copy/reference.txt",
+    )]
+    for answer in other_answers:
+        answer.parent.mkdir(parents=True, exist_ok=True)
+        answer.write_text("hidden answer")
     (env._root / "app").mkdir(parents=True)
     (env._root / "app/input.txt").write_text("visible input")
     env._profile_path = env._root / "sandbox.sb"
@@ -239,5 +260,30 @@ def test_candidate_can_read_app_but_not_reference_files(tmp_path):
     result = asyncio.run(env.exec_agent(command="cat /app/input.txt"))
     assert result.return_code == 0 and result.stdout.strip() == "visible input"
     import shlex
-    result = asyncio.run(env.exec_agent(command=f"cat {shlex.quote(str(reference))}"))
-    assert result.return_code != 0 and "hidden answer" not in (result.stdout or "")
+    for answer in (reference, *other_answers):
+        result = asyncio.run(env.exec(command=f"cat {shlex.quote(str(answer))}"))
+        assert result.return_code == 0 and result.stdout.strip() == "hidden answer"
+        result = asyncio.run(env.exec_agent(command=f"cat {shlex.quote(str(answer))}"))
+        assert result.return_code != 0 and "hidden answer" not in (result.stdout or "")
+
+
+def test_draft_calibration_is_explicitly_unversioned_and_cannot_bypass_locked_tasks(tmp_path):
+    task = tmp_path / 'tasks/simbench/locked'
+    task.mkdir(parents=True)
+    (task / 'task.toml').write_text('[metadata]\nfamily="simbench"\n')
+    write_json(tmp_path / 'suites/mobile-v2.json', make_suite(tmp_path))
+    draft = tmp_path / 'outputs/studio/new-simulator-task'
+    shutil.copytree(task, draft)
+    with pytest.raises(ValueError, match='Task changed'):
+        trial_identity(draft, {})
+    identity = trial_identity(draft, {}, allow_unversioned=True)
+    assert identity['measurement'] == 'unversioned'
+    (draft / 'instruction.md').write_text('Changed draft')
+    assert trial_identity(draft, {}, allow_unversioned=True)['experiment_sha256'] != identity['experiment_sha256']
+    (task / 'instruction.md').write_text('Changed locked task')
+    with pytest.raises(ValueError, match='Task changed'):
+        trial_identity(task, {}, allow_unversioned=True)
+    new_library_task = tmp_path / 'tasks/simbench/unlocked'
+    shutil.copytree(draft, new_library_task)
+    with pytest.raises(ValueError, match='Task changed'):
+        trial_identity(new_library_task, {}, allow_unversioned=True)

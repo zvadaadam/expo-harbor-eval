@@ -1,0 +1,45 @@
+{
+  "name": "expo-harbor-studio",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 4747",
+    "build": "vite build",
+    "start": "HOST=127.0.0.1 PORT=4747 node .output/server/index.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test src/server/*.test.ts && \"${STUDIO_PYTHON:-../.venv/bin/python}\" -m unittest discover -s bridge -p 'test_*.py'",
+    "format": "prettier --write src *.json vite.config.ts",
+    "format:check": "prettier --check src *.json vite.config.ts"
+  },
+  "dependencies": {
+    "@expo/styleguide-icons": "4.4.0",
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@radix-ui/colors": "3.0.0",
+    "@tanstack/react-query": "5.103.2",
+    "@tanstack/react-router": "1.170.39",
+    "@tanstack/react-router-ssr-query": "1.167.3",
+    "@tanstack/react-start": "1.168.58",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-markdown": "^10.1.0",
+    "tailwindcss": "^4.2.2",
+    "zod": "4.6.5",
+    "zustand": "5.0.15"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "nitro": "3.0.260903-beta",
+    "prettier": "^3.9.9",
+    "tsx": "^4.20.0",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "vite": "^8.0.14"
+  }
+}
